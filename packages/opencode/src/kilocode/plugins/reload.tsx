@@ -1,4 +1,5 @@
 import type { TuiPlugin, TuiPluginModule } from "@kilocode/plugin/tui"
+import { t } from "@tui/kilocode/i18n"
 
 const id = "internal:reload"
 
@@ -9,8 +10,8 @@ const tui: TuiPlugin = async (api) => {
       {
         namespace: "palette",
         name: "app.reload",
-        title: "Reload",
-        desc: "Reload config, skills, agents, and commands from disk",
+        title: t("Reload"),
+        desc: t("Reload config, skills, agents, and commands from disk"),
         category: "System",
         slashName: "reload",
         async run() {
@@ -18,7 +19,7 @@ const tui: TuiPlugin = async (api) => {
           pending = true
           try {
             await api.client.instance.reload({}, { throwOnError: true })
-            api.ui.toast({ message: "Reloaded", variant: "success" })
+            api.ui.toast({ message: t("Reloaded"), variant: "success" })
           } catch (err) {
             api.ui.toast({ message: String(err), variant: "error", duration: 5000 })
           } finally {

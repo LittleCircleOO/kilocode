@@ -6,6 +6,7 @@ import { useClipboard } from "../context/clipboard"
 import { InstallationVersion } from "@opencode-ai/core/installation/version"
 import { useExit } from "../context/exit"
 import { describeOS, describeTerminal } from "../util/system"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 // kilocode_change start — guard against missing renderer context in ErrorBoundary fallback
 function tryUseTerminalDimensions() {
@@ -37,7 +38,7 @@ export function ErrorComponent(props: { error: Error; reset: () => void; mode?: 
         bg: "#ffffff",
         element: "#f5f5f5",
         borderSubtle: "#d4d4d4",
-        text: "#1a1a1a",
+        text: t("#1a1a1a") /* kilocode_change */,
         muted: "#8a8a8a",
         primary: "#3b7dd8",
         onPrimary: "#ffffff",
@@ -48,7 +49,7 @@ export function ErrorComponent(props: { error: Error; reset: () => void; mode?: 
         bg: "#0a0a0a",
         element: "#1e1e1e",
         borderSubtle: "#3c3c3c",
-        text: "#eeeeee",
+        text: t("#eeeeee") /* kilocode_change */,
         muted: "#808080",
         primary: "#fab283",
         onPrimary: "#0a0a0a",
@@ -128,7 +129,7 @@ export function ErrorComponent(props: { error: Error; reset: () => void; mode?: 
             Kilo crashed
           </text>
           <Show when={showSubtext()}>
-            <text fg={colors.muted}>An unexpected error stopped the session.</text>
+            <text fg={colors.muted}>{t("An unexpected error stopped the session.") /* kilocode_change */}</text>
           </Show>
         </box>
 
@@ -138,7 +139,7 @@ export function ErrorComponent(props: { error: Error; reset: () => void; mode?: 
           border
           borderStyle="rounded"
           borderColor={colors.error}
-          title=" Error "
+          title={t(" Error ") /* kilocode_change */}
           titleColor={colors.error}
           paddingLeft={2}
           paddingRight={2}
@@ -185,7 +186,7 @@ export function ErrorComponent(props: { error: Error; reset: () => void; mode?: 
           border
           borderStyle="rounded"
           borderColor={colors.borderSubtle}
-          title=" Stack trace "
+          title={t(" Stack trace ") /* kilocode_change */}
           titleColor={colors.muted}
           bottomTitle=" ↑↓ scroll "
           bottomTitleAlignment="right"

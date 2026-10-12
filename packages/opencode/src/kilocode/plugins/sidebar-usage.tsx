@@ -21,6 +21,7 @@ import {
   type UsageResult,
 } from "@/kilocode/plugins/model-usage"
 import { ModelRow, UsageRow } from "@/kilocode/plugins/sidebar-usage-row"
+import { t } from "@tui/kilocode/i18n"
 
 const id = "internal:kilo-sidebar-usage"
 
@@ -149,7 +150,7 @@ function View(props: { api: TuiPluginApi; session_id: string }) {
         <box flexDirection="row" gap={1} onMouseDown={() => setUsageOpen((open) => !open)}>
           <text fg={theme().text}>{usageOpen() ? "▼" : "▶"}</text>
           <text fg={theme().text}>
-            <b>Token Usage</b>
+            <b>{t("Token Usage")}</b>
           </text>
         </box>
         <Show when={usageOpen()}>
@@ -159,16 +160,16 @@ function View(props: { api: TuiPluginApi; session_id: string }) {
           >
             {(data) => (
               <>
-                <Row label="Input" value={formatCount(data().totals.tokens.input)} />
-                <Row label="Output" value={formatCount(data().totals.tokens.output)} />
-                <Row label="Reasoning" value={formatCount(data().totals.tokens.reasoning)} />
-                <Row label="Cache read" value={formatCount(data().totals.tokens.cache.read)} />
-                <Row label="Cache write" value={formatCount(data().totals.tokens.cache.write)} />
-                <Row label="Cache rate" value={formatRate(data().totals.tokens)} />
+                <Row label={t("Input")} value={formatCount(data().totals.tokens.input)} />
+                <Row label={t("Output")} value={formatCount(data().totals.tokens.output)} />
+                <Row label={t("Reasoning")} value={formatCount(data().totals.tokens.reasoning)} />
+                <Row label={t("Cache read")} value={formatCount(data().totals.tokens.cache.read)} />
+                <Row label={t("Cache write")} value={formatCount(data().totals.tokens.cache.write)} />
+                <Row label={t("Cache rate")} value={formatRate(data().totals.tokens)} />
                 <Show when={hasMetrics(throughput())}>
                   <Row label={throughputLabel.generation} value={formatRateValue(throughput().generation)} />
                 </Show>
-                <Row label="Cost" value={formatCost(data().totals.cost)} />
+                <Row label={t("Cost")} value={formatCost(data().totals.cost)} />
               </>
             )}
           </Show>
@@ -180,11 +181,11 @@ function View(props: { api: TuiPluginApi; session_id: string }) {
             <box flexDirection="row" gap={1} onMouseDown={() => setModelsOpen((open) => !open)}>
               <text fg={theme().text}>{modelsOpen() ? "▼" : "▶"}</text>
               <text fg={theme().text}>
-                <b>Models ({data().models.length})</b>
+                <b>{t("Models (")}{data().models.length})</b>
               </text>
             </box>
             <Show when={modelsOpen()}>
-              <Show when={data().models.length > 0} fallback={<text fg={theme().textMuted}>No model usage yet</text>}>
+              <Show when={data().models.length > 0} fallback={<text fg={theme().textMuted}>{t("No model usage yet")}</text>}>
                 <box gap={1} paddingTop={1}>
                   <For each={groups()}>
                     {(group) => (
@@ -199,10 +200,10 @@ function View(props: { api: TuiPluginApi; session_id: string }) {
                               Model
                             </text>
                             <box width={5} flexDirection="row" flexShrink={0} justifyContent="flex-end">
-                              <text fg={theme().textMuted}>Steps</text>
+                              <text fg={theme().textMuted}>{t("Steps")}</text>
                             </box>
                             <box width={9} flexDirection="row" flexShrink={0} justifyContent="flex-end">
-                              <text fg={theme().textMuted}>Cost</text>
+                              <text fg={theme().textMuted}>{t("Cost")}</text>
                             </box>
                           </box>
                           <For each={group.models}>
@@ -224,12 +225,12 @@ function View(props: { api: TuiPluginApi; session_id: string }) {
                                   />
                                   <Show when={expanded().has(key)}>
                                     <box paddingLeft={2}>
-                                      <Row label="Input" value={formatCount(model.tokens.input)} />
-                                      <Row label="Output" value={formatCount(model.tokens.output)} />
-                                      <Row label="Reasoning" value={formatCount(model.tokens.reasoning)} />
-                                      <Row label="Cache read" value={formatCount(model.tokens.cache.read)} />
-                                      <Row label="Cache write" value={formatCount(model.tokens.cache.write)} />
-                                      <Row label="Cache rate" value={formatRate(model.tokens)} />
+                                      <Row label={t("Input")} value={formatCount(model.tokens.input)} />
+                                      <Row label={t("Output")} value={formatCount(model.tokens.output)} />
+                                      <Row label={t("Reasoning")} value={formatCount(model.tokens.reasoning)} />
+                                      <Row label={t("Cache read")} value={formatCount(model.tokens.cache.read)} />
+                                      <Row label={t("Cache write")} value={formatCount(model.tokens.cache.write)} />
+                                      <Row label={t("Cache rate")} value={formatRate(model.tokens)} />
                                     </box>
                                   </Show>
                                 </box>
@@ -252,12 +253,12 @@ function View(props: { api: TuiPluginApi; session_id: string }) {
             <box flexDirection="row" gap={1} onMouseDown={() => setBenchOpen((open) => !open)}>
               <text fg={theme().text}>{benchOpen() ? "▼" : "▶"}</text>
               <text fg={theme().text}>
-                <b>Terminal Bench 2.0</b>
+                <b>{t("Terminal Bench 2.0")}</b>
               </text>
             </box>
             <Show when={benchOpen()}>
-              <Row label="Completion" value={fmtScore(value().overallScore)} />
-              <Row label="Cost / attempt" value={fmtAttemptCost(value().avgAttemptCostUsd)} />
+              <Row label={t("Completion")} value={fmtScore(value().overallScore)} />
+              <Row label={t("Cost / attempt")} value={fmtAttemptCost(value().avgAttemptCostUsd)} />
             </Show>
           </box>
         )}

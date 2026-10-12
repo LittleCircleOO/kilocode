@@ -2,6 +2,7 @@ import { fetchKiloEmbeddingModelCatalog, resolveKiloGatewayBaseUrl } from "@kilo
 import type { Config, IndexingConfig, KiloEmbeddingModelCatalog } from "@kilocode/sdk/v2"
 import * as Log from "@opencode-ai/core/util/log"
 import { createMemo, type Accessor } from "solid-js"
+import { t } from "@tui/kilocode/i18n"
 
 export type IndexingScope = "global" | "project"
 
@@ -28,11 +29,11 @@ export async function loadKiloEmbeddingModels(onError?: (message: string) => voi
 }
 
 export function kiloModelOptions(catalog?: KiloEmbeddingModelCatalog) {
-  if (!catalog) return [{ value: "", title: "Loading supported models..." }]
-  if (catalog.models.length === 0) return [{ value: "", title: "No supported models available" }]
+  if (!catalog) return [{ value: "", title: t("Loading supported models...") }]
+  if (catalog.models.length === 0) return [{ value: "", title: t("No supported models available") }]
   return catalog.models.map((model) => ({
     value: model.id,
-    title: `${model.name} (${model.note ? `${model.note}, ` : ""}${model.dimension}d)`,
+    title: t("{{name}} ({{p1}}{{dimension}}d)", { name: model.name, p1: model.note ? `${model.note}, ` : "", dimension: model.dimension }),
   }))
 }
 

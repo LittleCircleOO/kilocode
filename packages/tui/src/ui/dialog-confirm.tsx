@@ -5,6 +5,7 @@ import { createStore } from "solid-js/store"
 import { For } from "solid-js"
 import { Locale } from "../util/locale"
 import { useBindings } from "../keymap"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 export type DialogConfirmProps = {
   title: string
@@ -27,7 +28,7 @@ export function DialogConfirm(props: DialogConfirmProps) {
     bindings: [
       {
         key: "return",
-        desc: "Confirm dialog selection",
+        desc: t("Confirm dialog selection") /* kilocode_change */,
         group: "Dialog",
         cmd: () => {
           if (store.active === "confirm") props.onConfirm?.()
@@ -37,7 +38,7 @@ export function DialogConfirm(props: DialogConfirmProps) {
       },
       {
         key: "left",
-        desc: "Previous dialog option",
+        desc: t("Previous dialog option") /* kilocode_change */,
         group: "Dialog",
         cmd: () => {
           setStore("active", store.active === "confirm" ? "cancel" : "confirm")
@@ -45,7 +46,7 @@ export function DialogConfirm(props: DialogConfirmProps) {
       },
       {
         key: "right",
-        desc: "Next dialog option",
+        desc: t("Next dialog option") /* kilocode_change */,
         group: "Dialog",
         cmd: () => {
           setStore("active", store.active === "confirm" ? "cancel" : "confirm")

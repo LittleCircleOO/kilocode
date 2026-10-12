@@ -20,6 +20,7 @@ import { DialogProviderUsage } from "./components/dialog-provider-usage.js"
 import { indexingEnabled } from "./indexing-feature"
 import { refreshBalance } from "./balance-refresh"
 import { showAboutDialog } from "./cli/cmd/tui/component/dialog-about.js"
+import { t } from "@tui/kilocode/i18n"
 
 // These types are OpenCode-internal and imported at runtime
 type UseSDK = any
@@ -48,8 +49,8 @@ export function registerKiloCommands(useSDK: () => UseSDK) {
       // /remote command
       {
         name: "remote.toggle",
-        title: "Toggle remote",
-        desc: "Enable or disable remote session relay",
+        title: t("Toggle remote"),
+        desc: t("Enable or disable remote session relay"),
         category: "Kilo",
         slashName: "remote",
         enabled: isKiloConnected(),
@@ -59,35 +60,35 @@ export function registerKiloCommands(useSDK: () => UseSDK) {
             const current = await sdk.client.remote.status()
 
             if (current.error || !current.data) {
-              dialog.replace(() => <DialogAlert title="Error" message="Failed to fetch remote status." />)
+              dialog.replace(() => <DialogAlert title={t("Error")} message={t("Failed to fetch remote status.")} />)
               return
             }
 
             if (current.data.enabled) {
               await sdk.client.remote.disable()
-              toast.show({ message: "Remote disabled", variant: "success" })
+              toast.show({ message: t("Remote disabled"), variant: "success" })
             } else {
               const result = await sdk.client.remote.enable()
               if (result.error) {
                 const err = result.error as { error?: string }
                 const msg = err?.error ?? "Failed to enable remote."
-                dialog.replace(() => <DialogAlert title="Error" message={msg} />)
+                dialog.replace(() => <DialogAlert title={t("Error")} message={msg} />)
                 return
               }
-              toast.show({ message: "Remote enabled", variant: "success" })
+              toast.show({ message: t("Remote enabled"), variant: "success" })
             }
 
             dialog.clear()
           } catch (error) {
-            dialog.replace(() => <DialogAlert title="Error" message={`Failed to toggle remote: ${error}`} />)
+            dialog.replace(() => <DialogAlert title={t("Error")} message={`Failed to toggle remote: ${error}`} />)
           }
         },
       },
 
       {
         name: "kilo.usage",
-        title: "Plans & usage",
-        desc: "View provider plans and quota",
+        title: t("Plans & usage"),
+        desc: t("View provider plans and quota"),
         category: "Kilo",
         slashName: "usage",
         slashAliases: ["plans", "quota"],
@@ -99,8 +100,8 @@ export function registerKiloCommands(useSDK: () => UseSDK) {
       // /profile command
       {
         name: "kilo.profile",
-        title: "Profile",
-        desc: "View your Kilo Gateway profile",
+        title: t("Profile"),
+        desc: t("View your Kilo Gateway profile"),
         category: "Kilo",
         slashName: "profile",
         slashAliases: ["me", "whoami"],
@@ -123,8 +124,8 @@ export function registerKiloCommands(useSDK: () => UseSDK) {
             if (response.error || !response.data) {
               dialog.replace(() => (
                 <DialogAlert
-                  title="Error"
-                  message="Failed to fetch profile. Please ensure you're authenticated with Kilo Gateway."
+                  title={t("Error")}
+                  message={t("Failed to fetch profile. Please ensure you're authenticated with Kilo Gateway.")}
                 />
               ))
               return
@@ -135,7 +136,7 @@ export function registerKiloCommands(useSDK: () => UseSDK) {
             // Show profile dialog with clickable usage link
             dialog.replace(() => <DialogKiloProfile profile={profile} balance={balance} currentOrgId={currentOrgId} />)
           } catch (error) {
-            dialog.replace(() => <DialogAlert title="Error" message={`Failed to fetch profile: ${error}`} />)
+            dialog.replace(() => <DialogAlert title={t("Error")} message={`Failed to fetch profile: ${error}`} />)
           }
         },
       },
@@ -144,8 +145,8 @@ export function registerKiloCommands(useSDK: () => UseSDK) {
         ? [
             {
               name: "kilo.indexing",
-              title: "Indexing",
-              desc: "Configure codebase indexing",
+              title: t("Indexing"),
+              desc: t("Configure codebase indexing"),
               category: "Kilo",
               slashName: "indexing",
               slashAliases: ["index", "embedding"],
@@ -161,9 +162,9 @@ export function registerKiloCommands(useSDK: () => UseSDK) {
         name: "kilo.privacy",
         get title() {
           const active = sync.data.config.privacy_mode === true || sync.data.globalConfig.privacy_mode === true
-          return active ? "Disable privacy mode" : "Enable privacy mode"
+          return active ? t("Disable privacy mode") : t("Enable privacy mode")
         },
-        desc: "Blur PII (balance, email, etc.) and confirm before showing profile",
+        desc: t("Blur PII (balance, email, etc.) and confirm before showing profile"),
         category: "Kilo",
         slashName: "privacy",
         run: async () => {
@@ -187,7 +188,7 @@ export function registerKiloCommands(useSDK: () => UseSDK) {
           const failed = responses.find((r) => r.error)
           if (failed) {
             const status = failed.response?.status ?? "?"
-            toast.show({ message: `Failed to update privacy mode (${status})`, variant: "error" })
+            toast.show({ message: t("Failed to update privacy mode ({{status}})", { status: status }), variant: "error" })
             return
           }
           const [cfg, global] = await Promise.all([
@@ -197,7 +198,7 @@ export function registerKiloCommands(useSDK: () => UseSDK) {
           if (cfg.data) sync.set("config", reconcile(cfg.data))
           if (global.data) sync.set("globalConfig", reconcile(global.data))
           toast.show({
-            message: next ? "Privacy mode enabled" : "Privacy mode disabled",
+            message: next ? t("Privacy mode enabled") : t("Privacy mode disabled"),
             variant: "success",
           })
         },
@@ -206,8 +207,8 @@ export function registerKiloCommands(useSDK: () => UseSDK) {
       // /teams command
       {
         name: "kilo.teams",
-        title: "Teams",
-        desc: "Switch between Kilo Gateway teams",
+        title: t("Teams"),
+        desc: t("Switch between Kilo Gateway teams"),
         category: "Kilo",
         slashName: "teams",
         slashAliases: ["team", "org", "orgs"],
@@ -221,8 +222,8 @@ export function registerKiloCommands(useSDK: () => UseSDK) {
             if (response.error || !response.data) {
               dialog.replace(() => (
                 <DialogAlert
-                  title="Error"
-                  message="Failed to fetch teams. Please ensure you're authenticated with Kilo Gateway."
+                  title={t("Error")}
+                  message={t("Failed to fetch teams. Please ensure you're authenticated with Kilo Gateway.")}
                 />
               ))
               return
@@ -233,7 +234,7 @@ export function registerKiloCommands(useSDK: () => UseSDK) {
             if (!profile.organizations || profile.organizations.length === 0) {
               dialog.replace(() => (
                 <DialogAlert
-                  title="No Teams Available"
+                  title={t("No Teams Available")}
                   message="You're not a member of any teams.\nVisit https://app.kilo.ai to create or join a team."
                 />
               ))
@@ -254,7 +255,7 @@ export function registerKiloCommands(useSDK: () => UseSDK) {
                     })
                     if (result.error) {
                       toast.show({
-                        message: "Failed to switch team",
+                        message: t("Failed to switch team"),
                         variant: "error",
                       })
                       dialog.clear()
@@ -274,7 +275,7 @@ export function registerKiloCommands(useSDK: () => UseSDK) {
                       : "Personal"
 
                     toast.show({
-                      message: `Switched to: ${teamName}`,
+                      message: t("Switched to: {{teamName}}", { teamName: teamName }),
                       variant: "success",
                     })
 
@@ -283,7 +284,7 @@ export function registerKiloCommands(useSDK: () => UseSDK) {
                   } catch (error) {
                     if (error instanceof DOMException && error.name === "AbortError") return
                     toast.show({
-                      message: "Failed to switch team",
+                      message: t("Failed to switch team"),
                       variant: "error",
                     })
                     dialog.clear()
@@ -292,7 +293,7 @@ export function registerKiloCommands(useSDK: () => UseSDK) {
               />
             ))
           } catch (error) {
-            dialog.replace(() => <DialogAlert title="Error" message={`Failed to fetch teams: ${error}`} />)
+            dialog.replace(() => <DialogAlert title={t("Error")} message={`Failed to fetch teams: ${error}`} />)
           }
         },
       },
@@ -300,8 +301,8 @@ export function registerKiloCommands(useSDK: () => UseSDK) {
       // /about command
       {
         name: "kilo.about",
-        title: "About",
-        desc: "Show version, environment, and diagnostic info",
+        title: t("About"),
+        desc: t("Show version, environment, and diagnostic info"),
         category: "Kilo",
         slashName: "about",
         run: () => {

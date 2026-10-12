@@ -5,6 +5,7 @@ import { useTheme } from "../context/theme"
 import { useTerminalDimensions } from "@opentui/solid"
 import { SplitBorder } from "./border"
 import { TextAttributes } from "@opentui/core"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 export type ToastOptions = {
   title?: string
   message: string
@@ -86,7 +87,7 @@ function init() {
         })
       toast.show({
         variant: "error",
-        message: "An unknown error has occurred",
+        message: t("An unknown error has occurred") /* kilocode_change */,
       })
     },
     get currentToast(): ToastOptions | null {

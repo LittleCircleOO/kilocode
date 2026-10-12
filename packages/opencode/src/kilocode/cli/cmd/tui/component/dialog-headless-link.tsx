@@ -3,6 +3,7 @@ import { TextAttributes } from "@opentui/core"
 import { useTheme } from "@tui/context/theme"
 import { useDialog, type DialogContext } from "@tui/ui/dialog"
 import { useBindings } from "@tui/keymap"
+import { t } from "@tui/kilocode/i18n"
 
 export type DialogHeadlessLinkProps = {
   url: string
@@ -14,7 +15,7 @@ export function DialogHeadlessLink(props: DialogHeadlessLinkProps) {
 
   useBindings(() => ({
     bindings: [
-      { key: "return", desc: "Close dialog", group: "Dialog", cmd: () => dialog.clear() },
+      { key: "return", desc: t("Close dialog"), group: "Dialog", cmd: () => dialog.clear() },
     ],
   }))
 
@@ -29,7 +30,7 @@ export function DialogHeadlessLink(props: DialogHeadlessLinkProps) {
         </text>
       </box>
       <box paddingBottom={1} flexDirection="column" gap={0}>
-        <text fg={theme.textMuted}>Read the docs at:</text>
+        <text fg={theme.textMuted}>{t("Read the docs at:")}</text>
         <text fg={theme.accent}>{props.url}</text>
       </box>
     </box>

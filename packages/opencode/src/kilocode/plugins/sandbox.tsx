@@ -1,5 +1,6 @@
 import type { TuiPlugin, TuiPluginApi, TuiPluginModule } from "@kilocode/plugin/tui"
 import { createEffect, createSignal, on, type Accessor } from "solid-js"
+import { t } from "@tui/kilocode/i18n"
 
 const id = "internal:sandbox"
 
@@ -84,7 +85,7 @@ const tui: TuiPlugin = async (api) => {
       {
         namespace: "palette",
         name: "session.toggle.sandbox",
-        title: "Toggle sandbox",
+        title: t("Toggle sandbox"),
         category: "Session",
         slashName: "sandbox",
         async run() {
@@ -104,7 +105,7 @@ const tui: TuiPlugin = async (api) => {
               })
               return
             }
-            api.ui.toast({ message: `Sandbox ${value.enabled ? "enabled" : "disabled"}`, variant: "success" })
+            api.ui.toast({ message: t("Sandbox {{p0}}", { p0: value.enabled ? "enabled" : "disabled" }), variant: "success" })
             api.ui.dialog.clear()
           } catch (err) {
             api.ui.toast({ message: String(err), variant: "error", duration: 5000 })

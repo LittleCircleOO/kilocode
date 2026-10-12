@@ -17,6 +17,7 @@ import { useToast } from "@tui/ui/toast"
 import { getScrollAcceleration } from "@tui/util/scroll"
 import { route } from "@/kilocode/cli/cmd/tui/memory-command"
 import { errorMessage } from "@/util/error"
+import { t } from "@tui/kilocode/i18n"
 
 function fmt(value: number) {
   return value.toLocaleString()
@@ -97,9 +98,9 @@ function MemorySourcesInfo(props: {
   const { theme } = useTheme()
   return (
     <box>
-      <text fg={theme.text}>Sources</text>
+      <text fg={theme.text}>{t("Sources")}</text>
       <text fg={theme.textMuted}>
-        project.md {count(props.sources.project)} · environment.md {count(props.sources.environment)} · corrections.md{" "}
+        project.md {count(props.sources.project)} · environment.md {count(props.sources.environment)} {t("· corrections.md")}{" "}
         {count(props.sources.corrections)}
       </text>
     </box>
@@ -110,8 +111,8 @@ function MemoryItemsInfo(props: { items: string }) {
   const { theme } = useTheme()
   return (
     <box>
-      <text fg={theme.text}>Stored memory</text>
-      <Show when={stored(props.items).length > 0} fallback={<text fg={theme.textMuted}>No items</text>}>
+      <text fg={theme.text}>{t("Stored memory")}</text>
+      <Show when={stored(props.items).length > 0} fallback={<text fg={theme.textMuted}>{t("No items")}</text>}>
         <For each={stored(props.items)}>{(line) => <text fg={theme.textMuted}>{line}</text>}</For>
       </Show>
     </box>
@@ -132,14 +133,14 @@ export function DialogMemoryHelp(props: { workspace?: string; directory?: string
   const toast = useToast()
   const options: DialogSelectOption<string>[] = MEMORY_COMMAND_CATALOG.map((item) => ({
     title: item.description,
-    footer: `/memory ${item.usage}`,
+    footer: t("/memory {{usage}}", { usage: item.usage }),
     category: "Memory",
     value: item.usage,
   }))
 
   return (
     <DialogSelect
-      title="Memory"
+      title={t("Memory")}
       options={options}
       flat
       footer={<Show when={props.reason}>{(reason) => <text fg={theme.error}>{reason()}</text>}</Show>}
@@ -148,10 +149,10 @@ export function DialogMemoryHelp(props: { workspace?: string; directory?: string
         const workspace = props.workspace ?? project.workspace.current()
         const result = await sdk.client.tui.appendPrompt({
           ...route({ workspace, directory: props.directory }),
-          text: `/memory ${draft(option.value)}`,
+          text: t("/memory {{p0}}", { p0: draft(option.value) }),
         })
         if (!result.error) return
-        toast.show({ variant: "error", message: `Memory menu failed: ${errorMessage(result.error)}` })
+        toast.show({ variant: "error", message: t("Memory menu failed: {{p0}}", { p0: errorMessage(result.error) }) })
       }}
     />
   )
@@ -185,7 +186,7 @@ function DialogMemoryStatus(props: { workspace?: string; directory?: string }) {
       </box>
       <Switch>
         <Match when={data.loading}>
-          <text fg={theme.textMuted}>Loading memory...</text>
+          <text fg={theme.textMuted}>{t("Loading memory...")}</text>
         </Match>
         <Match when={data.error}>
           <text fg={theme.error} wrapMode="word">
@@ -199,7 +200,7 @@ function DialogMemoryStatus(props: { workspace?: string; directory?: string }) {
                 <MemoryHeaderInfo root={item().root} state={item().state} />
               </box>
               <box>
-                <text fg={theme.text}>Auto-save</text>
+                <text fg={theme.text}>{t("Auto-save")}</text>
                 <text fg={theme.textMuted}>{autosave(item().state)}</text>
                 <text fg={theme.textMuted} wrapMode="word">
                   Auto-save sends best-effort-redacted turn context to your configured model provider; disable with /memory auto off.
@@ -208,7 +209,7 @@ function DialogMemoryStatus(props: { workspace?: string; directory?: string }) {
               <MemorySourcesInfo sources={item().sources} />
               <MemoryItemsInfo items={item().items} />
               <box>
-                <text fg={theme.text}>Index</text>
+                <text fg={theme.text}>{t("Index")}</text>
                 <text fg={theme.textMuted}>
                   {fmt(records(item().index))} entries · {fmt(MemoryToken.estimate(item().index))} estimated tokens
                 </text>
@@ -249,8 +250,8 @@ export function DialogMemory(props: { workspace?: string; directory?: string }) 
 
   useBindings(() => ({
     bindings: [
-      { key: "pageup", desc: "Scroll memory up", group: "Memory", cmd: () => box?.scrollBy(-height()) },
-      { key: "pagedown", desc: "Scroll memory down", group: "Memory", cmd: () => box?.scrollBy(height()) },
+      { key: "pageup", desc: t("Scroll memory up"), group: "Memory", cmd: () => box?.scrollBy(-height()) },
+      { key: "pagedown", desc: t("Scroll memory down"), group: "Memory", cmd: () => box?.scrollBy(height()) },
     ],
   }))
 
@@ -273,7 +274,7 @@ export function DialogMemory(props: { workspace?: string; directory?: string }) 
       >
         <Switch>
           <Match when={data.loading}>
-            <text fg={theme.textMuted}>Loading memory...</text>
+            <text fg={theme.textMuted}>{t("Loading memory...")}</text>
           </Match>
           <Match when={data.error}>
             <text fg={theme.error} wrapMode="word">
@@ -297,7 +298,7 @@ export function DialogMemory(props: { workspace?: string; directory?: string }) 
         <text fg={theme.textMuted} onMouseUp={() => void api.refetch()}>
           refresh
         </text>
-        <text fg={theme.textMuted}>pageup/pagedown scroll</text>
+        <text fg={theme.textMuted}>{t("pageup/pagedown scroll")}</text>
       </box>
     </box>
   )

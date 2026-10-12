@@ -5,6 +5,7 @@ import { useSDK } from "@tui/context/sdk"
 import { useToast } from "@tui/ui/toast"
 import { Event as IndexingStatusEvent, Warning as IndexingWarningEvent } from "@/kilocode/indexing-event"
 import { indexingErrorMessage, indexingWarningKey, type IndexingWarning } from "@/kilocode/indexing-warning"
+import { t } from "@tui/kilocode/i18n"
 
 const log = Log.create({ service: "indexing-warning" })
 
@@ -19,7 +20,7 @@ export function useIndexingWarnings() {
     if (seen.has(key)) return
     seen.add(key)
     toast.show({
-      title: "Qdrant Compatibility Warning",
+      title: t("Qdrant Compatibility Warning"),
       message: warning.message,
       variant: "warning",
       duration: 10000,
@@ -30,7 +31,7 @@ export function useIndexingWarnings() {
     if (seen.has(key)) return
     seen.add(key)
     toast.show({
-      title: "Code Indexing Error",
+      title: t("Code Indexing Error"),
       message,
       variant: "error",
       duration: 10000,

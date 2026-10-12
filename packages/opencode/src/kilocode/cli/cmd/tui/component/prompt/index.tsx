@@ -10,6 +10,7 @@ import {
   type VimKey,
   type VimMode,
 } from "./vim"
+import { t } from "@tui/kilocode/i18n"
 
 export interface VimDeps {
   input: () => TextareaRenderable | undefined
@@ -210,8 +211,8 @@ export function vimToggleCommand(opts: {
   showToast: (message: string) => void
 }) {
   return {
-    title: "Toggle vim mode",
-    desc: "Enable or disable vim modal editing in the prompt input",
+    title: t("Toggle vim mode"),
+    desc: t("Enable or disable vim modal editing in the prompt input"),
     name: "prompt.vim.toggle",
     category: "Prompt",
     slashName: "vim",

@@ -9,6 +9,7 @@ import { useBindings } from "@tui/keymap"
 import { useDialog } from "@tui/ui/dialog"
 import { DialogConfirm } from "@tui/ui/dialog-confirm"
 import { useToast } from "@tui/ui/toast"
+import { t } from "@tui/kilocode/i18n"
 
 type Run = { epoch: number; stopping: boolean }
 
@@ -77,7 +78,7 @@ export function useCaffeination() {
     const detail = message(value)
     setAvailable(false)
     setError(detail)
-    toast.show({ variant: "error", message: `Keep Awake failed: ${detail}` })
+    toast.show({ variant: "error", message: t("Keep Awake failed: {{detail}}", { detail: detail }) })
   }
   const queue = () => {
     work = work.then(reconcile).catch(fail)
@@ -122,7 +123,7 @@ export function useCaffeination() {
       if (enabled()) {
         await setState(false)
         dialog.clear()
-        toast.show({ variant: "info", message: "Keep Awake disabled" })
+        toast.show({ variant: "info", message: t("Keep Awake disabled") })
         return
       }
       if (!available()) {
@@ -142,7 +143,7 @@ export function useCaffeination() {
       }
       await setState(true)
       dialog.clear()
-      toast.show({ variant: "info", message: "Keep Awake enabled" })
+      toast.show({ variant: "info", message: t("Keep Awake enabled") })
     })().finally(() => {
       pending = undefined
     })
@@ -169,11 +170,11 @@ export function useCaffeination() {
         namespace: "palette",
         name: "kilo.caffeinate",
         get title() {
-          if (!available()) return "Keep Awake unavailable"
-          if (!enabled()) return "Enable Keep Awake"
-          return active() ? "Disable Keep Awake (active)" : "Disable Keep Awake"
+          if (!available()) return t("Keep Awake unavailable")
+          if (!enabled()) return t("Enable Keep Awake")
+          return active() ? t("Disable Keep Awake (active)") : t("Disable Keep Awake")
         },
-        desc: "Prevent system sleep while Kilo agents work",
+        desc: t("Prevent system sleep while Kilo agents work"),
         category: "System",
         slashName: "caffeinate",
         slashAliases: ["caffenate"],

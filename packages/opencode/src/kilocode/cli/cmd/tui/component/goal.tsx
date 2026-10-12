@@ -8,6 +8,7 @@ import { DialogSelect } from "@tui/ui/dialog-select"
 import { useToast } from "@tui/ui/toast"
 import { errorMessage } from "@tui/util/error"
 import { GoalState } from "@/kilocode/session/goal/state"
+import { t } from "@tui/kilocode/i18n"
 
 export namespace GoalPrompt {
   export const read = GoalState.read
@@ -20,14 +21,14 @@ export namespace GoalPrompt {
   ) {
     if (command !== "goal") return
     if (result.error) {
-      toast.show({ title: "Goal command failed", message: errorMessage(result.error), variant: "error" })
+      toast.show({ title: t("Goal command failed"), message: errorMessage(result.error), variant: "error" })
       return
     }
     if (args.trim()) return
     const message = result.data?.parts
       .flatMap((part) => (part.type === "text" && part.text ? [part.text] : []))
       .join("\n")
-    if (message) toast.show({ title: "Goal", message, variant: "info" })
+    if (message) toast.show({ title: t("Goal"), message, variant: "info" })
   }
 
   export function Row(props: { goal: ReturnType<typeof read>; run: (action: "pause" | "resume" | "clear") => void }) {
@@ -57,10 +58,10 @@ export namespace GoalPrompt {
                 }
                 options={[
                   {
-                    title: props.goal?.active ? "Pause" : props.goal?.status === "complete" ? "Restart goal" : "Resume",
+                    title: props.goal?.active ? t("Pause") : props.goal?.status === "complete" ? t("Restart goal") : t("Resume"),
                     value: props.goal?.active ? "pause" : "resume",
                   },
-                  { title: "Clear", value: "clear" },
+                  { title: t("Clear"), value: "clear" },
                 ]}
                 onSelect={(option) => {
                   dialog.clear()
@@ -102,7 +103,7 @@ export function GoalRow(props: { sessionID: string }) {
         },
         { throwOnError: true },
       )
-      .catch((err) => toast.show({ title: "Goal command failed", message: errorMessage(err), variant: "error" }))
+      .catch((err) => toast.show({ title: t("Goal command failed"), message: errorMessage(err), variant: "error" }))
   }
 
   return <GoalPrompt.Row goal={GoalPrompt.read(session()?.metadata)} run={run} />

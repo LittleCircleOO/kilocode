@@ -10,6 +10,7 @@ import { useToast } from "../ui/toast"
 import { running } from "../util/session"
 import { createDoublePress } from "./double-press"
 import { KiloSteer } from "./steer"
+import { t } from "@tui/kilocode/i18n"
 
 // Bare-arrow parent/sibling navigation. The session route no longer binds these: while a steer is
 // typed they must reach the prompt, and the route's layer would outrank the prompt's textarea.
@@ -42,7 +43,7 @@ export function useSubagentKeys() {
   // keeps running and receives the cancelled task result.
   function stop() {
     if (!interrupt.press()) return
-    const fail = () => toast.show({ message: "Failed to interrupt subagent", variant: "error" })
+    const fail = () => toast.show({ message: t("Failed to interrupt subagent"), variant: "error" })
     void sdk.client.session.abort({ sessionID: route.sessionID, scope: "tree" }).then((res) => {
       if (res.error) fail()
     }, fail)
@@ -56,7 +57,7 @@ export function useSubagentKeys() {
     commands: [
       {
         name: "subagent.interrupt",
-        title: "Interrupt subagent",
+        title: t("Interrupt subagent"),
         category: "Session",
         hidden: true,
         run: stop,

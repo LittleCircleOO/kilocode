@@ -16,6 +16,7 @@ import { errorMessage } from "@/util/error"
 import { Locale } from "@/util/locale"
 import { createMemo, createSignal, onMount, Show } from "solid-js"
 import stripAnsi from "strip-ansi"
+import { t } from "@tui/kilocode/i18n"
 
 type Info = BackgroundProcessInfo
 type Status = Info["status"]
@@ -74,14 +75,14 @@ function useActions() {
       if (result.error) {
         toast.show({
           variant: "error",
-          title: kind === "stop" ? "Failed to stop process" : "Failed to restart process",
+          title: kind === "stop" ? t("Failed to stop process") : t("Failed to restart process"),
           message: errorMessage(result.error),
         })
       }
     } catch (err) {
       toast.show({
         variant: "error",
-        title: kind === "stop" ? "Failed to stop process" : "Failed to restart process",
+        title: kind === "stop" ? t("Failed to stop process") : t("Failed to restart process"),
         message: errorMessage(err),
       })
     } finally {
@@ -163,7 +164,7 @@ export function DialogProcessList() {
 
   return (
     <DialogSelect
-      title={mode() === "session" ? "Background Processes (current session)" : "Background Processes (all sessions)"}
+      title={mode() === "session" ? t("Background Processes (current session)") : t("Background Processes (all sessions)")}
       options={options()}
       skipFilter={options().length === 0}
       onSelect={(option) => {
@@ -174,7 +175,7 @@ export function DialogProcessList() {
       actions={[
         {
           command: "background_process.stop",
-          title: "stop",
+          title: t("stop"),
           onTrigger: (option) => {
             const item = list().find((proc) => proc.id === option.value)
             if (item) void actions.run("stop", item)
@@ -182,7 +183,7 @@ export function DialogProcessList() {
         },
         {
           command: "background_process.restart",
-          title: "restart",
+          title: t("restart"),
           onTrigger: (option) => {
             const item = list().find((proc) => proc.id === option.value)
             if (item) void actions.run("restart", item)
@@ -190,7 +191,7 @@ export function DialogProcessList() {
         },
         {
           command: "background_process.scope.toggle",
-          title: mode() === "session" ? "all" : "current",
+          title: mode() === "session" ? t("all") : t("current"),
           disabled: !sid(),
           side: "right",
           onTrigger: () => {
@@ -231,10 +232,10 @@ function DialogProcessDetail(props: { id: string; back: () => void }) {
 
   useBindings(() => ({
     bindings: [
-      { key: "backspace", desc: "Back", group: "Process", cmd: props.back },
+      { key: "backspace", desc: t("Back"), group: "Process", cmd: props.back },
       {
         key: "ctrl+o",
-        desc: "Stop process",
+        desc: t("Stop process"),
         group: "Process",
         cmd: () => {
           const proc = item()
@@ -243,15 +244,15 @@ function DialogProcessDetail(props: { id: string; back: () => void }) {
       },
       {
         key: "ctrl+r",
-        desc: "Restart process",
+        desc: t("Restart process"),
         group: "Process",
         cmd: () => {
           const proc = item()
           if (proc) void actions.run("restart", proc)
         },
       },
-      { key: "pageup", desc: "Scroll up", group: "Process", cmd: () => box?.scrollBy(-height()) },
-      { key: "pagedown", desc: "Scroll down", group: "Process", cmd: () => box?.scrollBy(height()) },
+      { key: "pageup", desc: t("Scroll up"), group: "Process", cmd: () => box?.scrollBy(-height()) },
+      { key: "pagedown", desc: t("Scroll down"), group: "Process", cmd: () => box?.scrollBy(height()) },
     ],
   }))
 
@@ -265,7 +266,7 @@ function DialogProcessDetail(props: { id: string; back: () => void }) {
           esc
         </text>
       </box>
-      <Show when={item()} fallback={<text fg={theme.textMuted}>Process is no longer tracked.</text>}>
+      <Show when={item()} fallback={<text fg={theme.textMuted}>{t("Process is no longer tracked.")}</text>}>
         {(proc) => (
           <>
             <box>
@@ -273,7 +274,7 @@ function DialogProcessDetail(props: { id: string; back: () => void }) {
                 Name: {label(proc())}
               </text>
               <text fg={theme.textMuted}>
-                Status:{" "}
+                {t("Status:")}{" "}
                 <span style={{ fg: tone(proc().status, theme), attributes: TextAttributes.BOLD }}>{proc().status}</span>
               </text>
               <text fg={theme.textMuted}>PID: {proc().pid ?? "none"}</text>
@@ -306,7 +307,7 @@ function DialogProcessDetail(props: { id: string; back: () => void }) {
                 stickyStart="bottom"
                 verticalScrollbarOptions={{ visible: true }}
               >
-                <Show when={output()} fallback={<text fg={theme.textMuted}>No output yet</text>}>
+                <Show when={output()} fallback={<text fg={theme.textMuted}>{t("No output yet")}</text>}>
                   {(text) => (
                     <text fg={theme.text} wrapMode="word">
                       {text()}
@@ -317,21 +318,21 @@ function DialogProcessDetail(props: { id: string; back: () => void }) {
             </box>
             <box flexDirection="row" justifyContent="space-between" paddingTop={1}>
               <box flexDirection="row" gap={2}>
-                <Hint title="back" keys="backspace" onClick={props.back} />
+                <Hint title={t("back")} keys="backspace" onClick={props.back} />
                 <Hint
-                  title={busy() ? "stopping" : "stop"}
+                  title={busy() ? t("stopping") : t("stop")}
                   keys="ctrl+o"
                   disabled={busy() || stopped()}
                   onClick={() => void actions.run("stop", proc())}
                 />
                 <Hint
-                  title={busy() ? "restarting" : "restart"}
+                  title={busy() ? t("restarting") : t("restart")}
                   keys="ctrl+r"
                   disabled={busy()}
                   onClick={() => void actions.run("restart", proc())}
                 />
               </box>
-              <text fg={theme.textMuted}>pageup/pagedown scroll</text>
+              <text fg={theme.textMuted}>{t("pageup/pagedown scroll")}</text>
             </box>
           </>
         )}

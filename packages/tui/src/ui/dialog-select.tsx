@@ -19,6 +19,7 @@ import { Locale } from "../util/locale"
 import { getScrollAcceleration } from "../util/scroll"
 import { useTuiConfig } from "../config"
 import { formatKeyBindings, useBindings, useKeymapSelector } from "../keymap"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 export interface DialogSelectProps<T> {
   title: string
@@ -389,7 +390,7 @@ export function DialogSelect<T>(props: DialogSelectProps<T>) {
       commands: [
         {
           name: "dialog.select.prev",
-          title: "Previous item",
+          title: t("Previous item") /* kilocode_change */,
           category: "Dialog",
           run() {
             setStore("input", "keyboard")
@@ -398,7 +399,7 @@ export function DialogSelect<T>(props: DialogSelectProps<T>) {
         },
         {
           name: "dialog.select.next",
-          title: "Next item",
+          title: t("Next item") /* kilocode_change */,
           category: "Dialog",
           run() {
             setStore("input", "keyboard")
@@ -407,7 +408,7 @@ export function DialogSelect<T>(props: DialogSelectProps<T>) {
         },
         {
           name: "dialog.select.page_up",
-          title: "Page up",
+          title: t("Page up") /* kilocode_change */,
           category: "Dialog",
           run() {
             setStore("input", "keyboard")
@@ -416,7 +417,7 @@ export function DialogSelect<T>(props: DialogSelectProps<T>) {
         },
         {
           name: "dialog.select.page_down",
-          title: "Page down",
+          title: t("Page down") /* kilocode_change */,
           category: "Dialog",
           run() {
             setStore("input", "keyboard")
@@ -425,7 +426,7 @@ export function DialogSelect<T>(props: DialogSelectProps<T>) {
         },
         {
           name: "dialog.select.home",
-          title: "First item",
+          title: t("First item") /* kilocode_change */,
           category: "Dialog",
           run() {
             if (props.locked) return
@@ -435,7 +436,7 @@ export function DialogSelect<T>(props: DialogSelectProps<T>) {
         },
         {
           name: "dialog.select.end",
-          title: "Last item",
+          title: t("Last item") /* kilocode_change */,
           category: "Dialog",
           run() {
             if (props.locked) return
@@ -445,7 +446,7 @@ export function DialogSelect<T>(props: DialogSelectProps<T>) {
         },
         {
           name: "dialog.select.submit",
-          title: "Select item",
+          title: t("Select item") /* kilocode_change */,
           category: "Dialog",
           run: submit,
         },
@@ -484,13 +485,13 @@ export function DialogSelect<T>(props: DialogSelectProps<T>) {
           ? [
               {
                 key: "tab",
-                desc: "Next dialog action",
+                desc: t("Next dialog action") /* kilocode_change */,
                 group: "Dialog",
                 cmd: () => moveAction(1),
               },
               {
                 key: "shift+tab",
-                desc: "Previous dialog action",
+                desc: t("Previous dialog action") /* kilocode_change */,
                 group: "Dialog",
                 cmd: () => moveAction(-1),
               },
@@ -624,7 +625,7 @@ export function DialogSelect<T>(props: DialogSelectProps<T>) {
           fallback={
             props.emptyView ?? (
               <box paddingLeft={4} paddingRight={4} paddingTop={1}>
-                <text fg={theme.textMuted}>No results found</text>
+                <text fg={theme.textMuted}>{t("No results found") /* kilocode_change */}</text>
               </box>
             )
           }

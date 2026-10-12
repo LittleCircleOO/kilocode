@@ -2,6 +2,7 @@
 import type { TuiPlugin, TuiPluginApi, TuiPluginModule } from "@kilocode/plugin/tui"
 import { createMemo, createResource, Show } from "solid-js"
 import { Process } from "@/util/process"
+import { t } from "@tui/kilocode/i18n"
 
 const id = "internal:kilo-sidebar-pr"
 const GH_PROBE_TTL = 300_000
@@ -263,7 +264,7 @@ function View(props: { api: TuiPluginApi }) {
     <box>
       <Show when={pr()}>
         <text fg={theme().textMuted}>
-          PR #{pr()!.number} - {pr()!.title}
+          {t("PR #")}{pr()!.number} - {pr()!.title}
         </text>
       </Show>
     </box>

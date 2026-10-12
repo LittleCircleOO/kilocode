@@ -6,6 +6,7 @@ import type { KiloPassState } from "@kilocode/kilo-gateway"
 import type { Message } from "@kilocode/sdk/v2"
 import { onBalanceRefresh } from "../balance-refresh"
 import { REDACTED_BALANCE } from "../pii"
+import { t } from "@tui/kilocode/i18n"
 
 const id = "internal:kilo-sidebar-footer"
 const TEAM_POLL_MS = 5 * 60_000
@@ -169,7 +170,7 @@ function View(props: { api: TuiPluginApi }) {
         {(data) => (
           <box gap={0}>
             <text fg={theme().text}>
-              <b>Balance</b>
+              <b>{t("Balance")}</b>
             </text>
             {(() => {
               const balance = data().balance
@@ -230,18 +231,18 @@ function View(props: { api: TuiPluginApi }) {
           <box flexGrow={1} gap={1}>
             <box flexDirection="row" justifyContent="space-between">
               <text fg={theme().text}>
-                <b>Getting started</b>
+                <b>{t("Getting started")}</b>
               </text>
               <text fg={theme().textMuted} onMouseDown={() => props.api.kv.set("dismissed_getting_started", true)}>
                 ✕
               </text>
             </box>
-            <text fg={theme().textMuted}>Kilo includes free models so you can start immediately.</text>
+            <text fg={theme().textMuted}>{t("Kilo includes free models so you can start immediately.")}</text>
             <text fg={theme().textMuted}>
               Connect from 75+ providers to use other models, including Claude, GPT, Gemini etc
             </text>
             <box flexDirection="row" gap={1} justifyContent="space-between">
-              <text fg={theme().text}>Connect provider</text>
+              <text fg={theme().text}>{t("Connect provider")}</text>
               <text fg={theme().textMuted}>/connect</text>
             </box>
           </box>
@@ -254,7 +255,7 @@ function View(props: { api: TuiPluginApi }) {
       <text fg={theme().textMuted}>
         <span style={{ fg: theme().success }}>•</span>{" "}
         <span style={{ fg: theme().text }}>
-          <b>Kilo</b>
+          <b>{t("Kilo")}</b>
         </span>{" "}
         <span>{props.api.app.version}</span>
       </text>

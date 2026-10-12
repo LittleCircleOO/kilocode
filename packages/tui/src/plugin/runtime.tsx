@@ -8,6 +8,7 @@ import type { TuiConfig } from "../config"
 import { createContext, createSignal, useContext, type JSX, type ParentProps } from "solid-js"
 import { createPluginRoutes } from "./api"
 import { createSlots, type HostSlots } from "./slots"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 export function createPluginRuntime() {
   const [commands, setCommands] = createSignal<PluginRuntimeCommands>(emptyCommands)
@@ -52,7 +53,7 @@ const emptyCommands: PluginRuntimeCommands = {
     return false
   },
   async install() {
-    return { ok: false, message: "Plugin runtime is not available." }
+    return { ok: false, message: t("Plugin runtime is not available.") /* kilocode_change */ }
   },
 }
 

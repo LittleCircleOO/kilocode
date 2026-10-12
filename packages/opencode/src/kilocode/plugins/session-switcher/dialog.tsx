@@ -22,6 +22,7 @@ import { createDebouncedSignal } from "@tui/util/signal"
 import { errorMessage } from "@/util/error"
 import { SessionPreviewPane, createLeadingTrailingSignal } from "./preview-pane"
 import { relativeTime } from "./util"
+import { t } from "@tui/kilocode/i18n"
 
 export function SessionSwitcherDialog() {
   const dialog = useDialog()
@@ -74,7 +75,7 @@ export function SessionSwitcherDialog() {
         const created = result?.data
         if (!created) {
           toast.show({
-            message: `Failed to create workspace: ${errorMessage(result?.error ?? "no response")}`,
+            message: t("Failed to create workspace: {{p0}}", { p0: errorMessage(result?.error ?? "no response") }),
             variant: "error",
           })
           return
@@ -108,7 +109,7 @@ export function SessionSwitcherDialog() {
           if (result.error) {
             toast.show({
               variant: "error",
-              title: "Failed to delete workspace",
+              title: t("Failed to delete workspace"),
               message: errorMessage(result.error),
             })
             return false
@@ -203,7 +204,7 @@ export function SessionSwitcherDialog() {
           category === "Pinned" ? (
             <text>
               <span style={{ fg: theme.accent }}>
-                <b>Pinned</b>
+                <b>{t("Pinned")}</b>
               </span>
               <Show when={quickSwitchHint()}>
                 {(hint) => <span style={{ fg: theme.textMuted }}> · switch {hint()}</span>}
@@ -250,7 +251,7 @@ export function SessionSwitcherDialog() {
   const list = (
     <DialogSelect
       ref={(value) => (select = value)}
-      title="Sessions"
+      title={t("Sessions")}
       options={options()}
       skipFilter={true}
       current={currentSessionID()}
@@ -269,7 +270,7 @@ export function SessionSwitcherDialog() {
       actions={[
         {
           command: "session.pin.toggle",
-          title: "pin/unpin",
+          title: t("pin/unpin"),
           onTrigger: (option: { value: string }) => {
             local.session.togglePin(option.value)
             queueMicrotask(() => select?.moveTo(option.value))
@@ -277,7 +278,7 @@ export function SessionSwitcherDialog() {
         },
         {
           command: "session.delete",
-          title: "delete",
+          title: t("delete"),
           onTrigger: async (option) => {
             if (toDelete() === option.value) {
               const session = sessions().find((item) => item.id === option.value)
@@ -293,7 +294,7 @@ export function SessionSwitcherDialog() {
                   } else {
                     toast.show({
                       variant: "error",
-                      title: "Failed to delete session",
+                      title: t("Failed to delete session"),
                       message: errorMessage(result.error),
                     })
                   }
@@ -306,7 +307,7 @@ export function SessionSwitcherDialog() {
                 } else {
                   toast.show({
                     variant: "error",
-                    title: "Failed to delete session",
+                    title: t("Failed to delete session"),
                     message: errorMessage(err),
                   })
                 }
@@ -325,7 +326,7 @@ export function SessionSwitcherDialog() {
         },
         {
           command: "session.rename",
-          title: "rename",
+          title: t("rename"),
           onTrigger: async (option) => {
             dialog.replace(() => <DialogSessionRename session={option.value} />)
           },

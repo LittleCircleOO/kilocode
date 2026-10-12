@@ -5,6 +5,7 @@ import { createStore } from "solid-js/store"
 import { onMount, Show } from "solid-js"
 import { useTuiConfig } from "../config"
 import { useBindings } from "../keymap"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 export type DialogExportOptionsProps = {
   defaultFilename: string
@@ -39,7 +40,7 @@ export function DialogExportOptions(props: DialogExportOptionsProps) {
     bindings: [
       {
         key: "tab",
-        desc: "Next export option",
+        desc: t("Next export option") /* kilocode_change */,
         group: "Dialog",
         cmd: () => {
           const order: Array<"filename" | "thinking" | "toolDetails" | "assistantMetadata" | "openWithoutSaving"> = [
@@ -62,7 +63,7 @@ export function DialogExportOptions(props: DialogExportOptionsProps) {
     bindings: [
       {
         key: "space",
-        desc: "Toggle export option",
+        desc: t("Toggle export option") /* kilocode_change */,
         group: "Dialog",
         cmd: () => {
           if (store.active === "thinking") setStore("thinking", !store.thinking)
@@ -95,7 +96,7 @@ export function DialogExportOptions(props: DialogExportOptionsProps) {
       </box>
       <box gap={1}>
         <box>
-          <text fg={theme.text}>Filename:</text>
+          <text fg={theme.text}>{t("Filename:") /* kilocode_change */}</text>
         </box>
         <textarea
           onSubmit={() => {
@@ -113,7 +114,7 @@ export function DialogExportOptions(props: DialogExportOptionsProps) {
             val.traits = { status: "FILENAME" }
           }}
           initialValue={props.defaultFilename}
-          placeholder="Enter filename"
+          placeholder={t("Enter filename") /* kilocode_change */}
           placeholderColor={theme.textMuted}
           textColor={theme.text}
           focusedTextColor={theme.text}
@@ -138,7 +139,7 @@ export function DialogExportOptions(props: DialogExportOptionsProps) {
           <text fg={store.active === "thinking" ? theme.primary : theme.textMuted}>
             {store.thinking ? "[x]" : "[ ]"}
           </text>
-          <text fg={store.active === "thinking" ? theme.primary : theme.text}>Include thinking</text>
+          <text fg={store.active === "thinking" ? theme.primary : theme.text}>{t("Include thinking") /* kilocode_change */}</text>
         </box>
         <box
           flexDirection="row"
@@ -156,7 +157,7 @@ export function DialogExportOptions(props: DialogExportOptionsProps) {
           <text fg={store.active === "toolDetails" ? theme.primary : theme.textMuted}>
             {store.toolDetails ? "[x]" : "[ ]"}
           </text>
-          <text fg={store.active === "toolDetails" ? theme.primary : theme.text}>Include tool details</text>
+          <text fg={store.active === "toolDetails" ? theme.primary : theme.text}>{t("Include tool details") /* kilocode_change */}</text>
         </box>
         <box
           flexDirection="row"
@@ -174,7 +175,7 @@ export function DialogExportOptions(props: DialogExportOptionsProps) {
           <text fg={store.active === "assistantMetadata" ? theme.primary : theme.textMuted}>
             {store.assistantMetadata ? "[x]" : "[ ]"}
           </text>
-          <text fg={store.active === "assistantMetadata" ? theme.primary : theme.text}>Include assistant metadata</text>
+          <text fg={store.active === "assistantMetadata" ? theme.primary : theme.text}>{t("Include assistant metadata") /* kilocode_change */}</text>
         </box>
         <box
           flexDirection="row"
@@ -192,18 +193,18 @@ export function DialogExportOptions(props: DialogExportOptionsProps) {
           <text fg={store.active === "openWithoutSaving" ? theme.primary : theme.textMuted}>
             {store.openWithoutSaving ? "[x]" : "[ ]"}
           </text>
-          <text fg={store.active === "openWithoutSaving" ? theme.primary : theme.text}>Open without saving</text>
+          <text fg={store.active === "openWithoutSaving" ? theme.primary : theme.text}>{t("Open without saving") /* kilocode_change */}</text>
         </box>
       </box>
       <Show when={store.active !== "filename"}>
         <text fg={theme.textMuted} paddingBottom={1}>
-          Press <span style={{ fg: theme.text }}>space</span> to toggle, <span style={{ fg: theme.text }}>return</span>{" "}
+          Press <span style={{ fg: theme.text }}>{t("space") /* kilocode_change */}</span> to toggle, <span style={{ fg: theme.text }}>{t("return") /* kilocode_change */}</span>{" "}
           to confirm
         </text>
       </Show>
       <Show when={store.active === "filename"}>
         <text fg={theme.textMuted} paddingBottom={1}>
-          Press <span style={{ fg: theme.text }}>return</span> to confirm, <span style={{ fg: theme.text }}>tab</span>{" "}
+          Press <span style={{ fg: theme.text }}>{t("return") /* kilocode_change */}</span> to confirm, <span style={{ fg: theme.text }}>{t("tab") /* kilocode_change */}</span>{" "}
           for options
         </text>
       </Show>

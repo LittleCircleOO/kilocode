@@ -5,6 +5,7 @@ import { Locale } from "../util/locale"
 import { useTheme } from "../context/theme"
 import { usePromptStash, type StashEntry } from "./prompt/stash"
 import { useCommandShortcut } from "../keymap"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 function getRelativeTime(timestamp: number): string {
   const now = Date.now()
@@ -54,7 +55,7 @@ export function DialogStash(props: { onSelect: (entry: StashEntry) => void }) {
 
   return (
     <DialogSelect
-      title="Stash"
+      title={t("Stash") /* kilocode_change */}
       options={options()}
       onMove={() => {
         setToDelete(undefined)
@@ -71,7 +72,7 @@ export function DialogStash(props: { onSelect: (entry: StashEntry) => void }) {
       actions={[
         {
           command: "stash.delete",
-          title: "delete",
+          title: t("delete") /* kilocode_change */,
           onTrigger: (option) => {
             if (toDelete() === option.value) {
               stash.remove(option.value)

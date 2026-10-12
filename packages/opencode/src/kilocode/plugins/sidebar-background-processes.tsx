@@ -1,5 +1,6 @@
 import type { TuiPlugin, TuiPluginApi, TuiPluginModule, TuiSidebarBackgroundProcessItem } from "@kilocode/plugin/tui"
 import { createMemo, createSignal, For, Show } from "solid-js"
+import { t } from "@tui/kilocode/i18n"
 
 const id = "internal:kilo-sidebar-background-processes"
 
@@ -43,7 +44,7 @@ function View(props: { api: TuiPluginApi; session_id: string }) {
             <text fg={theme().text}>{open() ? "▼" : "▶"}</text>
           </Show>
           <text fg={theme().text}>
-            <b>Background Processes</b>
+            <b>{t("Background Processes")}</b>
           </text>
         </box>
         <Show when={list().length <= 2 || open()}>

@@ -4,6 +4,7 @@ import { useDialog } from "../ui/dialog"
 import { createStore } from "solid-js/store"
 import { For } from "solid-js"
 import { useBindings } from "../keymap"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 export function DialogSessionDeleteFailed(props: {
   session: string
@@ -21,14 +22,14 @@ export function DialogSessionDeleteFailed(props: {
   const options = [
     {
       id: "delete" as const,
-      title: "Delete workspace",
-      description: "Delete the workspace and all sessions attached to it.",
+      title: t("Delete workspace") /* kilocode_change */,
+      description: t("Delete the workspace and all sessions attached to it.") /* kilocode_change */,
       run: props.onDelete,
     },
     {
       id: "restore" as const,
-      title: "Restore to new workspace",
-      description: "Try to restore this session into a new workspace.",
+      title: t("Restore to new workspace") /* kilocode_change */,
+      description: t("Try to restore this session into a new workspace.") /* kilocode_change */,
       run: props.onRestore,
     },
   ]
@@ -42,11 +43,11 @@ export function DialogSessionDeleteFailed(props: {
 
   useBindings(() => ({
     bindings: [
-      { key: "return", desc: "Confirm recovery option", group: "Dialog", cmd: () => void confirm() },
-      { key: "left", desc: "Delete broken session", group: "Dialog", cmd: () => setStore("active", "delete") },
-      { key: "up", desc: "Delete broken session", group: "Dialog", cmd: () => setStore("active", "delete") },
-      { key: "right", desc: "Restore broken session", group: "Dialog", cmd: () => setStore("active", "restore") },
-      { key: "down", desc: "Restore broken session", group: "Dialog", cmd: () => setStore("active", "restore") },
+      { key: "return", desc: t("Confirm recovery option") /* kilocode_change */, group: "Dialog", cmd: () => void confirm() },
+      { key: "left", desc: t("Delete broken session") /* kilocode_change */, group: "Dialog", cmd: () => setStore("active", "delete") },
+      { key: "up", desc: t("Delete broken session") /* kilocode_change */, group: "Dialog", cmd: () => setStore("active", "delete") },
+      { key: "right", desc: t("Restore broken session") /* kilocode_change */, group: "Dialog", cmd: () => setStore("active", "restore") },
+      { key: "down", desc: t("Restore broken session") /* kilocode_change */, group: "Dialog", cmd: () => setStore("active", "restore") },
     ],
   }))
 

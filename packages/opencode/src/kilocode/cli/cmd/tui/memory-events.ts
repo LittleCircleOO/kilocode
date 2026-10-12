@@ -1,4 +1,5 @@
 import { TRANSIENT } from "@kilocode/kilo-memory/schema"
+import { t } from "@tui/kilocode/i18n"
 
 type Event = {
   on(type: "memory.error", fn: (event: MemoryEvent) => void): void | (() => void)
@@ -28,7 +29,7 @@ export namespace MemoryTuiEvents {
       const detail = event.properties.detail
       if (!detail || typeof detail !== "object") {
         input.toast.show({
-          message: `Memory error${event.properties.reason ? ` · ${event.properties.reason}` : ""}`,
+          message: t("Memory error{{p0}}", { p0: event.properties.reason ? ` · ${event.properties.reason}` : "" }),
           variant: "error",
           duration: 3500,
         })

@@ -14,6 +14,7 @@
 //      "Anthropic Claude Sonnet 4.5" under the "Recommended" section.
 import * as fuzzysort from "fuzzysort"
 import { entries, filter, flatMap, groupBy, map, pipe, sortBy } from "remeda"
+import { t } from "@tui/kilocode/i18n"
 
 export const KILO_PROVIDER_ID = "kilo"
 export const RECOMMENDED_CATEGORY = "Recommended"
@@ -154,7 +155,7 @@ export function buildModelPickerOptions<M extends ModelPickerModel>(
         map(([modelID, model]) =>
           build(provider, modelID, model, {
             description: favorites.some((item) => sameRef(item, { providerID: provider.id, modelID }))
-              ? "(Favorite)"
+              ? t("(Favorite)")
               : undefined,
             category: connected
               ? provider.id === KILO_PROVIDER_ID && model.recommendedIndex !== undefined

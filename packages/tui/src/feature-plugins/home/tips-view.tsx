@@ -3,6 +3,7 @@ import { createMemo, For, type Accessor } from "solid-js"
 import { DEFAULT_THEMES, useTheme } from "../../context/theme"
 import { KILO_TIPS } from "@/kilocode/cli/cmd/tui/feature-plugins/home/tips" // kilocode_change
 import { useCommandShortcut } from "../../keymap"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 type TipPart = { text: string; highlight: boolean }
 type TipShortcut = Accessor<string>
@@ -153,7 +154,7 @@ export function Tips(props: { api: TuiPluginApi; connected?: boolean }) {
   return (
     <box flexDirection="row" maxWidth="100%">
       <text flexShrink={0} style={{ fg: theme.warning }}>
-        ● Tip{" "}
+        {t("● Tip") /* kilocode_change */}{" "}
       </text>
       <text flexShrink={1} wrapMode="word">
         <For each={parts()}>

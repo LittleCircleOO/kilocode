@@ -1,5 +1,6 @@
 // kilocode_change - new file
 import type { ToastOptions } from "../ui/toast"
+import { t } from "@tui/kilocode/i18n"
 
 export type Notice = { title: string; message: string }
 
@@ -16,7 +17,7 @@ export function combine(notices: Notice[]): ToastOptions | undefined {
   if (!first) return undefined
   if (notices.length === 1) return { ...first, variant: "warning", duration: 0 }
   return {
-    title: "Startup Warnings",
+    title: t("Startup Warnings"),
     message: notices.map((item) => `${item.title}: ${item.message}`).join("\n\n"),
     variant: "warning",
     duration: 0,

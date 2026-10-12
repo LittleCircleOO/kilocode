@@ -5,6 +5,7 @@ import { useSDK } from "../context/sdk"
 import { useProject } from "../context/project"
 import { Locale } from "../util/locale"
 import { fetchSessionMentions, type SessionMention } from "./session-mentions"
+import { t } from "@tui/kilocode/i18n"
 
 /**
  * Searchable past-chat picker opened from the prompt's "Past chats" @-mention
@@ -37,7 +38,7 @@ export function DialogSessionMention(props: { exclude?: string; onPick: (session
 
   return (
     <DialogSelect
-      title="Reference a past chat"
+      title={t("Reference a past chat")}
       options={options()}
       onSelect={(option) => {
         const found = sessions().find((item) => item.id === option.value)

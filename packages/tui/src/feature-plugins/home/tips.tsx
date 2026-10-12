@@ -3,6 +3,7 @@ import type { BuiltinTuiPlugin } from "../builtins"
 import { createMemo, Show } from "solid-js"
 import { Tips } from "./tips-view"
 import { useBindings } from "../../keymap"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 const id = "internal:home-tips"
 
@@ -11,7 +12,7 @@ function View(props: { api: TuiPluginApi; hidden: boolean; show: boolean; connec
     commands: [
       {
         name: "tips.toggle",
-        title: props.hidden ? "Show tips" : "Hide tips",
+        title: props.hidden ? t("Show tips") /* kilocode_change */ : t("Hide tips") /* kilocode_change */,
         category: "System",
         namespace: "palette",
         run() {

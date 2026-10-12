@@ -6,7 +6,8 @@ import { useSync } from "../context/sync"
 import { useProject } from "@tui/context/project"
 import { For, Match, Switch, Show, createMemo } from "solid-js"
 import { InstallationVersion } from "@opencode-ai/core/installation/version"
-import { Global } from "@opencode-ai/core/global" // kilocode_change
+import { Global } from "@opencode-ai/core/global"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 export type DialogStatusProps = {}
 
@@ -55,11 +56,11 @@ export function DialogStatus() {
         </text>
       </box>
       {/* kilocode_change start */}
-      <text fg={theme.textMuted}>Kilo v{InstallationVersion}</text>
+      <text fg={theme.textMuted}>{t("Kilo v") /* kilocode_change */}{InstallationVersion}</text>
       {/* kilocode_change end */}
       {/* kilocode_change start */}
       <box>
-        <text fg={theme.text}>Paths</text>
+        <text fg={theme.text}>{t("Paths") /* kilocode_change */}</text>
         <text fg={theme.textMuted}>
           Global config {"  "}
           {Global.Path.config.replace(Global.Path.home, "~")}
@@ -72,9 +73,9 @@ export function DialogStatus() {
         </Show>
       </box>
       {/* kilocode_change end */}
-      <Show when={Object.keys(sync.data.mcp).length > 0} fallback={<text fg={theme.text}>No MCP Servers</text>}>
+      <Show when={Object.keys(sync.data.mcp).length > 0} fallback={<text fg={theme.text}>{t("No MCP Servers") /* kilocode_change */}</text>}>
         <box>
-          <text fg={theme.text}>{Object.keys(sync.data.mcp).length} MCP Servers</text>
+          <text fg={theme.text}>{Object.keys(sync.data.mcp).length} {t("MCP Servers") /* kilocode_change */}</text>
           <For each={Object.entries(sync.data.mcp)}>
             {([key, item]) => (
               <box flexDirection="row" gap={1}>
@@ -98,9 +99,9 @@ export function DialogStatus() {
                   <b>{key}</b>{" "}
                   <span style={{ fg: theme.textMuted }}>
                     <Switch fallback={item.status}>
-                      <Match when={item.status === "connected"}>Connected</Match>
+                      <Match when={item.status === "connected"}>{t("Connected") /* kilocode_change */}</Match>
                       <Match when={item.status === "failed" && item}>{(val) => val().error}</Match>
-                      <Match when={item.status === "disabled"}>Disabled in configuration</Match>
+                      <Match when={item.status === "disabled"}>{t("Disabled in configuration") /* kilocode_change */}</Match>
                       <Match when={(item.status as string) === "needs_auth"}>
                         Needs authentication (run: kilo mcp auth {key}){/* kilocode_change */}
                       </Match>
@@ -117,7 +118,7 @@ export function DialogStatus() {
       </Show>
       {sync.data.lsp.length > 0 && (
         <box>
-          <text fg={theme.text}>{sync.data.lsp.length} LSP Servers</text>
+          <text fg={theme.text}>{sync.data.lsp.length} {t("LSP Servers") /* kilocode_change */}</text>
           <For each={sync.data.lsp}>
             {(item) => (
               <box flexDirection="row" gap={1}>
@@ -140,9 +141,9 @@ export function DialogStatus() {
           </For>
         </box>
       )}
-      <Show when={enabledFormatters().length > 0} fallback={<text fg={theme.text}>No Formatters</text>}>
+      <Show when={enabledFormatters().length > 0} fallback={<text fg={theme.text}>{t("No Formatters") /* kilocode_change */}</text>}>
         <box>
-          <text fg={theme.text}>{enabledFormatters().length} Formatters</text>
+          <text fg={theme.text}>{enabledFormatters().length} {t("Formatters") /* kilocode_change */}</text>
           <For each={enabledFormatters()}>
             {(item) => (
               <box flexDirection="row" gap={1}>
@@ -162,9 +163,9 @@ export function DialogStatus() {
           </For>
         </box>
       </Show>
-      <Show when={plugins().length > 0} fallback={<text fg={theme.text}>No Plugins</text>}>
+      <Show when={plugins().length > 0} fallback={<text fg={theme.text}>{t("No Plugins") /* kilocode_change */}</text>}>
         <box>
-          <text fg={theme.text}>{plugins().length} Plugins</text>
+          <text fg={theme.text}>{plugins().length} {t("Plugins") /* kilocode_change */}</text>
           <For each={plugins()}>
             {(item) => (
               <box flexDirection="row" gap={1}>

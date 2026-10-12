@@ -17,6 +17,7 @@ import { useConnected } from "./use-connected"
 import { useBindings } from "../keymap"
 import { errorMessage } from "@/util/error" // kilocode_change
 import { useClipboard } from "../context/clipboard"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 const PROVIDER_PRIORITY: Record<string, number> = KiloProvider.PROVIDER_PRIORITY // kilocode_change
 
@@ -59,9 +60,9 @@ export function providerOptions(list: { id: string; name: string }[]): ProviderO
     ),
     {
       type: "custom",
-      title: "Other",
+      title: t("Other") /* kilocode_change */,
       value: CUSTOM_PROVIDER_OPTION_VALUE,
-      description: "Custom provider",
+      description: t("Custom provider") /* kilocode_change */,
       category: "Providers",
     },
   ]
@@ -83,10 +84,10 @@ export function createDialogProviderOptions() {
 
   async function promptCustomProviderID(): Promise<string | undefined> {
     const value = await DialogPrompt.show(dialog, "Other", {
-      placeholder: "Provider id",
+      placeholder: t("Provider id") /* kilocode_change */,
       description: () => (
         <text fg={theme.textMuted}>
-          This only stores a credential. Configure the provider in kilo.json to use it.{/* kilocode_change */}
+          {t("This only stores a credential. Configure the provider in kilo.json to use it.") /* kilocode_change */}{/* kilocode_change */}
         </text>
       ),
     })
@@ -98,7 +99,7 @@ export function createDialogProviderOptions() {
     toast.show({
       variant: "error",
       message:
-        "Provider ids must start with a lowercase letter or number and only use lowercase letters, numbers, hyphens, and underscores",
+        t("Provider ids must start with a lowercase letter or number and only use lowercase letters, numbers, hyphens, and underscores") /* kilocode_change */,
     })
     return promptCustomProviderID()
   }
@@ -116,7 +117,7 @@ export function createDialogProviderOptions() {
             async onSelect() {
               const providerID = await promptCustomProviderID()
               if (!providerID) return
-              return dialog.replace(() => <ApiMethod providerID={providerID} title="API key" custom />)
+              return dialog.replace(() => <ApiMethod providerID={providerID} title={t("API key") /* kilocode_change */} custom />)
             },
           }
         }
@@ -145,7 +146,7 @@ export function createDialogProviderOptions() {
             const methods = sync.data.provider_auth[providerID] ?? [
               {
                 type: "api",
-                label: "API key",
+                label: t("API key") /* kilocode_change */,
               },
             ]
             let index: number | null = 0
@@ -154,7 +155,7 @@ export function createDialogProviderOptions() {
                 dialog.replace(
                   () => (
                     <DialogSelect
-                      title="Select auth method"
+                      title={t("Select auth method") /* kilocode_change */}
                       options={methods.map((x, index) => ({
                         title: x.label,
                         value: index,
@@ -244,7 +245,7 @@ export function createDialogProviderOptions() {
 
 export function DialogProvider() {
   const options = createDialogProviderOptions()
-  return <DialogSelect title="Connect a provider" options={options()} />
+  return <DialogSelect title={t("Connect a provider") /* kilocode_change */} options={options()} />
 }
 
 interface AutoMethodProps {
@@ -265,14 +266,14 @@ function AutoMethod(props: AutoMethodProps) {
     bindings: [
       {
         key: "c",
-        desc: "Copy provider code",
+        desc: t("Copy provider code") /* kilocode_change */,
         group: "Dialog",
         cmd: () => {
           const code =
             props.authorization.instructions.match(/[A-Z0-9]{4}-[A-Z0-9]{4,5}/)?.[0] ?? props.authorization.url
           clipboard
             .write?.(code)
-            .then(() => toast.show({ message: "Copied to clipboard", variant: "info" }))
+            .then(() => toast.show({ message: t("Copied to clipboard") /* kilocode_change */, variant: "info" }))
             .catch(toast.error)
         },
       },
@@ -289,7 +290,7 @@ function AutoMethod(props: AutoMethodProps) {
         variant: "error",
         message:
           "name" in result.error && result.error.name === "ProviderAuthOauthCallbackFailed"
-            ? "OAuth authorization failed. Try /connect again."
+            ? t("OAuth authorization failed. Try /connect again.") /* kilocode_change */
             : JSON.stringify(result.error),
       })
       dialog.clear()
@@ -314,9 +315,9 @@ function AutoMethod(props: AutoMethodProps) {
         <Link href={props.authorization.url} fg={theme.primary} />
         <text fg={theme.textMuted}>{props.authorization.instructions}</text>
       </box>
-      <text fg={theme.textMuted}>Waiting for authorization...</text>
+      <text fg={theme.textMuted}>{t("Waiting for authorization...") /* kilocode_change */}</text>
       <text fg={theme.text}>
-        c <span style={{ fg: theme.textMuted }}>copy</span>
+        c <span style={{ fg: theme.textMuted }}>{t("copy") /* kilocode_change */}</span>
       </text>
     </box>
   )
@@ -338,7 +339,7 @@ function CodeMethod(props: CodeMethodProps) {
   return (
     <DialogPrompt
       title={props.title}
-      placeholder="Authorization code"
+      placeholder={t("Authorization code") /* kilocode_change */}
       onConfirm={async (value) => {
         const { error } = await sdk.client.provider.oauth.callback({
           providerID: props.providerID,
@@ -358,7 +359,7 @@ function CodeMethod(props: CodeMethodProps) {
           <text fg={theme.textMuted}>{props.authorization.instructions}</text>
           <Link href={props.authorization.url} fg={theme.primary} />
           <Show when={error()}>
-            <text fg={theme.error}>Invalid code</text>
+            <text fg={theme.error}>{t("Invalid code") /* kilocode_change */}</text>
           </Show>
         </box>
       )}
@@ -402,7 +403,7 @@ function ApiMethod(props: ApiMethodProps) {
         if (props.custom && !sync.data.provider_next.all.some((provider) => provider.id === props.providerID)) {
           toast.show({
             variant: "info",
-            message: `Saved credential for ${props.providerID}. Configure it in kilo.json to use it.`, // kilocode_change
+            message: t("Saved credential for {{providerID}}. Configure it in kilo.json to use it.", { providerID: props.providerID }) /* kilocode_change */, // kilocode_change
           })
           dialog.clear()
           return

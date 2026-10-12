@@ -2,7 +2,8 @@ import { TextAttributes } from "@opentui/core"
 import { useTheme } from "../context/theme"
 import { useDialog, type DialogContext } from "./dialog"
 import { useBindings } from "../keymap"
-import { For } from "solid-js" // kilocode_change
+import { For } from "solid-js"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 export type DialogAlertProps = {
   title: string
@@ -18,7 +19,7 @@ export function DialogAlert(props: DialogAlertProps) {
     bindings: [
       {
         key: "return",
-        desc: "Confirm alert",
+        desc: t("Confirm alert") /* kilocode_change */,
         group: "Dialog",
         cmd: () => {
           props.onConfirm?.()
@@ -54,7 +55,7 @@ export function DialogAlert(props: DialogAlertProps) {
             dialog.clear()
           }}
         >
-          <text fg={theme.selectedListItemText}>ok</text>
+          <text fg={theme.selectedListItemText}>{t("ok") /* kilocode_change */}</text>
         </box>
       </box>
     </box>

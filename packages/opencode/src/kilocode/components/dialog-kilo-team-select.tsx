@@ -8,6 +8,7 @@
 import { DialogSelect } from "@tui/ui/dialog-select"
 import type { Organization } from "@kilocode/kilo-gateway"
 import { getOrganizationOptions } from "@kilocode/kilo-gateway/tui"
+import { t } from "@tui/kilocode/i18n"
 
 interface DialogKiloTeamSelectProps {
   organizations: Organization[]
@@ -26,7 +27,7 @@ export function DialogKiloTeamSelect(props: DialogKiloTeamSelectProps) {
 
   return (
     <DialogSelect
-      title="Select Team"
+      title={t("Select Team")}
       options={options}
       current={props.currentOrgId || null}
       onSelect={async (option: any) => {

@@ -1,5 +1,7 @@
+import { t } from "@tui/kilocode/i18n"
+
 export const FreeModelDisclosure = {
-  label: "May train",
+  label: t("May train"),
   panel: "Data may be used for training",
   byok: "BYOK",
   collectsData(model: { mayTrainOnYourPrompts?: boolean }): boolean {

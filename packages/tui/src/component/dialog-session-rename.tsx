@@ -3,6 +3,7 @@ import { useDialog } from "../ui/dialog"
 import { useSync } from "../context/sync"
 import { createMemo } from "solid-js"
 import { useSDK } from "../context/sdk"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 interface DialogSessionRenameProps {
   session: string
@@ -18,7 +19,7 @@ export function DialogSessionRename(props: DialogSessionRenameProps) {
 
   return (
     <DialogPrompt
-      title="Rename Session"
+      title={t("Rename Session") /* kilocode_change */}
       value={session()?.title ?? props.title} // kilocode_change
       onConfirm={(value) => {
         void sdk.client.session

@@ -9,7 +9,8 @@ import type { AssistantMessage } from "@kilocode/sdk/v2"
 import { Locale } from "../../util/locale"
 import { useTerminalDimensions } from "@opentui/solid"
 import { useCommandShortcut, useOpencodeKeymap } from "../../keymap"
-import { useSubagentKeys } from "../../kilocode/subagent-keys" // kilocode_change
+import { useSubagentKeys } from "../../kilocode/subagent-keys"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 export function SubagentFooter() {
   const route = useRouteData("session")
@@ -34,7 +35,7 @@ export function SubagentFooter() {
 
   const subagentInfo = createMemo(() => {
     const s = session()
-    if (!s) return { label: "Subagent", index: 0, total: 0 }
+    if (!s) return { label: t("Subagent") /* kilocode_change */, index: 0, total: 0 }
     const agentMatch = s.title.match(/@(\w+) subagent/)
     const label = agentMatch ? Locale.titlecase(agentMatch[1]) : "Subagent"
 
@@ -151,7 +152,7 @@ export function SubagentFooter() {
                 backgroundColor={hover() === "interrupt" ? theme.backgroundElement : theme.backgroundPanel}
               >
                 <text fg={armed() ? theme.primary : theme.text} wrapMode="none">
-                  Interrupt{" "}
+                  {t("Interrupt") /* kilocode_change */}{" "}
                   <span style={{ fg: armed() ? theme.primary : theme.textMuted }}>
                     {armed() ? `${interruptKey()} again` : interruptKey()}
                   </span>

@@ -12,6 +12,7 @@ import {
   type WorkspaceSelection,
 } from "../dialog-workspace-create"
 import type { WorkspaceStatus } from "../workspace-label"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 export function usePromptWorkspace(sessionID?: string) {
   const dialog = useDialog()
@@ -32,14 +33,14 @@ export function usePromptWorkspace(sessionID?: string) {
     } catch (err) {
       setSelection(undefined)
       setCreating(false)
-      toast.show({ title: "Creating workspace failed", message: errorMessage(err), variant: "error" })
+      toast.show({ title: t("Creating workspace failed") /* kilocode_change */, message: errorMessage(err), variant: "error" })
       return
     }
     if (result.error || !result.data) {
       setSelection(undefined)
       setCreating(false)
       toast.show({
-        title: "Creating workspace failed",
+        title: t("Creating workspace failed") /* kilocode_change */,
         message: errorMessage(result.error ?? "no response"),
         variant: "error",
       })

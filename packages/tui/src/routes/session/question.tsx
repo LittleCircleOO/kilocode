@@ -8,6 +8,7 @@ import { useSDK } from "../../context/sdk"
 import { SplitBorder } from "../../ui/border"
 import { useTuiConfig } from "../../config"
 import { useBindings, useOpencodeModeStack } from "../../keymap"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 const QUESTION_MODE = "question"
 
@@ -151,7 +152,7 @@ export function QuestionPrompt(props: {
     commands: [
       {
         name: "prompt.clear",
-        title: "Clear answer edit",
+        title: t("Clear answer edit") /* kilocode_change */,
         category: "Question",
         run() {
           const text = textarea?.plainText ?? ""
@@ -166,7 +167,7 @@ export function QuestionPrompt(props: {
     bindings: [
       {
         key: "escape",
-        desc: "Cancel answer edit",
+        desc: t("Cancel answer edit") /* kilocode_change */,
         group: "Question",
         cmd: () => {
           setStore("editing", false)
@@ -175,7 +176,7 @@ export function QuestionPrompt(props: {
       ...tuiConfig.keybinds.get("prompt.clear"),
       {
         key: "return",
-        desc: "Submit answer edit",
+        desc: t("Submit answer edit") /* kilocode_change */,
         group: "Question",
         cmd: () => {
           const text = textarea?.plainText?.trim() ?? ""
@@ -234,7 +235,7 @@ export function QuestionPrompt(props: {
       commands: [
         {
           name: "app.exit",
-          title: "Reject question",
+          title: t("Reject question") /* kilocode_change */,
           category: "Question",
           run() {
             reject()
@@ -244,21 +245,21 @@ export function QuestionPrompt(props: {
       bindings: [
         {
           key: "left",
-          desc: "Previous question",
+          desc: t("Previous question") /* kilocode_change */,
           group: "Question",
           cmd: () => selectTab((store.tab - 1 + tabs()) % tabs()),
         },
         {
           key: "h",
-          desc: "Previous question",
+          desc: t("Previous question") /* kilocode_change */,
           group: "Question",
           cmd: () => selectTab((store.tab - 1 + tabs()) % tabs()),
         },
-        { key: "right", desc: "Next question", group: "Question", cmd: () => selectTab((store.tab + 1) % tabs()) },
-        { key: "l", desc: "Next question", group: "Question", cmd: () => selectTab((store.tab + 1) % tabs()) },
+        { key: "right", desc: t("Next question") /* kilocode_change */, group: "Question", cmd: () => selectTab((store.tab + 1) % tabs()) },
+        { key: "l", desc: t("Next question") /* kilocode_change */, group: "Question", cmd: () => selectTab((store.tab + 1) % tabs()) },
         {
           key: "tab",
-          desc: "Next question",
+          desc: t("Next question") /* kilocode_change */,
           group: "Question",
           cmd: ({ event }: { event: { shift: boolean } }) => {
             selectTab((store.tab + (event.shift ? -1 : 1) + tabs()) % tabs())
@@ -266,14 +267,14 @@ export function QuestionPrompt(props: {
         },
         ...(confirm()
           ? [
-              { key: "return", desc: "Submit answer", group: "Question", cmd: () => submit() },
-              { key: "escape", desc: "Reject question", group: "Question", cmd: () => reject() },
+              { key: "return", desc: t("Submit answer") /* kilocode_change */, group: "Question", cmd: () => submit() },
+              { key: "escape", desc: t("Reject question") /* kilocode_change */, group: "Question", cmd: () => reject() },
               ...tuiConfig.keybinds.get("app.exit"),
             ]
           : [
               ...Array.from({ length: max }, (_, index) => ({
                 key: String(index + 1),
-                desc: `Select answer ${index + 1}`,
+                desc: t("Select answer {{p0}}", { p0: index + 1 }) /* kilocode_change */,
                 group: "Question",
                 cmd: () => {
                   moveTo(index)
@@ -282,20 +283,20 @@ export function QuestionPrompt(props: {
               })),
               {
                 key: "up",
-                desc: "Previous answer",
+                desc: t("Previous answer") /* kilocode_change */,
                 group: "Question",
                 cmd: () => moveTo((store.selected - 1 + total) % total),
               },
               {
                 key: "k",
-                desc: "Previous answer",
+                desc: t("Previous answer") /* kilocode_change */,
                 group: "Question",
                 cmd: () => moveTo((store.selected - 1 + total) % total),
               },
-              { key: "down", desc: "Next answer", group: "Question", cmd: () => moveTo((store.selected + 1) % total) },
-              { key: "j", desc: "Next answer", group: "Question", cmd: () => moveTo((store.selected + 1) % total) },
-              { key: "return", desc: "Select answer", group: "Question", cmd: () => selectOption() },
-              { key: "escape", desc: "Reject question", group: "Question", cmd: () => reject() },
+              { key: "down", desc: t("Next answer") /* kilocode_change */, group: "Question", cmd: () => moveTo((store.selected + 1) % total) },
+              { key: "j", desc: t("Next answer") /* kilocode_change */, group: "Question", cmd: () => moveTo((store.selected + 1) % total) },
+              { key: "return", desc: t("Select answer") /* kilocode_change */, group: "Question", cmd: () => selectOption() },
+              { key: "escape", desc: t("Reject question") /* kilocode_change */, group: "Question", cmd: () => reject() },
               ...tuiConfig.keybinds.get("app.exit"),
             ]),
       ],
@@ -364,7 +365,7 @@ export function QuestionPrompt(props: {
                 selectTab(questions().length)
               }}
             >
-              <text fg={confirm() ? selectedForeground(theme, theme.accent) : theme.textMuted}>Confirm</text>
+              <text fg={confirm() ? selectedForeground(theme, theme.accent) : theme.textMuted}>{t("Confirm") /* kilocode_change */}</text>
             </box>
           </box>
         </Show>
@@ -452,7 +453,7 @@ export function QuestionPrompt(props: {
                           })
                         }}
                         initialValue={input()}
-                        placeholder="Type your own answer"
+                        placeholder={t("Type your own answer") /* kilocode_change */}
                         placeholderColor={theme.textMuted}
                         minHeight={1}
                         maxHeight={6}
@@ -476,7 +477,7 @@ export function QuestionPrompt(props: {
 
         <Show when={confirm() && !single()}>
           <box paddingLeft={1}>
-            <text fg={theme.text}>Review</text>
+            <text fg={theme.text}>{t("Review") /* kilocode_change */}</text>
           </box>
           <For each={questions()}>
             {(q, index) => {
@@ -508,23 +509,23 @@ export function QuestionPrompt(props: {
         <box flexDirection="row" gap={2}>
           <Show when={!single()}>
             <text fg={theme.text}>
-              {"⇆"} <span style={{ fg: theme.textMuted }}>tab</span>
+              {"⇆"} <span style={{ fg: theme.textMuted }}>{t("tab") /* kilocode_change */}</span>
             </text>
           </Show>
           <Show when={!confirm()}>
             <text fg={theme.text}>
-              {"↑↓"} <span style={{ fg: theme.textMuted }}>select</span>
+              {"↑↓"} <span style={{ fg: theme.textMuted }}>{t("select") /* kilocode_change */}</span>
             </text>
           </Show>
           <text fg={theme.text}>
-            enter{" "}
+            {t("enter") /* kilocode_change */}{" "}
             <span style={{ fg: theme.textMuted }}>
               {confirm() ? "submit" : multi() ? "toggle" : single() ? "submit" : "confirm"}
             </span>
           </text>
 
           <text fg={theme.text}>
-            esc <span style={{ fg: theme.textMuted }}>dismiss</span>
+            esc <span style={{ fg: theme.textMuted }}>{t("dismiss") /* kilocode_change */}</span>
           </text>
         </box>
       </box>

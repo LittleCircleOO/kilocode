@@ -8,6 +8,7 @@ import { useDialog } from "@tui/ui/dialog"
 import { Link } from "@tui/ui/link"
 import { Spinner } from "@tui/component/spinner"
 import { For, Show, createSignal, onMount } from "solid-js"
+import { t } from "@tui/kilocode/i18n"
 
 function Item(props: { item: ProviderUsageSnapshot }) {
   const { theme } = useTheme()
@@ -23,7 +24,7 @@ function Item(props: { item: ProviderUsageSnapshot }) {
         {props.item.fetchState === "ready" ? props.item.planState : props.item.fetchState}
       </text>
       <Show when={props.item.fetchState === "ready" && props.item.windows.length === 0}>
-        <text fg={theme.textMuted}>No usage limits reported.</text>
+        <text fg={theme.textMuted}>{t("No usage limits reported.")}</text>
       </Show>
       <For each={props.item.windows}>
         {(window) => (
@@ -61,7 +62,7 @@ function ProviderUsageBody(props: { data: ProviderUsage }) {
     <box>
       <Show
         when={props.data.items.length > 0}
-        fallback={<text fg={theme.textMuted}>No provider usage sources detected.</text>}
+        fallback={<text fg={theme.textMuted}>{t("No provider usage sources detected.")}</text>}
       >
         <For each={props.data.items}>{(item) => <Item item={item} />}</For>
       </Show>
@@ -104,7 +105,7 @@ export function DialogProviderUsage() {
         <text fg={theme.text} attributes={TextAttributes.BOLD}>
           Plans & usage
         </text>
-        <text fg={theme.textMuted}>esc</text>
+        <text fg={theme.textMuted}>{t("esc")}</text>
       </box>
       <scrollbox maxHeight={24} flexGrow={1}>
         <box>

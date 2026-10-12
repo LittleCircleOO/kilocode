@@ -4,6 +4,7 @@ import { createMemo, For, Show, type Component } from "solid-js"
 import { useTheme } from "../context/theme"
 import { formatMarkdownTables } from "../util/markdown"
 import { isRecord } from "../util/record"
+import { t } from "@tui/kilocode/i18n"
 
 function text(value: unknown) {
   return typeof value === "string" ? value : undefined
@@ -82,7 +83,7 @@ export function BoardTool(props: {
       <Show when={rows()} fallback={<Show when={fallback()}>{(body) => <text fg={theme.text}>{body()}</text>}</Show>}>
         {(items) => (
           <box gap={1}>
-            <Show when={items().length} fallback={<text fg={theme.textMuted}>No messages on the board.</text>}>
+            <Show when={items().length} fallback={<text fg={theme.textMuted}>{t("No messages on the board.")}</text>}>
               <For each={items()}>
                 {(item) => (
                   <box gap={1}>
@@ -100,11 +101,11 @@ export function BoardTool(props: {
               </For>
             </Show>
             <Show when={post() && props.part.state.status === "completed"}>
-              <text fg={theme.textMuted}>Stored only. Delivery and reading are not confirmed.</text>
+              <text fg={theme.textMuted}>{t("Stored only. Delivery and reading are not confirmed.")}</text>
             </Show>
             <Show when={text(result()?.warning)}>{(warning) => <text fg={theme.warning}>{warning()}</text>}</Show>
             <Show when={result()?.hasMore === true}>
-              <text fg={theme.textMuted}>More messages are available.</text>
+              <text fg={theme.textMuted}>{t("More messages are available.")}</text>
             </Show>
           </box>
         )}

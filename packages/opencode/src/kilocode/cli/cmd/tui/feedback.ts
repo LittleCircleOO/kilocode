@@ -10,6 +10,7 @@ import { Telemetry } from "@kilocode/kilo-telemetry"
 import type { AssistantMessage, Message } from "@kilocode/sdk/v2"
 import type { DialogContext } from "@tui/ui/dialog"
 import type { ToastContext } from "@tui/ui/toast"
+import { t } from "@tui/kilocode/i18n"
 
 interface SessionRevert {
   revert?: { messageID: string }
@@ -23,7 +24,7 @@ interface Context {
 
 export function submitFeedback(rating: "up" | "down", dialog: DialogContext, ctx: Context): void {
   if (!Telemetry.isEnabled()) {
-    ctx.toast.show({ message: "Feedback disabled: telemetry is off", variant: "info" })
+    ctx.toast.show({ message: t("Feedback disabled: telemetry is off"), variant: "info" })
     dialog.clear()
     return
   }
@@ -32,7 +33,7 @@ export function submitFeedback(rating: "up" | "down", dialog: DialogContext, ctx
     .messages()
     .findLast((msg): msg is AssistantMessage => msg.role === "assistant" && (!revertID || msg.id < revertID))
   if (!lastAssistant) {
-    ctx.toast.show({ message: "No assistant messages found", variant: "error" })
+    ctx.toast.show({ message: t("No assistant messages found"), variant: "error" })
     dialog.clear()
     return
   }
@@ -51,7 +52,7 @@ export function submitFeedback(rating: "up" | "down", dialog: DialogContext, ctx
   }
   Telemetry.trackFeedback(payload)
   ctx.toast.show({
-    message: rating === "up" ? "Thanks for the feedback!" : "Thanks — we'll use this to improve.",
+    message: rating === "up" ? t("Thanks for the feedback!") : t("Thanks — we'll use this to improve."),
     variant: "success",
   })
   dialog.clear()

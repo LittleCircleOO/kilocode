@@ -5,6 +5,7 @@ import { Show, createEffect, createSignal, onMount, type JSX } from "solid-js"
 import { Spinner } from "../component/spinner"
 import { useTuiConfig } from "../config"
 import { useBindings, useCommandShortcut } from "../keymap"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 export type DialogPromptProps = {
   title: string
@@ -38,7 +39,7 @@ export function DialogPrompt(props: DialogPromptProps) {
     commands: [
       {
         name: "dialog.prompt.submit",
-        title: "Submit dialog prompt",
+        title: t("Submit dialog prompt") /* kilocode_change */,
         category: "Dialog",
         run: confirm,
       },
@@ -103,10 +104,10 @@ export function DialogPrompt(props: DialogPromptProps) {
         </Show>
       </box>
       <box paddingBottom={1} gap={1} flexDirection="row">
-        <Show when={!props.busy} fallback={<text fg={theme.textMuted}>processing...</text>}>
+        <Show when={!props.busy} fallback={<text fg={theme.textMuted}>{t("processing...") /* kilocode_change */}</text>}>
           <Show when={submitShortcut()}>
             <text fg={theme.text}>
-              {submitShortcut()} <span style={{ fg: theme.textMuted }}>submit</span>
+              {submitShortcut()} <span style={{ fg: theme.textMuted }}>{t("submit") /* kilocode_change */}</span>
             </text>
           </Show>
         </Show>

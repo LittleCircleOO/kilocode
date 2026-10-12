@@ -3,6 +3,7 @@ import type { BuiltinTuiPlugin } from "../builtins"
 import { createMemo, Show } from "solid-js"
 import { abbreviateHome } from "../../runtime"
 import { useTuiPaths } from "../../context/runtime"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 const id = "internal:sidebar-footer"
 
@@ -47,20 +48,20 @@ function View(props: { api: TuiPluginApi; sessionID: string }) {
           <box flexGrow={1} gap={1}>
             <box flexDirection="row" justifyContent="space-between">
               <text fg={theme().text}>
-                <b>Getting started</b>
+                <b>{t("Getting started") /* kilocode_change */}</b>
               </text>
               <text fg={theme().textMuted} onMouseDown={() => props.api.kv.set("dismissed_getting_started", true)}>
                 ✕
               </text>
             </box>
             {/* kilocode_change start */}
-            <text fg={theme().textMuted}>Kilo includes free models so you can start immediately.</text>
+            <text fg={theme().textMuted}>{t("Kilo includes free models so you can start immediately.") /* kilocode_change */}</text>
             {/* kilocode_change end */}
             <text fg={theme().textMuted}>
               Connect from 75+ providers to use other models, including Claude, GPT, Gemini etc
             </text>
             <box flexDirection="row" gap={1} justifyContent="space-between">
-              <text fg={theme().text}>Connect provider</text>
+              <text fg={theme().text}>{t("Connect provider") /* kilocode_change */}</text>
               <text fg={theme().textMuted}>/connect</text>
             </box>
           </box>
@@ -72,7 +73,7 @@ function View(props: { api: TuiPluginApi; sessionID: string }) {
       </text>
       {/* kilocode_change start */}
       <text fg={theme().textMuted}>
-        <span style={{ fg: theme().success }}>•</span> <b>Kilo</b> <span>{props.api.app.version}</span>
+        <span style={{ fg: theme().success }}>•</span> <b>{t("Kilo") /* kilocode_change */}</b> <span>{props.api.app.version}</span>
       </text>
       {/* kilocode_change end */}
     </box>

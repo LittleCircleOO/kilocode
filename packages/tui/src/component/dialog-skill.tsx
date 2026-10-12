@@ -5,6 +5,7 @@ import { useDialog } from "../ui/dialog"
 import { useSDK } from "../context/sdk"
 import { useTheme } from "../context/theme"
 import { errorMessage } from "../util/error"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 export type DialogSkillProps = {
   onSelect: (skill: string) => void
@@ -50,8 +51,8 @@ export function DialogSkill(props: DialogSkillProps) {
 
   return (
     <DialogSelect
-      title="Skills"
-      placeholder="Search skills..."
+      title={t("Skills") /* kilocode_change */}
+      placeholder={t("Search skills...") /* kilocode_change */}
       options={options()}
       renderFilter={!showError()}
       locked={showError()}

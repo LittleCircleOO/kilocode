@@ -4,7 +4,8 @@ import { createBindingLookup } from "@opentui/keymap/extras"
 import { Schema } from "effect"
 import { createComponent, createContext, type JSX, useContext } from "solid-js" // kilocode_change
 import { TuiKeybind } from "./keybind"
-import { KiloTitleIcon } from "@/kilocode/cli/cmd/tui/title-icon" // kilocode_change
+import { KiloTitleIcon } from "@/kilocode/cli/cmd/tui/title-icon"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 export const AttentionSoundName = Schema.Literals([
   "default",
@@ -21,24 +22,24 @@ export const PluginSpec = Schema.Union([Schema.String, Schema.mutable(Schema.Tup
 
 export const LeaderTimeoutDefault = 2000
 export const LeaderTimeout = Schema.Int.check(Schema.isGreaterThan(0)).annotate({
-  description: "Leader key timeout in milliseconds",
+  description: t("Leader key timeout in milliseconds") /* kilocode_change */,
 })
 
 export const ScrollSpeed = Schema.Number.check(Schema.isGreaterThanOrEqualTo(0.001))
 export const ScrollAcceleration = Schema.Struct({
-  enabled: Schema.Boolean.annotate({ description: "Enable scroll acceleration" }),
-}).annotate({ description: "Scroll acceleration settings" })
+  enabled: Schema.Boolean.annotate({ description: t("Enable scroll acceleration") /* kilocode_change */ }),
+}).annotate({ description: t("Scroll acceleration settings") /* kilocode_change */ })
 export const DiffStyle = Schema.Literals(["auto", "stacked"]).annotate({
-  description: "Control diff rendering style: 'auto' adapts to terminal width, 'stacked' always shows single column",
+  description: t("Control diff rendering style: 'auto' adapts to terminal width, 'stacked' always shows single column") /* kilocode_change */,
 })
 export const Cursor = Schema.Struct({
   style: Schema.optional(Schema.Literals(["block", "underline", "line", "default"])).annotate({
-    description: "Cursor shape. Use 'default' to preserve the terminal setting",
+    description: t("Cursor shape. Use 'default' to preserve the terminal setting") /* kilocode_change */,
   }),
   blinking: Schema.optional(Schema.Boolean).annotate({
-    description: "Whether the cursor blinks. Has no effect when style is 'default'",
+    description: t("Whether the cursor blinks. Has no effect when style is 'default'") /* kilocode_change */,
   }),
-}).annotate({ description: "Terminal cursor settings" })
+}).annotate({ description: t("Terminal cursor settings") /* kilocode_change */ })
 
 export const AttentionSounds = Schema.Record(AttentionSoundName, Schema.optionalKey(Schema.String))
 export type AttentionSoundPaths = Schema.Schema.Type<typeof AttentionSounds>
@@ -49,15 +50,15 @@ export const Attention = Schema.Struct({
   volume: Schema.optional(Schema.Number.check(Schema.isGreaterThanOrEqualTo(0), Schema.isLessThanOrEqualTo(1))),
   sound_pack: Schema.optional(Schema.String),
   sounds: Schema.optional(AttentionSounds),
-}).annotate({ description: "Attention notification and sound settings" })
+}).annotate({ description: t("Attention notification and sound settings") /* kilocode_change */ })
 
 const PromptSize = Schema.Int.check(Schema.isGreaterThan(0))
 export const Prompt = Schema.Struct({
-  max_height: Schema.optional(PromptSize).annotate({ description: "Prompt textarea max height" }),
+  max_height: Schema.optional(PromptSize).annotate({ description: t("Prompt textarea max height") /* kilocode_change */ }),
   max_width: Schema.optional(Schema.Union([PromptSize, Schema.Literal("auto")])).annotate({
-    description: "Home prompt max width: a positive integer for a fixed cap, or 'auto' to scale with terminal width",
+    description: t("Home prompt max width: a positive integer for a fixed cap, or 'auto' to scale with terminal width") /* kilocode_change */,
   }),
-}).annotate({ description: "Prompt size settings" })
+}).annotate({ description: t("Prompt size settings") /* kilocode_change */ })
 
 export const Info = Schema.Struct({
   $schema: Schema.optional(Schema.String),
@@ -69,11 +70,11 @@ export const Info = Schema.Struct({
   attention: Schema.optional(Attention),
   title_icon: Schema.optional(KiloTitleIcon.Value), // kilocode_change
   prompt: Schema.optional(Prompt),
-  scroll_speed: Schema.optional(ScrollSpeed).annotate({ description: "TUI scroll speed" }),
+  scroll_speed: Schema.optional(ScrollSpeed).annotate({ description: t("TUI scroll speed") /* kilocode_change */ }),
   scroll_acceleration: Schema.optional(ScrollAcceleration),
   diff_style: Schema.optional(DiffStyle),
   cursor: Schema.optional(Cursor),
-  mouse: Schema.optional(Schema.Boolean).annotate({ description: "Enable or disable mouse capture (default: true)" }),
+  mouse: Schema.optional(Schema.Boolean).annotate({ description: t("Enable or disable mouse capture (default: true)") /* kilocode_change */ }),
   vim: Schema.optional(Schema.Boolean), // kilocode_change - retain Kilo prompt editing mode
 })
 export type Info = Schema.Schema.Type<typeof Info>

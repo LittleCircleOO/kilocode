@@ -7,6 +7,7 @@ import { useToast } from "../ui/toast"
 import { useTheme } from "../context/theme"
 import { errorMessage } from "../util/error"
 import type { ExperimentalConsoleListOrgsResponse } from "@kilocode/sdk/v2"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 type OrgOption = ExperimentalConsoleListOrgsResponse["orgs"][number]
 
@@ -51,7 +52,7 @@ export function DialogConsoleOrg() {
     if (listed === undefined) {
       return [
         {
-          title: "Loading orgs...",
+          title: t("Loading orgs...") /* kilocode_change */,
           value: "loading",
           onSelect: () => {},
         },
@@ -61,7 +62,7 @@ export function DialogConsoleOrg() {
     if (listed.length === 0) {
       return [
         {
-          title: "No orgs found",
+          title: t("No orgs found") /* kilocode_change */,
           value: "empty",
           onSelect: () => {},
         },
@@ -105,7 +106,7 @@ export function DialogConsoleOrg() {
 
           await sdk.client.instance.dispose()
           toast.show({
-            message: `Switched to ${item.orgName}`,
+            message: t("Switched to {{orgName}}", { orgName: item.orgName }) /* kilocode_change */,
             variant: "info",
           })
           dialog.clear()
@@ -115,7 +116,7 @@ export function DialogConsoleOrg() {
 
   return (
     <DialogSelect<string | OrgOption>
-      title="Switch org"
+      title={t("Switch org") /* kilocode_change */}
       options={options()}
       current={current()}
       renderFilter={!showError()}

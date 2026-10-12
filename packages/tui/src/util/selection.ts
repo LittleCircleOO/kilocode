@@ -1,4 +1,5 @@
 import type { ClipboardService } from "../context/clipboard"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 type Toast = {
   show: (input: { message: string; variant: "info" | "success" | "warning" | "error" }) => void
@@ -36,7 +37,7 @@ export function copy(renderer: Renderer, toast: Toast, clipboard: ClipboardServi
 
   clipboard
     ?.write?.(clipboardText)
-    .then(() => toast.show({ message: "Copied to clipboard", variant: "info" }))
+    .then(() => toast.show({ message: t("Copied to clipboard") /* kilocode_change */, variant: "info" }))
     .catch(toast.error)
 
   renderer.clearSelection()

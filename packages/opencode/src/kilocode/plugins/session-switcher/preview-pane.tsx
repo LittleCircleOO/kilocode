@@ -8,6 +8,7 @@ import { useSync } from "@tui/context/sync"
 import { Locale } from "@tui/util/locale"
 import { Spinner } from "@tui/component/spinner"
 import { extractMessageMarkdown, extractMessageText, relativeTime } from "./util"
+import { t } from "@tui/kilocode/i18n"
 
 type WithParts = { info: Message; parts: Part[] }
 
@@ -169,7 +170,7 @@ export function SessionPreviewPane(props: {
           <>
             <Header session={s()} statusLabel={statusLabel()} />
             <Show when={loading()}>
-              <Spinner>loading preview...</Spinner>
+              <Spinner>{t("loading preview...")}</Spinner>
             </Show>
             <Show
               when={exchange()}
@@ -296,7 +297,7 @@ function NonTextHint(props: { exchange: { user?: WithParts; assistant?: WithPart
   return (
     <text fg={theme.textMuted} wrapMode="word">
       <Show when={summary()} fallback="No text content in the latest messages">
-        Latest exchange has no text content ({summary()})
+        {t("Latest exchange has no text content (")}{summary()})
       </Show>
     </text>
   )

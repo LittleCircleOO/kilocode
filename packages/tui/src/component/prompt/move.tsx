@@ -10,6 +10,7 @@ import { DialogMoveSession, type MoveSessionSelection } from "../dialog-move-ses
 import { DialogWorkspaceFileChanges } from "../dialog-workspace-file-changes"
 import { useHomeSessionDestination } from "../../routes/home/session-destination"
 import { useProject } from "../../context/project"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 function moveReminderText(directory: string) {
   return `<system-reminder>The user has changed the current working directory to "${directory}". This is still the same project but at a possibly new location; take this into account when working with any files from now on.</system-reminder>`
@@ -60,7 +61,7 @@ export function usePromptMove(input: { projectID: () => string | undefined; sess
       homeDestination?.clear()
       setProgress(undefined)
       setCreating(false)
-      toast.show({ title: "Creating workspace failed", message: errorMessage(err), variant: "error" })
+      toast.show({ title: t("Creating workspace failed") /* kilocode_change */, message: errorMessage(err), variant: "error" })
       return
     }
   }

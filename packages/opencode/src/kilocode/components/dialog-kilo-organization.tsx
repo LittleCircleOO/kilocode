@@ -11,6 +11,7 @@ import { useToast } from "@tui/ui/toast"
 import { DialogSelect } from "@tui/ui/dialog-select"
 import type { Organization } from "@kilocode/kilo-gateway"
 import { getOrganizationOptions, getDefaultOrganizationSelection } from "@kilocode/kilo-gateway/tui"
+import { t } from "@tui/kilocode/i18n"
 
 // These types are OpenCode-internal and imported at runtime
 type UseSDK = any
@@ -63,7 +64,7 @@ export function DialogKiloOrganization(props: DialogKiloOrganizationProps) {
           if (error instanceof DOMException && error.name === "AbortError") return
           console.warn("Failed to set organization:", error)
           toast.show({
-            message: "Failed to set organization; continuing with current account",
+            message: t("Failed to set organization; continuing with current account"),
             variant: "warning",
           })
           dialog.replace(() => <props.DialogModel providerID={props.providerID} />)

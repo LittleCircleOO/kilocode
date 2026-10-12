@@ -5,12 +5,13 @@ import { fileURLToPath } from "url"
 import { DialogSelect, type DialogSelectOption } from "../../ui/dialog-select"
 import { Show, createEffect, createMemo, createSignal } from "solid-js"
 import { useBindings } from "../../keymap"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 const id = "internal:plugin-manager"
 
 function state(api: TuiPluginApi, item: TuiPluginStatus) {
   if (!item.enabled) {
-    return <span style={{ fg: api.theme.current.textMuted }}>disabled</span>
+    return <span style={{ fg: api.theme.current.textMuted }}>{t("disabled") /* kilocode_change */}</span>
   }
 
   return (
@@ -41,23 +42,23 @@ function Install(props: { api: TuiPluginApi }) {
 
   useBindings(() => ({
     enabled: !busy(),
-    bindings: [{ key: "tab", desc: "Toggle install scope", group: "Plugins", cmd: () => setGlobal((value) => !value) }],
+    bindings: [{ key: "tab", desc: t("Toggle install scope") /* kilocode_change */, group: "Plugins", cmd: () => setGlobal((value) => !value) }],
   }))
 
   return (
     <props.api.ui.DialogPrompt
-      title="Install plugin"
-      placeholder="npm package name"
+      title={t("Install plugin") /* kilocode_change */}
+      placeholder={t("npm package name") /* kilocode_change */}
       busy={busy()}
-      busyText="Installing plugin..."
+      busyText={t("Installing plugin...") /* kilocode_change */}
       description={() => (
         <box flexDirection="row" gap={1}>
-          <text fg={props.api.theme.current.textMuted}>scope:</text>
+          <text fg={props.api.theme.current.textMuted}>{t("scope:") /* kilocode_change */}</text>
           <text fg={busy() ? props.api.theme.current.textMuted : props.api.theme.current.text}>
             {global() ? "global" : "local"}
           </text>
           <Show when={!busy()}>
-            <text fg={props.api.theme.current.textMuted}>(tab toggle)</text>
+            <text fg={props.api.theme.current.textMuted}>{t("(tab toggle)") /* kilocode_change */}</text>
           </Show>
         </box>
       )}
@@ -67,7 +68,7 @@ function Install(props: { api: TuiPluginApi }) {
         if (!mod) {
           props.api.ui.toast({
             variant: "error",
-            message: "Plugin package name is required",
+            message: t("Plugin package name is required") /* kilocode_change */,
           })
           return
         }
@@ -84,7 +85,7 @@ function Install(props: { api: TuiPluginApi }) {
               if (out.missing) {
                 props.api.ui.toast({
                   variant: "info",
-                  message: "Check npm registry/auth settings and try again.",
+                  message: t("Check npm registry/auth settings and try again.") /* kilocode_change */,
                 })
               }
               show(props.api)
@@ -93,12 +94,12 @@ function Install(props: { api: TuiPluginApi }) {
 
             props.api.ui.toast({
               variant: "success",
-              message: `Installed ${mod} (${global() ? "global" : "local"}: ${out.dir})`,
+              message: t("Installed {{mod}} ({{p1}}: {{dir}})", { mod: mod, p1: global() ? "global" : "local", dir: out.dir }) /* kilocode_change */,
             })
             if (!out.tui) {
               props.api.ui.toast({
                 variant: "info",
-                message: "Package has no TUI target to load in this app.",
+                message: t("Package has no TUI target to load in this app.") /* kilocode_change */,
               })
               show(props.api)
               return
@@ -108,7 +109,7 @@ function Install(props: { api: TuiPluginApi }) {
               if (!ok) {
                 props.api.ui.toast({
                   variant: "warning",
-                  message: "Installed plugin, but runtime load failed. See console/logs; restart TUI to retry.",
+                  message: t("Installed plugin, but runtime load failed. See console/logs; restart TUI to retry.") /* kilocode_change */,
                 })
                 show(props.api)
                 return
@@ -116,7 +117,7 @@ function Install(props: { api: TuiPluginApi }) {
 
               props.api.ui.toast({
                 variant: "success",
-                message: `Loaded ${mod} in current session.`,
+                message: t("Loaded {{mod}} in current session.", { mod: mod }) /* kilocode_change */,
               })
               show(props.api)
             })
@@ -188,7 +189,7 @@ function View(props: { api: TuiPluginApi }) {
         if (!ok) {
           props.api.ui.toast({
             variant: "error",
-            message: `Failed to update plugin ${item.id}`,
+            message: t("Failed to update plugin {{id}}", { id: item.id }) /* kilocode_change */,
           })
         }
         setList(props.api.plugins.list())
@@ -200,13 +201,13 @@ function View(props: { api: TuiPluginApi }) {
 
   return (
     <DialogSelect
-      title="Plugins"
+      title={t("Plugins") /* kilocode_change */}
       options={rows()}
       current={cur()}
       onMove={(item) => setCur(item.value)}
       actions={[
         {
-          title: "toggle",
+          title: t("toggle") /* kilocode_change */,
           command: "plugins.toggle",
           hidden: lock(),
           onTrigger: (item) => {
@@ -215,7 +216,7 @@ function View(props: { api: TuiPluginApi }) {
           },
         },
         {
-          title: "install",
+          title: t("install") /* kilocode_change */,
           command: "dialog.plugins.install",
           hidden: lock(),
           onTrigger: () => {
@@ -240,7 +241,7 @@ const tui: TuiPlugin = async (api) => {
     commands: [
       {
         name: "plugins.list",
-        title: "Plugins",
+        title: t("Plugins") /* kilocode_change */,
         category: "System",
         namespace: "palette",
         run() {
@@ -249,7 +250,7 @@ const tui: TuiPlugin = async (api) => {
       },
       {
         name: "plugins.install",
-        title: "Install plugin",
+        title: t("Install plugin") /* kilocode_change */,
         category: "System",
         namespace: "palette",
         run() {

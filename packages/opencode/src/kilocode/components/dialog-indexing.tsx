@@ -29,6 +29,7 @@ import {
   mergeIndexingConfig,
   type IndexingScope,
 } from "./indexing-dialog-state"
+import { t } from "@tui/kilocode/i18n"
 
 // These types are OpenCode-internal and imported at runtime
 type UseSDK = any
@@ -55,24 +56,24 @@ type ProviderFieldDef = { key: string; label: string; placeholder: string; sensi
 
 const PROVIDER_FIELDS: Record<EmbeddingProvider, ProviderFieldDef[]> = {
   kilo: [],
-  openai: [{ key: "apiKey", label: "API Key", placeholder: "sk-...", sensitive: true }],
-  ollama: [{ key: "baseUrl", label: "Base URL", placeholder: "http://localhost:11434" }],
+  openai: [{ key: "apiKey", label: t("API Key"), placeholder: t("sk-..."), sensitive: true }],
+  ollama: [{ key: "baseUrl", label: t("Base URL"), placeholder: "http://localhost:11434" }],
   "openai-compatible": [
-    { key: "baseUrl", label: "Base URL", placeholder: "https://api.example.com/v1" },
-    { key: "apiKey", label: "API Key (optional)", placeholder: "sk-...", sensitive: true },
+    { key: "baseUrl", label: t("Base URL"), placeholder: "https://api.example.com/v1" },
+    { key: "apiKey", label: t("API Key (optional)"), placeholder: t("sk-..."), sensitive: true },
   ],
-  gemini: [{ key: "apiKey", label: "API Key", placeholder: "AI...", sensitive: true }],
-  mistral: [{ key: "apiKey", label: "API Key", placeholder: "...", sensitive: true }],
-  "vercel-ai-gateway": [{ key: "apiKey", label: "API Key", placeholder: "...", sensitive: true }],
+  gemini: [{ key: "apiKey", label: t("API Key"), placeholder: t("AI..."), sensitive: true }],
+  mistral: [{ key: "apiKey", label: t("API Key"), placeholder: "...", sensitive: true }],
+  "vercel-ai-gateway": [{ key: "apiKey", label: t("API Key"), placeholder: "...", sensitive: true }],
   bedrock: [
-    { key: "region", label: "AWS Region", placeholder: "us-east-1" },
-    { key: "profile", label: "AWS Profile", placeholder: "default" },
+    { key: "region", label: t("AWS Region"), placeholder: t("us-east-1") },
+    { key: "profile", label: t("AWS Profile"), placeholder: t("default") },
   ],
   openrouter: [
-    { key: "apiKey", label: "API Key", placeholder: "sk-or-...", sensitive: true },
-    { key: "specificProvider", label: "Specific Provider", placeholder: "optional" },
+    { key: "apiKey", label: t("API Key"), placeholder: t("sk-or-..."), sensitive: true },
+    { key: "specificProvider", label: t("Specific Provider"), placeholder: t("optional") },
   ],
-  voyage: [{ key: "apiKey", label: "API Key", placeholder: "pa-...", sensitive: true }],
+  voyage: [{ key: "apiKey", label: t("API Key"), placeholder: t("pa-..."), sensitive: true }],
 }
 
 const VECTOR_STORE_LABELS: Record<string, string> = {
@@ -124,7 +125,7 @@ async function saveScopedIndexing(
     unset: patch.unset,
   })
   if (response.error) {
-    toast.show({ message: "Failed to save indexing config", variant: "error" })
+    toast.show({ message: t("Failed to save indexing config"), variant: "error" })
     return false
   }
   const [configResponse, globalResponse] = await Promise.all([
@@ -133,7 +134,7 @@ async function saveScopedIndexing(
   ])
   if (configResponse.data) sync.set("config", reconcile(configResponse.data))
   if (globalResponse.data) sync.set("globalConfig", reconcile(globalResponse.data))
-  toast.show({ message: "Indexing config saved", variant: "success" })
+  toast.show({ message: t("Indexing config saved"), variant: "success" })
   return true
 }
 
@@ -173,12 +174,12 @@ function ProviderSelect(props: SubDialogProps) {
     .map(([value, title]) => ({
       value,
       title,
-      description: value === indexing.provider ? "(current)" : undefined,
+      description: value === indexing.provider ? t("(current)") : undefined,
     }))
 
   return (
     <DialogSelect
-      title="Embedding Provider"
+      title={t("Embedding Provider")}
       options={options}
       current={indexing.provider}
       onSelect={async (option) => {
@@ -214,7 +215,7 @@ function KiloModelSelect(props: SubDialogProps) {
     if (!message || seen.error === message) return
     seen.error = message
     toast.show({
-      title: "Code Indexing Error",
+      title: t("Code Indexing Error"),
       message,
       variant: "error",
       duration: 10000,
@@ -238,7 +239,7 @@ function KiloModelSelect(props: SubDialogProps) {
 
   return (
     <DialogSelect
-      title="Kilo Embedding Model"
+      title={t("Kilo Embedding Model")}
       options={options()}
       current={current()}
       renderFilter={(catalog()?.models.length ?? 0) > 0}
@@ -306,12 +307,12 @@ function VectorStoreSelect(props: SubDialogProps) {
   const options: DialogSelectOption<string>[] = Object.entries(VECTOR_STORE_LABELS).map(([value, title]) => ({
     value,
     title,
-    description: value === (indexing.vectorStore ?? DEFAULT_VECTOR_STORE) ? "(current)" : undefined,
+    description: value === (indexing.vectorStore ?? DEFAULT_VECTOR_STORE) ? t("(current)") : undefined,
   }))
 
   return (
     <DialogSelect
-      title="Vector Store"
+      title={t("Vector Store")}
       options={options}
       current={indexing.vectorStore ?? DEFAULT_VECTOR_STORE}
       onSelect={async (option) => {
@@ -338,7 +339,7 @@ async function showLancedbSettings(
 ) {
   const result = await DialogPrompt.show(dialog, "LanceDB — Directory", {
     value: indexing.lancedb?.directory ?? "",
-    placeholder: "Leave empty for default",
+    placeholder: t("Leave empty for default"),
   })
   if (result === null) {
     dialog.replace(() => <DialogIndexing useSDK={useSDK} scope={scope} />)
@@ -376,7 +377,7 @@ async function showQdrantSettings(
 
   const apiKey = await DialogPrompt.show(dialog, "Qdrant — API Key", {
     value: currentSettings.apiKey ?? "",
-    placeholder: "Optional API key",
+    placeholder: t("Optional API key"),
   })
   if (apiKey === null) {
     dialog.replace(() => <DialogIndexing useSDK={useSDK} scope={scope} />)
@@ -405,10 +406,10 @@ interface TuningParam {
 }
 
 const TUNING_PARAMS: TuningParam[] = [
-  { key: "searchMinScore", label: "Search Min Score", defaultValue: 0.4 },
-  { key: "searchMaxResults", label: "Search Max Results", defaultValue: 50 },
-  { key: "embeddingBatchSize", label: "Embedding Batch Size", defaultValue: 60 },
-  { key: "scannerMaxBatchRetries", label: "Scanner Max Batch Retries", defaultValue: 3 },
+  { key: "searchMinScore", label: t("Search Min Score"), defaultValue: 0.4 },
+  { key: "searchMaxResults", label: t("Search Max Results"), defaultValue: 50 },
+  { key: "embeddingBatchSize", label: t("Embedding Batch Size"), defaultValue: 60 },
+  { key: "scannerMaxBatchRetries", label: t("Scanner Max Batch Retries"), defaultValue: 3 },
 ]
 
 function TuningMenu(props: SubDialogProps) {
@@ -431,14 +432,14 @@ function TuningMenu(props: SubDialogProps) {
 
   return (
     <DialogSelect
-      title="Tuning Parameters"
+      title={t("Tuning Parameters")}
       options={options}
       onSelect={async (option) => {
         const param = TUNING_PARAMS.find((p) => p.key === option.value)!
         const currentValue = indexing[param.key]
         const result = await DialogPrompt.show(dialog, param.label, {
           value: currentValue !== undefined ? String(currentValue) : "",
-          placeholder: `Default: ${param.defaultValue}`,
+          placeholder: t("Default: {{defaultValue}}", { defaultValue: param.defaultValue }),
         })
         if (result === null) {
           dialog.replace(() => (
@@ -455,7 +456,7 @@ function TuningMenu(props: SubDialogProps) {
         const trimmed = result.trim()
         const num = trimmed ? Number(trimmed) : undefined
         if (trimmed && isNaN(num!)) {
-          toast.show({ message: `Invalid number: "${trimmed}"`, variant: "error" })
+          toast.show({ message: t("Invalid number: \"{{trimmed}}\"", { trimmed: trimmed }), variant: "error" })
           dialog.replace(() => (
             <TuningMenu
               useSDK={props.useSDK}
@@ -494,13 +495,13 @@ interface DialogIndexingProps {
 function ScopeSelect(props: DialogIndexingProps & { scope: IndexingScope }) {
   const dialog = useDialog()
   const options: DialogSelectOption<IndexingScope>[] = [
-    { value: "global", title: "Global", description: "Stored in the user config directory" },
-    { value: "project", title: "Project", description: "Stored in this repo's .kilo config" },
+    { value: "global", title: t("Global"), description: t("Stored in the user config directory") },
+    { value: "project", title: t("Project"), description: t("Stored in this repo's .kilo config") },
   ]
 
   return (
     <DialogSelect
-      title="Indexing Scope"
+      title={t("Indexing Scope")}
       options={options}
       current={props.scope}
       onSelect={(option) => {
@@ -538,25 +539,25 @@ export function DialogIndexing(props: DialogIndexingProps) {
     const result: DialogSelectOption<string>[] = [
       {
         value: "scope",
-        title: "Configuration Scope",
+        title: t("Configuration Scope"),
         category: "General",
         description: scope(),
       },
       {
         value: "enabled",
-        title: "Indexing",
+        title: t("Indexing"),
         category: "General",
         description: mark(state.enabled() ? "enabled" : "disabled", [["enabled"]]),
       },
       {
         value: "provider",
-        title: "Embedding Provider",
+        title: t("Embedding Provider"),
         category: "Embedding",
         description: mark(provider, [["provider"]]),
       },
       {
         value: "model",
-        title: "Embedding Model",
+        title: t("Embedding Model"),
         category: "Embedding",
         description: mark(
           indexing.provider === "kilo" ? (indexing.model ?? "Kilo catalog") : (indexing.model ?? "default"),
@@ -565,29 +566,29 @@ export function DialogIndexing(props: DialogIndexingProps) {
       },
       {
         value: "dimension",
-        title: "Vector Dimension",
+        title: t("Vector Dimension"),
         category: "Embedding",
         description:
           indexing.provider === "kilo"
-            ? "provided by Kilo"
+            ? t("provided by Kilo")
             : mark(indexing.dimension ? String(indexing.dimension) : "auto", [["dimension"]]),
         disabled: indexing.provider === "kilo",
       },
       {
         value: "vectorStore",
-        title: "Vector Store",
+        title: t("Vector Store"),
         category: "Storage",
         description: mark(storeLabel, [["vectorStore"]]),
       },
       {
         value: "fileExtensions",
-        title: "File Extensions",
+        title: t("File Extensions"),
         category: "Advanced",
         description: mark(indexing.fileExtensions?.join(", ") ?? "built-in defaults", [["fileExtensions"]]),
       },
       {
         value: "tuning",
-        title: "Tuning Parameters",
+        title: t("Tuning Parameters"),
         category: "Advanced",
         description: mark(tuning, tuningPaths),
       },
@@ -596,7 +597,7 @@ export function DialogIndexing(props: DialogIndexingProps) {
     if (indexing.provider && PROVIDER_FIELDS[indexing.provider].length > 0) {
       result.splice(3, 0, {
         value: "providerSettings",
-        title: `${PROVIDER_LABELS[indexing.provider]} Settings`,
+        title: t("{{p0}} Settings", { p0: PROVIDER_LABELS[indexing.provider] }),
         category: "Embedding",
         description: mark(
           providerSettingsDescription(indexing, indexing.provider),
@@ -609,7 +610,7 @@ export function DialogIndexing(props: DialogIndexingProps) {
 
   return (
     <DialogSelect
-      title="Indexing Configuration"
+      title={t("Indexing Configuration")}
       options={options()}
       skipFilter
       onSelect={async (option) => {
@@ -650,7 +651,7 @@ export function DialogIndexing(props: DialogIndexingProps) {
             }
             const result = await DialogPrompt.show(dialog, "Embedding Model", {
               value: indexing.model ?? "",
-              placeholder: "Enter model ID",
+              placeholder: t("Enter model ID"),
             })
             if (result !== null) {
               const trimmed = result.trim()
@@ -663,7 +664,7 @@ export function DialogIndexing(props: DialogIndexingProps) {
             if (indexing.provider === "kilo") break
             const result = await DialogPrompt.show(dialog, "Vector Dimension", {
               value: indexing.dimension ? String(indexing.dimension) : "",
-              placeholder: "Leave empty for auto-detection",
+              placeholder: t("Leave empty for auto-detection"),
             })
             if (result !== null) {
               const trimmed = result.trim()
@@ -671,7 +672,7 @@ export function DialogIndexing(props: DialogIndexingProps) {
               if (trimmed) {
                 dim = Number(trimmed)
                 if (isNaN(dim) || dim <= 0 || !Number.isInteger(dim)) {
-                  toast.show({ message: `Invalid dimension: "${trimmed}"`, variant: "error" })
+                  toast.show({ message: t("Invalid dimension: \"{{trimmed}}\"", { trimmed: trimmed }), variant: "error" })
                   dialog.replace(() => <DialogIndexing useSDK={props.useSDK} scope={scope()} />)
                   break
                 }
@@ -689,7 +690,7 @@ export function DialogIndexing(props: DialogIndexingProps) {
           case "fileExtensions": {
             const result = await DialogPrompt.show(dialog, "File Extensions", {
               value: indexing.fileExtensions?.join(", ") ?? "",
-              placeholder: ".php, .js, .css (empty uses built-in defaults)",
+              placeholder: t(".php, .js, .css (empty uses built-in defaults)"),
             })
             if (result !== null) {
               const values = result
@@ -698,7 +699,7 @@ export function DialogIndexing(props: DialogIndexingProps) {
                 .filter(Boolean)
               const invalid = values.find((item) => !isFileExtension(item))
               if (invalid) {
-                toast.show({ message: `Invalid file extension: "${invalid}"`, variant: "error" })
+                toast.show({ message: t("Invalid file extension: \"{{invalid}}\"", { invalid: invalid }), variant: "error" })
               } else {
                 await saveScopedIndexing(
                   sdk,

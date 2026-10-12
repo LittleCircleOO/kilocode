@@ -18,6 +18,7 @@ import { errorMessage } from "../util/error"
 import { DialogSessionDeleteFailed } from "./dialog-session-delete-failed"
 import { useCommandShortcut } from "../keymap"
 import { useEvent } from "../context/event"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 type SessionListFilter = { scope?: "project"; path?: string }
 
@@ -120,7 +121,7 @@ export function DialogSessionList() {
           result = await sdk.client.experimental.workspace.create({ type: selection.workspaceType, branch: null })
         } catch (err) {
           toast.show({
-            title: "Failed to create workspace",
+            title: t("Failed to create workspace") /* kilocode_change */,
             message: errorMessage(err),
             variant: "error",
           })
@@ -129,7 +130,7 @@ export function DialogSessionList() {
         const workspace = result?.data
         if (!workspace) {
           toast.show({
-            title: "Failed to create workspace",
+            title: t("Failed to create workspace") /* kilocode_change */,
             message: errorMessage(result?.error ?? "no response"),
             variant: "error",
           })
@@ -164,7 +165,7 @@ export function DialogSessionList() {
           if (result.error) {
             toast.show({
               variant: "error",
-              title: "Failed to delete workspace",
+              title: t("Failed to delete workspace") /* kilocode_change */,
               message: errorMessage(result.error),
             })
             return false
@@ -212,7 +213,7 @@ export function DialogSessionList() {
   })
   const quickSwitchFooterHints = createMemo(() => {
     const hint = quickSwitchHint()
-    return hint && local.session.slots().length > 0 ? [{ title: "switch", label: hint }] : []
+    return hint && local.session.slots().length > 0 ? [{ title: t("switch") /* kilocode_change */, label: hint }] : []
   })
 
   const options = createMemo(() => {
@@ -283,7 +284,7 @@ export function DialogSessionList() {
 
   return (
     <DialogSelect
-      title={global() ? "Sessions (all worktrees)" : "Sessions (current worktree)"} // kilocode_change
+      title={global() ? t("Sessions (all worktrees)") /* kilocode_change */ : t("Sessions (current worktree)") /* kilocode_change */} // kilocode_change
       options={options()}
       skipFilter={true}
       preserveSelection={true}
@@ -302,14 +303,14 @@ export function DialogSessionList() {
       actions={[
         {
           command: "session.pin.toggle",
-          title: "pin/unpin",
+          title: t("pin/unpin") /* kilocode_change */,
           onTrigger: (option: { value: string }) => {
             local.session.togglePin(option.value)
           },
         },
         {
           command: "session.delete",
-          title: "delete",
+          title: t("delete") /* kilocode_change */,
           onTrigger: async (option) => {
             if (toDelete() === option.value) {
               const session = sessions().find((item) => item.id === option.value)
@@ -325,7 +326,7 @@ export function DialogSessionList() {
                   } else {
                     toast.show({
                       variant: "error",
-                      title: "Failed to delete session",
+                      title: t("Failed to delete session") /* kilocode_change */,
                       message: errorMessage(result.error),
                     })
                   }
@@ -338,7 +339,7 @@ export function DialogSessionList() {
                 } else {
                   toast.show({
                     variant: "error",
-                    title: "Failed to delete session",
+                    title: t("Failed to delete session") /* kilocode_change */,
                     message: errorMessage(err),
                   })
                 }
@@ -358,7 +359,7 @@ export function DialogSessionList() {
         },
         {
           command: "session.rename",
-          title: "rename",
+          title: t("rename") /* kilocode_change */,
           // kilocode_change start
           onTrigger: async (option) => {
             const item = sessions().find((x) => x.id === option.value)
@@ -376,7 +377,7 @@ export function DialogSessionList() {
         },
         {
           command: "session.scope.toggle",
-          title: global() ? "current" : "all",
+          title: global() ? t("current") /* kilocode_change */ : t("all") /* kilocode_change */,
           requiresSelection: false,
           onTrigger: async () => {
             setToDelete(undefined)

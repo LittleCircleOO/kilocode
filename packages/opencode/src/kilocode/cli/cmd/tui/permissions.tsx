@@ -1,6 +1,7 @@
 import type { PermissionRequest } from "@kilocode/sdk/v2"
 import { useTheme } from "@tui/context/theme"
 import { MemoryPermissionRegistry } from "@/kilocode/cli/cmd/tui/routes/session/memory-permission"
+import { t } from "@tui/kilocode/i18n"
 
 function MemoryBody(props: { request: PermissionRequest }) {
   const { theme } = useTheme()
@@ -18,13 +19,13 @@ export namespace MemoryPermission {
       const action = String(request.metadata?.action ?? "save")
       return {
         icon: "◇",
-        title: `Memory ${action}`,
+        title: t("Memory {{action}}", { action: action }),
         body: <MemoryBody request={request} />,
       }
     })
     MemoryPermissionRegistry.register("kilo_memory_recall", (request) => ({
       icon: "◇",
-      title: "Memory recall",
+      title: t("Memory recall"),
       body: <MemoryBody request={request} />,
     }))
   }

@@ -41,7 +41,8 @@ import { useToast } from "../ui/toast" // kilocode_change
 import { collector } from "../kilocode/notices" // kilocode_change
 import { errorMessage } from "../util/error" // kilocode_change
 import { usePermission } from "./permission"
-import { GoalSync } from "@/kilocode/cli/cmd/tui/goal-sync" // kilocode_change
+import { GoalSync } from "@/kilocode/cli/cmd/tui/goal-sync"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 const emptyConsoleState: ConsoleState = {
   consoleManagedProviders: [],
@@ -157,7 +158,7 @@ export const {
       mcp_resource: {},
       formatter: [],
       vcs: undefined,
-      indexing: { state: "Disabled", message: "Indexing disabled.", processedFiles: 0, totalFiles: 0, percent: 0 }, // kilocode_change
+      indexing: { state: "Disabled", message: t("Indexing disabled.") /* kilocode_change */, processedFiles: 0, totalFiles: 0, percent: 0 }, // kilocode_change
     })
 
     const event = useEvent()
@@ -907,7 +908,7 @@ export const {
             // kilocode_change start - an empty slash menu must not be the only sign the list failed
             sdk.client.command.list({ workspace }).then((x) => {
               if (x.error) {
-                notify({ title: "Commands Unavailable", message: errorMessage(x.error) })
+                notify({ title: t("Commands Unavailable") /* kilocode_change */, message: errorMessage(x.error) })
                 return
               }
               setStore("command", reconcile(x.data ?? []))
@@ -951,7 +952,7 @@ export const {
               const first = list.at(0)
               if (!first) return
               const suffix = list.length > 1 ? ` (and ${list.length - 1} more)` : ""
-              notify({ title: "Config Warning", message: first.message + suffix })
+              notify({ title: t("Config Warning") /* kilocode_change */, message: first.message + suffix })
             }),
             sdk.client.indexing
               .status()

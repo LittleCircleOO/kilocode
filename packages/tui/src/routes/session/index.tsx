@@ -100,6 +100,7 @@ import { GoalRow } from "@/kilocode/cli/cmd/tui/component/goal"
 import { formatMarkdownTables } from "../../util/markdown"
 // kilocode_change end
 import { LocationProvider } from "../../context/location"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 addDefaultParsers(parsers.parsers)
 
@@ -387,7 +388,7 @@ export function Session() {
       const result = await sdk.client.session.get({ sessionID }, { throwOnError: true })
       if (!result.data) {
         toast.show({
-          message: `Session not found: ${sessionID}`,
+          message: t("Session not found: {{sessionID}}", { sessionID: sessionID }) /* kilocode_change */,
           variant: "error",
           duration: 5000,
         })
@@ -559,7 +560,7 @@ export function Session() {
 
   const sessionCommandList = createMemo(() => [
     {
-      title: session()?.share?.url ? "Copy share link" : "Share session",
+      title: session()?.share?.url ? t("Copy share link") /* kilocode_change */ : t("Share session") /* kilocode_change */,
       value: "session.share",
       suggested: route.type === "session",
       category: "Session",
@@ -571,8 +572,8 @@ export function Session() {
         const copy = (url: string) =>
           clipboard
             .write?.(url)
-            .then(() => toast.show({ message: "Share URL copied to clipboard!", variant: "success" }))
-            .catch(() => toast.show({ message: "Failed to copy URL to clipboard", variant: "error" }))
+            .then(() => toast.show({ message: t("Share URL copied to clipboard!") /* kilocode_change */, variant: "success" }))
+            .catch(() => toast.show({ message: t("Failed to copy URL to clipboard") /* kilocode_change */, variant: "error" }))
         const url = session()?.share?.url
         if (url) {
           await copy(url)
@@ -591,7 +592,7 @@ export function Session() {
           .then((res) => copy(res.data!.share!.url))
           .catch((error) => {
             toast.show({
-              message: error instanceof Error ? error.message : "Failed to share session",
+              message: error instanceof Error ? error.message : t("Failed to share session") /* kilocode_change */,
               variant: "error",
             })
           })
@@ -599,7 +600,7 @@ export function Session() {
       },
     },
     {
-      title: "Rename session",
+      title: t("Rename session") /* kilocode_change */,
       value: "session.rename",
       category: "Session",
       slash: {
@@ -610,7 +611,7 @@ export function Session() {
       },
     },
     {
-      title: "Jump to message",
+      title: t("Jump to message") /* kilocode_change */,
       value: "session.timeline",
       category: "Session",
       slash: {
@@ -632,7 +633,7 @@ export function Session() {
       },
     },
     {
-      title: "Fork session",
+      title: t("Fork session") /* kilocode_change */,
       value: "session.fork",
       category: "Session",
       slash: {
@@ -654,7 +655,7 @@ export function Session() {
       },
     },
     {
-      title: "Compact session",
+      title: t("Compact session") /* kilocode_change */,
       value: "session.compact",
       category: "Session",
       slash: {
@@ -666,7 +667,7 @@ export function Session() {
         if (!selectedModel) {
           toast.show({
             variant: "warning",
-            message: "Connect a provider to summarize this session",
+            message: t("Connect a provider to summarize this session") /* kilocode_change */,
             duration: 3000,
           })
           return
@@ -680,7 +681,7 @@ export function Session() {
       },
     },
     {
-      title: "Unshare session",
+      title: t("Unshare session") /* kilocode_change */,
       value: "session.unshare",
       category: "Session",
       enabled: !!session()?.share?.url,
@@ -692,10 +693,10 @@ export function Session() {
           .unshare({
             sessionID: route.sessionID,
           })
-          .then(() => toast.show({ message: "Session unshared successfully", variant: "success" }))
+          .then(() => toast.show({ message: t("Session unshared successfully") /* kilocode_change */, variant: "success" }))
           .catch((error) => {
             toast.show({
-              message: error instanceof Error ? error.message : "Failed to unshare session",
+              message: error instanceof Error ? error.message : t("Failed to unshare session") /* kilocode_change */,
               variant: "error",
             })
           })
@@ -703,7 +704,7 @@ export function Session() {
       },
     },
     {
-      title: "Undo previous message",
+      title: t("Undo previous message") /* kilocode_change */,
       value: "session.undo",
       category: "Session",
       slash: {
@@ -742,7 +743,7 @@ export function Session() {
       },
     },
     {
-      title: "Redo",
+      title: t("Redo") /* kilocode_change */,
       value: "session.redo",
       category: "Session",
       enabled: !!session()?.revert?.messageID,
@@ -768,7 +769,7 @@ export function Session() {
       },
     },
     {
-      title: sidebarVisible() ? "Hide sidebar" : "Show sidebar",
+      title: sidebarVisible() ? t("Hide sidebar") /* kilocode_change */ : t("Show sidebar") /* kilocode_change */,
       value: "session.sidebar.toggle",
       category: "Session",
       run: () => {
@@ -781,7 +782,7 @@ export function Session() {
       },
     },
     {
-      title: conceal() ? "Disable code concealment" : "Enable code concealment",
+      title: conceal() ? t("Disable code concealment") /* kilocode_change */ : t("Enable code concealment") /* kilocode_change */,
       value: "session.toggle.conceal",
       category: "Session",
       run: () => {
@@ -790,7 +791,7 @@ export function Session() {
       },
     },
     {
-      title: showTimestamps() ? "Hide timestamps" : "Show timestamps",
+      title: showTimestamps() ? t("Hide timestamps") /* kilocode_change */ : t("Show timestamps") /* kilocode_change */,
       value: "session.toggle.timestamps",
       category: "Session",
       slash: {
@@ -820,7 +821,7 @@ export function Session() {
       },
     },
     {
-      title: showDetails() ? "Hide tool details" : "Show tool details",
+      title: showDetails() ? t("Hide tool details") /* kilocode_change */ : t("Show tool details") /* kilocode_change */,
       value: "session.toggle.actions",
       category: "Session",
       run: () => {
@@ -829,7 +830,7 @@ export function Session() {
       },
     },
     {
-      title: "Toggle session scrollbar",
+      title: t("Toggle session scrollbar") /* kilocode_change */,
       value: "session.toggle.scrollbar",
       category: "Session",
       run: () => {
@@ -838,7 +839,7 @@ export function Session() {
       },
     },
     {
-      title: showGenericToolOutput() ? "Hide generic tool output" : "Show generic tool output",
+      title: showGenericToolOutput() ? t("Hide generic tool output") /* kilocode_change */ : t("Show generic tool output") /* kilocode_change */,
       value: "session.toggle.generic_tool_output",
       category: "Session",
       run: () => {
@@ -847,7 +848,7 @@ export function Session() {
       },
     },
     {
-      title: "Page up",
+      title: t("Page up") /* kilocode_change */,
       value: "session.page.up",
       category: "Session",
       hidden: true,
@@ -857,7 +858,7 @@ export function Session() {
       },
     },
     {
-      title: "Page down",
+      title: t("Page down") /* kilocode_change */,
       value: "session.page.down",
       category: "Session",
       hidden: true,
@@ -867,7 +868,7 @@ export function Session() {
       },
     },
     {
-      title: "Line up",
+      title: t("Line up") /* kilocode_change */,
       value: "session.line.up",
       category: "Session",
       hidden: true,
@@ -877,7 +878,7 @@ export function Session() {
       },
     },
     {
-      title: "Line down",
+      title: t("Line down") /* kilocode_change */,
       value: "session.line.down",
       category: "Session",
       hidden: true,
@@ -887,7 +888,7 @@ export function Session() {
       },
     },
     {
-      title: "Half page up",
+      title: t("Half page up") /* kilocode_change */,
       value: "session.half.page.up",
       category: "Session",
       hidden: true,
@@ -897,7 +898,7 @@ export function Session() {
       },
     },
     {
-      title: "Half page down",
+      title: t("Half page down") /* kilocode_change */,
       value: "session.half.page.down",
       category: "Session",
       hidden: true,
@@ -907,7 +908,7 @@ export function Session() {
       },
     },
     {
-      title: "First message",
+      title: t("First message") /* kilocode_change */,
       value: "session.first",
       category: "Session",
       hidden: true,
@@ -917,7 +918,7 @@ export function Session() {
       },
     },
     {
-      title: "Last message",
+      title: t("Last message") /* kilocode_change */,
       value: "session.last",
       category: "Session",
       hidden: true,
@@ -927,7 +928,7 @@ export function Session() {
       },
     },
     {
-      title: "Jump to last user message",
+      title: t("Jump to last user message") /* kilocode_change */,
       value: "session.messages_last_user",
       category: "Session",
       hidden: true,
@@ -958,21 +959,21 @@ export function Session() {
       },
     },
     {
-      title: "Next message",
+      title: t("Next message") /* kilocode_change */,
       value: "session.message.next",
       category: "Session",
       hidden: true,
       run: () => scrollToMessage("next", dialog),
     },
     {
-      title: "Previous message",
+      title: t("Previous message") /* kilocode_change */,
       value: "session.message.previous",
       category: "Session",
       hidden: true,
       run: () => scrollToMessage("prev", dialog),
     },
     {
-      title: "Copy last assistant message",
+      title: t("Copy last assistant message") /* kilocode_change */,
       value: "messages.copy",
       category: "Session",
       // kilocode_change start - /copy copies the latest assistant response
@@ -983,7 +984,7 @@ export function Session() {
       run: () => {
         const lastAssistantMessage = messagesBeforeRevert().findLast((message) => message.role === "assistant")
         if (!lastAssistantMessage) {
-          toast.show({ message: "No assistant messages found", variant: "error" })
+          toast.show({ message: t("No assistant messages found") /* kilocode_change */, variant: "error" })
           dialog.clear()
           return
         }
@@ -991,7 +992,7 @@ export function Session() {
         const parts = sync.data.part[lastAssistantMessage.id] ?? []
         const textParts = parts.filter((part) => part.type === "text")
         if (textParts.length === 0) {
-          toast.show({ message: "No text parts found in last assistant message", variant: "error" })
+          toast.show({ message: t("No text parts found in last assistant message") /* kilocode_change */, variant: "error" })
           dialog.clear()
           return
         }
@@ -1002,7 +1003,7 @@ export function Session() {
           .trim()
         if (!text) {
           toast.show({
-            message: "No text content found in last assistant message",
+            message: t("No text content found in last assistant message") /* kilocode_change */,
             variant: "error",
           })
           dialog.clear()
@@ -1011,27 +1012,27 @@ export function Session() {
 
         clipboard
           .write?.(text)
-          .then(() => toast.show({ message: "Message copied to clipboard!", variant: "success" }))
-          .catch(() => toast.show({ message: "Failed to copy to clipboard", variant: "error" }))
+          .then(() => toast.show({ message: t("Message copied to clipboard!") /* kilocode_change */, variant: "success" }))
+          .catch(() => toast.show({ message: t("Failed to copy to clipboard") /* kilocode_change */, variant: "error" }))
         dialog.clear()
       },
     },
     // kilocode_change start - message feedback
     {
-      title: "Rate last assistant message helpful",
+      title: t("Rate last assistant message helpful") /* kilocode_change */,
       value: "messages.feedback.up",
       category: "Session",
       run: () => submitFeedback("up", dialog, { toast, session, messages }),
     },
     {
-      title: "Rate last assistant message not helpful",
+      title: t("Rate last assistant message not helpful") /* kilocode_change */,
       value: "messages.feedback.down",
       category: "Session",
       run: () => submitFeedback("down", dialog, { toast, session, messages }),
     },
     // kilocode_change end
     {
-      title: "Copy session transcript",
+      title: t("Copy session transcript") /* kilocode_change */,
       value: "session.copy",
       category: "Session",
       slash: {
@@ -1059,15 +1060,15 @@ export function Session() {
             },
           )
           await clipboard.write?.(transcript)
-          toast.show({ message: "Session transcript copied to clipboard!", variant: "success" })
+          toast.show({ message: t("Session transcript copied to clipboard!") /* kilocode_change */, variant: "success" })
         } catch {
-          toast.show({ message: "Failed to copy session transcript", variant: "error" })
+          toast.show({ message: t("Failed to copy session transcript") /* kilocode_change */, variant: "error" })
         }
         dialog.clear()
       },
     },
     {
-      title: "Export session transcript",
+      title: t("Export session transcript") /* kilocode_change */,
       value: "session.export",
       category: "Session",
       slash: {
@@ -1140,16 +1141,16 @@ export function Session() {
               await writeExport(filepath, result)
             }
 
-            toast.show({ message: `Session exported to ${filename}`, variant: "success" })
+            toast.show({ message: t("Session exported to {{filename}}", { filename: filename }) /* kilocode_change */, variant: "success" })
           }
         } catch {
-          toast.show({ message: "Failed to export session", variant: "error" })
+          toast.show({ message: t("Failed to export session") /* kilocode_change */, variant: "error" })
         }
         dialog.clear()
       },
     },
     {
-      title: "Background subagents",
+      title: t("Background subagents") /* kilocode_change */,
       value: "session.background",
       category: "Session",
       hidden: true,
@@ -1163,7 +1164,7 @@ export function Session() {
       },
     },
     {
-      title: "Go to child session",
+      title: t("Go to child session") /* kilocode_change */,
       value: "session.child.first",
       category: "Session",
       hidden: true,
@@ -1173,7 +1174,7 @@ export function Session() {
       },
     },
     {
-      title: "Go to parent session",
+      title: t("Go to parent session") /* kilocode_change */,
       value: "session.parent",
       category: "Session",
       hidden: true,
@@ -1190,7 +1191,7 @@ export function Session() {
       }),
     },
     {
-      title: "Next child session",
+      title: t("Next child session") /* kilocode_change */,
       value: "session.child.next",
       category: "Session",
       hidden: true,
@@ -1201,7 +1202,7 @@ export function Session() {
       }),
     },
     {
-      title: "Previous child session",
+      title: t("Previous child session") /* kilocode_change */,
       value: "session.child.previous",
       category: "Session",
       hidden: true,
@@ -1329,7 +1330,7 @@ export function Session() {
                 {/* kilocode_change start */}
                 <Show when={session()?.parentID && messages().length === 0}>
                   <box paddingLeft={3}>
-                    <text fg={theme.textMuted}>↳ Initializing...</text>
+                    <text fg={theme.textMuted}>{t("↳ Initializing...") /* kilocode_change */}</text>
                   </box>
                 </Show>
                 {/* kilocode_change end */}
@@ -1370,7 +1371,7 @@ export function Session() {
                                 paddingLeft={2}
                                 backgroundColor={hover() ? theme.backgroundElement : theme.backgroundPanel}
                               >
-                                <text fg={theme.textMuted}>{revert()!.reverted.length} message reverted</text>
+                                <text fg={theme.textMuted}>{revert()!.reverted.length} {t("message reverted") /* kilocode_change */}</text>
                                 <text fg={theme.textMuted}>
                                   <span style={{ fg: theme.text }}>{redoShortcut()}</span> or /redo to restore
                                 </text>
@@ -1610,7 +1611,7 @@ function UserMessage(props: {
         <box
           marginTop={1}
           border={["top"]}
-          title=" Compaction "
+          title={t(" Compaction ") /* kilocode_change */}
           titleAlignment="center"
           borderColor={theme.borderActive}
         />
@@ -1669,7 +1670,7 @@ function AssistantMessage(props: { message: AssistantMessage; parts: Part[]; las
         <box paddingTop={1} paddingLeft={3}>
           <text fg={theme.text}>
             {childShortcut()}
-            <span style={{ fg: theme.textMuted }}> view subagents</span>
+            <span style={{ fg: theme.textMuted }}> {t("view subagents") /* kilocode_change */}</span>
             <Show
               when={
                 sync.data.capabilities.experimentalBackgroundSubagents &&
@@ -1684,7 +1685,7 @@ function AssistantMessage(props: { message: AssistantMessage; parts: Part[]; las
             >
               <span style={{ fg: theme.textMuted }}> · </span>
               {backgroundShortcut()}
-              <span style={{ fg: theme.textMuted }}> background</span>
+              <span style={{ fg: theme.textMuted }}> {t("background") /* kilocode_change */}</span>
             </Show>
           </text>
         </box>
@@ -1736,7 +1737,7 @@ function AssistantMessage(props: { message: AssistantMessage; parts: Part[]; las
                 <span style={{ fg: theme.textMuted }}> · {Locale.duration(duration())}</span>
               </Show>
               <Show when={props.message.error?.name === "MessageAbortedError"}>
-                <span style={{ fg: theme.textMuted }}> · interrupted</span>
+                <span style={{ fg: theme.textMuted }}> {t("· interrupted") /* kilocode_change */}</span>
               </Show>
             </text>
           </box>
@@ -2122,7 +2123,7 @@ function SemanticSearch(props: ToolProps) {
 
   return (
     <InlineTool icon="✱" pending="Searching codebase..." complete={query()} part={props.part}>
-      Codebase Search "{query()}" <Show when={target()}>in {paths.format(target()!)} </Show>
+      {t("Codebase Search \"") /* kilocode_change */}{query()}" <Show when={target()}>in {paths.format(target()!)} </Show>
       <Show when={count() > 0}>
         ({count()} {count() === 1 ? "result" : "results"})
       </Show>
@@ -2460,7 +2461,7 @@ function Glob(props: ToolProps) {
   const pathFormatter = usePathFormatter()
   return (
     <InlineTool icon="✱" pending="Finding files..." complete={stringValue(props.input.pattern)} part={props.part}>
-      Glob "{stringValue(props.input.pattern)}"{" "}
+      {t("Glob \"") /* kilocode_change */}{stringValue(props.input.pattern)}"{" "}
       <Show when={stringValue(props.input.path)}>in {pathFormatter.format(stringValue(props.input.path))} </Show>
       <Show when={numberValue(props.metadata.count)}>
         ({numberValue(props.metadata.count)} {numberValue(props.metadata.count) === 1 ? "match" : "matches"})
@@ -2508,7 +2509,7 @@ function Grep(props: ToolProps) {
   const pathFormatter = usePathFormatter()
   return (
     <InlineTool icon="✱" pending="Searching content..." complete={stringValue(props.input.pattern)} part={props.part}>
-      Grep "{stringValue(props.input.pattern)}"{" "}
+      {t("Grep \"") /* kilocode_change */}{stringValue(props.input.pattern)}"{" "}
       <Show when={stringValue(props.input.path)}>in {pathFormatter.format(stringValue(props.input.path))} </Show>
       <Show when={numberValue(props.metadata.matches)}>
         ({numberValue(props.metadata.matches)} {numberValue(props.metadata.matches) === 1 ? "match" : "matches"})
@@ -2529,7 +2530,7 @@ function WebSearch(props: ToolProps) {
   return (
     <InlineTool icon="◈" pending="Searching web..." complete={stringValue(props.input.query)} part={props.part}>
       {webSearchProviderLabel(props.metadata.provider)} "{stringValue(props.input.query)}"{" "}
-      <Show when={numberValue(props.metadata.numResults)}>({numberValue(props.metadata.numResults)} results)</Show>
+      <Show when={numberValue(props.metadata.numResults)}>({numberValue(props.metadata.numResults)} {t("results)") /* kilocode_change */}</Show>
     </InlineTool>
   )
 }
@@ -2846,7 +2847,7 @@ function ApplyPatch(props: ToolProps) {
                 when={file.type !== "delete"}
                 fallback={
                   <text fg={theme.diffRemoved}>
-                    -{file.deletions} line{file.deletions !== 1 ? "s" : ""}
+                    -{file.deletions} {t("line") /* kilocode_change */}{file.deletions !== 1 ? "s" : ""}
                   </text>
                 }
               >
@@ -2872,7 +2873,7 @@ function TodoWrite(props: ToolProps) {
     <Switch>
       <Match when={parseTodos(props.metadata.todos).length}>
         {/* kilocode_change - todo writes are orchestration, not a mutating action to explain */}
-        <BlockTool title="# Todos" part={props.part} hideApproval>
+        <BlockTool title={t("# Todos") /* kilocode_change */} part={props.part} hideApproval>
           <box>
             <For each={todos()}>{(todo) => <TodoItem status={todo.status} content={todo.content} />}</For>
           </box>
@@ -2953,7 +2954,7 @@ function Question(props: ToolProps) {
       {/* kilocode_change end */}
       <Match when={true}>
         <InlineTool icon="→" pending="Asking questions..." complete={count()} part={props.part}>
-          Asked {count()} question{count() !== 1 ? "s" : ""}
+          Asked {count()} {t("question") /* kilocode_change */}{count() !== 1 ? "s" : ""}
         </InlineTool>
       </Match>
     </Switch>
@@ -2963,7 +2964,7 @@ function Question(props: ToolProps) {
 function Skill(props: ToolProps) {
   return (
     <InlineTool icon="→" pending="Loading skill..." complete={stringValue(props.input.name)} part={props.part}>
-      Skill "{stringValue(props.input.name)}"
+      {t("Skill \"") /* kilocode_change */}{stringValue(props.input.name)}"
     </InlineTool>
   )
 }
@@ -2985,7 +2986,7 @@ function Diagnostics(props: { diagnostics: unknown; filePath: string }) {
         <For each={errors()}>
           {(diagnostic) => (
             <text fg={theme.error}>
-              Error [{diagnostic.range.start.line + 1}:{diagnostic.range.start.character + 1}] {diagnostic.message}
+              {t("Error [") /* kilocode_change */}{diagnostic.range.start.line + 1}:{diagnostic.range.start.character + 1}] {diagnostic.message}
             </text>
           )}
         </For>

@@ -28,6 +28,7 @@ import { useFrecency } from "../../prompt/frecency"
 import { useBindings, useCommandSlashes, useOpencodeModeStack } from "../../keymap"
 import { displayCharAt, mentionTriggerIndex } from "../../prompt/display"
 import type { FileSystemEntry } from "@kilocode/sdk/v2"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 function removeLineRange(input: string) {
   const hashIndex = input.lastIndexOf("#")
@@ -377,7 +378,7 @@ export function Autocomplete(props: {
   const pastChatsOption: AutocompleteOption = {
     display: "Past chats",
     value: "Past chats",
-    description: "Search previous sessions",
+    description: t("Search previous sessions") /* kilocode_change */,
     onSelect: () => {
       hide()
       dialog.replace(() => (
@@ -456,7 +457,7 @@ export function Autocomplete(props: {
       .map(
         (reference): AutocompleteOption => ({
           display: "@" + reference.name,
-          description: ` ${reference.source.type === "git" ? reference.source.repository : reference.source.path}`,
+          description: t(" {{p0}}", { p0: reference.source.type === "git" ? reference.source.repository : reference.source.path }) /* kilocode_change */,
           onSelect: () => {
             insertPart(reference.name, {
               type: "file",
@@ -482,7 +483,9 @@ export function Autocomplete(props: {
       const display = slashDisplay(serverCommand)
       results.push({
         display,
-        description: serverCommand.description,
+        // kilocode_change - translate server-registered command descriptions at the
+        // TUI boundary; unknown descriptions fall back to the original text
+        description: typeof serverCommand.description === "string" ? t(serverCommand.description) : undefined,
         onSelect: () => {
           const newText = display + " "
           const cursor = props.input().logicalCursor
@@ -616,7 +619,7 @@ export function Autocomplete(props: {
     commands: [
       {
         name: "prompt.autocomplete.prev",
-        title: "Previous autocomplete item",
+        title: t("Previous autocomplete item") /* kilocode_change */,
         category: "Autocomplete",
         run() {
           setStore("input", "keyboard")
@@ -625,7 +628,7 @@ export function Autocomplete(props: {
       },
       {
         name: "prompt.autocomplete.next",
-        title: "Next autocomplete item",
+        title: t("Next autocomplete item") /* kilocode_change */,
         category: "Autocomplete",
         run() {
           setStore("input", "keyboard")
@@ -634,7 +637,7 @@ export function Autocomplete(props: {
       },
       {
         name: "prompt.autocomplete.hide",
-        title: "Hide autocomplete",
+        title: t("Hide autocomplete") /* kilocode_change */,
         category: "Autocomplete",
         run() {
           hide()
@@ -642,7 +645,7 @@ export function Autocomplete(props: {
       },
       {
         name: "prompt.autocomplete.select",
-        title: "Select autocomplete item",
+        title: t("Select autocomplete item") /* kilocode_change */,
         category: "Autocomplete",
         run() {
           select()
@@ -650,7 +653,7 @@ export function Autocomplete(props: {
       },
       {
         name: "prompt.autocomplete.complete",
-        title: "Complete autocomplete item",
+        title: t("Complete autocomplete item") /* kilocode_change */,
         category: "Autocomplete",
         run() {
           const selected = options()[store.selected]
@@ -812,7 +815,7 @@ export function Autocomplete(props: {
           each={options()}
           fallback={
             <box paddingLeft={1} paddingRight={1}>
-              <text fg={theme.textMuted}>No matching items</text>
+              <text fg={theme.textMuted}>{t("No matching items") /* kilocode_change */}</text>
             </box>
           }
         >

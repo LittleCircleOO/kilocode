@@ -8,6 +8,7 @@ import { useDialog } from "../../ui/dialog"
 import type { SessionNetworkWait } from "@kilocode/sdk/v2"
 import { useTuiConfig } from "../../config"
 import { useBindings } from "../../keymap"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 export function NetworkPrompt(props: { request: SessionNetworkWait }) {
   const sdk = useSDK()
@@ -43,8 +44,8 @@ export function NetworkPrompt(props: { request: SessionNetworkWait }) {
   useBindings(() => ({
     enabled: dialog.stack.length === 0,
     bindings: [
-      ...(props.request.restored ? [{ key: "return", desc: "Resume now", group: "Network", cmd: reply }] : []),
-      { key: "escape", desc: "Stop turn", group: "Network", cmd: reject },
+      ...(props.request.restored ? [{ key: "return", desc: t("Resume now") /* kilocode_change */, group: "Network", cmd: reply }] : []),
+      { key: "escape", desc: t("Stop turn") /* kilocode_change */, group: "Network", cmd: reject },
       ...config.keybinds.get("app.exit").map((binding) => ({ ...binding, cmd: reject })),
     ],
   }))
@@ -61,17 +62,17 @@ export function NetworkPrompt(props: { request: SessionNetworkWait }) {
           when={props.request.restored}
           fallback={
             <>
-              <text fg={theme.warning}>Network disconnected</text>
+              <text fg={theme.warning}>{t("Network disconnected") /* kilocode_change */}</text>
               <text fg={theme.text}>{props.request.message}</text>
-              <text fg={theme.textMuted}>Waiting for network...</text>
-              <text fg={theme.textMuted}>Press Esc to stop this turn.</text>
+              <text fg={theme.textMuted}>{t("Waiting for network...") /* kilocode_change */}</text>
+              <text fg={theme.textMuted}>{t("Press Esc to stop this turn.") /* kilocode_change */}</text>
             </>
           }
         >
-          <text fg={theme.success}>Network reconnected</text>
-          <text fg={theme.text}>Connection restored. Retrying in {countdown()}s.</text>
-          <text fg={theme.textMuted}>Press Enter to resume now.</text>
-          <text fg={theme.textMuted}>Press Esc to stop.</text>
+          <text fg={theme.success}>{t("Network reconnected") /* kilocode_change */}</text>
+          <text fg={theme.text}>Connection restored. Retrying in {countdown()}{t("s.") /* kilocode_change */}</text>
+          <text fg={theme.textMuted}>{t("Press Enter to resume now.") /* kilocode_change */}</text>
+          <text fg={theme.textMuted}>{t("Press Esc to stop.") /* kilocode_change */}</text>
         </Show>
       </box>
     </box>

@@ -14,6 +14,7 @@ import { useToast } from "@tui/ui/toast"
 import { Link } from "@tui/ui/link"
 import * as Clipboard from "@tui/clipboard"
 import { DialogKiloOrganization } from "./dialog-kilo-organization.js"
+import { t } from "@tui/kilocode/i18n"
 
 // These types are OpenCode-internal and imported at runtime
 type UseSDK = any
@@ -44,7 +45,7 @@ export function KiloAutoMethod(props: KiloAutoMethodProps) {
     if (evt.name === "c" && !evt.ctrl && !evt.meta) {
       const code = props.authorization.instructions.match(/[A-Z0-9]{4}-[A-Z0-9]{4}/)?.[0] ?? props.authorization.url
       Clipboard.write(code)
-        .then(() => toast.show({ message: "Copied to clipboard", variant: "info" }))
+        .then(() => toast.show({ message: t("Copied to clipboard"), variant: "info" }))
         .catch(toast.error)
     }
   })
@@ -107,7 +108,7 @@ export function KiloAutoMethod(props: KiloAutoMethodProps) {
       setStatus("error")
 
       toast.show({
-        message: "Couldn't fetch organizations, using personal account",
+        message: t("Couldn't fetch organizations, using personal account"),
         variant: "warning",
       })
 
@@ -131,7 +132,7 @@ export function KiloAutoMethod(props: KiloAutoMethodProps) {
         <text attributes={TextAttributes.BOLD} fg={theme.text}>
           {props.title}
         </text>
-        <text fg={theme.textMuted}>esc</text>
+        <text fg={theme.textMuted}>{t("esc")}</text>
       </box>
 
       <box gap={1}>
@@ -140,19 +141,19 @@ export function KiloAutoMethod(props: KiloAutoMethodProps) {
       </box>
 
       <Show when={status() === "waiting"}>
-        <text fg={theme.textMuted}>Waiting for authorization...</text>
+        <text fg={theme.textMuted}>{t("Waiting for authorization...")}</text>
       </Show>
 
       <Show when={status() === "fetching"}>
-        <text fg={theme.textMuted}>Fetching organizations...</text>
+        <text fg={theme.textMuted}>{t("Fetching organizations...")}</text>
       </Show>
 
       <Show when={status() === "error"}>
-        <text fg={theme.warning}>Using personal account</text>
+        <text fg={theme.warning}>{t("Using personal account")}</text>
       </Show>
 
       <text fg={theme.text}>
-        c <span style={{ fg: theme.textMuted }}>copy</span>
+        c <span style={{ fg: theme.textMuted }}>{t("copy")}</span>
       </text>
     </box>
   )

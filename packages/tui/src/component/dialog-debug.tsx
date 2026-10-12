@@ -9,6 +9,7 @@ import { useClipboard } from "../context/clipboard"
 import { useToast } from "../ui/toast"
 import { useBindings } from "../keymap"
 import { describeOS, describeTerminal } from "../util/system"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 export function DialogDebug() {
   const { theme } = useTheme()
@@ -24,12 +25,12 @@ export function DialogDebug() {
   const entries = createMemo(() => {
     const model = local.model.current()
     return [
-      { label: "Version", value: `${InstallationVersion} (${InstallationChannel})` },
-      { label: "Date", value: new Date().toISOString() },
-      { label: "OS", value: describeOS() },
-      { label: "Terminal", value: describeTerminal() },
-      { label: "Session ID", value: route.data.type === "session" ? route.data.sessionID : "n/a" },
-      { label: "Model", value: model ? `${model.providerID}/${model.modelID}` : "n/a" },
+      { label: t("Version") /* kilocode_change */, value: `${InstallationVersion} (${InstallationChannel})` },
+      { label: t("Date") /* kilocode_change */, value: new Date().toISOString() },
+      { label: t("OS") /* kilocode_change */, value: describeOS() },
+      { label: t("Terminal") /* kilocode_change */, value: describeTerminal() },
+      { label: t("Session ID") /* kilocode_change */, value: route.data.type === "session" ? route.data.sessionID : "n/a" },
+      { label: t("Model") /* kilocode_change */, value: model ? `${model.providerID}/${model.modelID}` : "n/a" },
     ]
   })
 
@@ -41,13 +42,13 @@ export function DialogDebug() {
       .write?.(text)
       .then(() => {
         setCopied(true)
-        toast.show({ message: "Debug info copied to clipboard", variant: "info" })
+        toast.show({ message: t("Debug info copied to clipboard") /* kilocode_change */, variant: "info" })
       })
       .catch(toast.error)
   }
 
   useBindings(() => ({
-    bindings: [{ key: "return", desc: "Copy debug info", group: "Dialog", cmd: copy }],
+    bindings: [{ key: "return", desc: t("Copy debug info") /* kilocode_change */, group: "Dialog", cmd: copy }],
   }))
 
   return (
@@ -77,12 +78,12 @@ export function DialogDebug() {
         </For>
       </box>
       <box flexDirection="row" justifyContent="space-between">
-        <text fg={theme.textMuted}>Share this when reporting an issue.</text>
+        <text fg={theme.textMuted}>{t("Share this when reporting an issue.") /* kilocode_change */}</text>
         <text onMouseUp={copy}>
           <span style={{ fg: copied() ? theme.success : theme.text }}>
             <b>{copied() ? "✓ copied" : "copy"}</b>{" "}
           </span>
-          <span style={{ fg: theme.textMuted }}>enter</span>
+          <span style={{ fg: theme.textMuted }}>{t("enter") /* kilocode_change */}</span>
         </text>
       </box>
     </box>

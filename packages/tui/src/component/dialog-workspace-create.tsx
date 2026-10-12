@@ -10,6 +10,7 @@ import { useSDK } from "../context/sdk"
 import { useToast } from "../ui/toast"
 import { DialogAlert } from "../ui/dialog-alert"
 import { DialogWorkspaceFileChanges } from "./dialog-workspace-file-changes"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 type Adapter = ExperimentalWorkspaceAdapterListResponse[number]
 
@@ -61,7 +62,7 @@ async function loadWorkspaceAdapters(input: {
     return response.data
   } catch (err) {
     input.toast.show({
-      title: "Failed to load workspace adapters",
+      title: t("Failed to load workspace adapters") /* kilocode_change */,
       message: errorMessage(err),
       variant: "error",
     })
@@ -106,7 +107,7 @@ export async function warpWorkspaceSession(input: {
     })
   } catch (err) {
     input.toast.show({
-      title: "Failed to warp session",
+      title: t("Failed to warp session") /* kilocode_change */,
       message: errorMessage(err),
       variant: "error",
     })
@@ -123,7 +124,7 @@ export async function warpWorkspaceSession(input: {
     }
 
     input.toast.show({
-      title: "Failed to warp session",
+      title: t("Failed to warp session") /* kilocode_change */,
       message: errorMessage(result?.error ?? "no response"),
       variant: "error",
     })
@@ -214,14 +215,14 @@ export function DialogWorkspaceSelect(props: {
         category: "New workspace",
       })),
       {
-        title: "None",
+        title: t("None") /* kilocode_change */,
         value: { type: "none" as const },
-        description: "Use the local project",
+        description: t("Use the local project") /* kilocode_change */,
         category: "Choose workspace",
       },
       ...recent.map((workspace: Workspace) => ({
         title: workspace.name,
-        description: `(${workspace.type})`,
+        description: t("({{type}})", { type: workspace.type }) /* kilocode_change */,
         value: {
           type: "existing" as const,
           workspaceID: workspace.id,
@@ -233,9 +234,9 @@ export function DialogWorkspaceSelect(props: {
       ...(hasMore
         ? [
             {
-              title: "View all workspaces",
+              title: t("View all workspaces") /* kilocode_change */,
               value: { type: "existing-list" as const },
-              description: "Choose from all workspaces",
+              description: t("Choose from all workspaces") /* kilocode_change */,
               category: "Choose workspace",
             },
           ]
@@ -246,7 +247,7 @@ export function DialogWorkspaceSelect(props: {
   if (!adapters()) return null
   return (
     <DialogSelect<WorkspaceSelectValue>
-      title="Warp"
+      title={t("Warp") /* kilocode_change */}
       skipFilter={true}
       renderFilter={false}
       options={options()}
@@ -286,14 +287,14 @@ function DialogExistingWorkspaceSelect(props: {
       .filter((workspace) => workspace.id !== props.omitWorkspaceID)
       .map((workspace: Workspace) => ({
         title: workspace.name,
-        description: `(${workspace.type})`,
+        description: t("({{type}})", { type: workspace.type }) /* kilocode_change */,
         value: { workspace },
       })),
   )
 
   return (
     <DialogSelect<ExistingWorkspaceSelectValue>
-      title="Existing Workspace"
+      title={t("Existing Workspace") /* kilocode_change */}
       options={options()}
       onSelect={(option) => {
         void props.onSelect({

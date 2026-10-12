@@ -15,6 +15,7 @@ import { abbreviateHome } from "@tui/runtime"
 import * as Model from "@tui/util/model"
 import { useBindings } from "@tui/keymap"
 import { REDACTED_PATH } from "../../../../pii"
+import { t } from "@tui/kilocode/i18n"
 
 function runtime() {
   const rt = (globalThis as { Bun?: { version?: string } }).Bun
@@ -75,15 +76,15 @@ export function DialogAbout() {
   const projectRoot = () => project.data.project.mainDir ?? project.instance.path().directory ?? process.cwd()
 
   const links = [
-    { label: "Docs", url: "https://kilo.ai/docs" },
-    { label: "GitHub", url: "https://github.com/Kilo-Org/kilocode" },
-    { label: "Issues", url: "https://github.com/Kilo-Org/kilocode/issues" },
-    { label: "Discord", url: "https://kilo.ai/discord" },
+    { label: t("Docs"), url: "https://kilo.ai/docs" },
+    { label: t("GitHub"), url: "https://github.com/Kilo-Org/kilocode" },
+    { label: t("Issues"), url: "https://github.com/Kilo-Org/kilocode/issues" },
+    { label: t("Discord"), url: "https://kilo.ai/discord" },
   ]
 
   const copy = () => {
     if (!clipboard.write) {
-      toast.show({ variant: "error", message: "Clipboard not available" })
+      toast.show({ variant: "error", message: t("Clipboard not available") })
       return
     }
     const lines = [
@@ -97,20 +98,20 @@ export function DialogAbout() {
     if (privacy()) lines.push("(paths hidden — privacy_mode is on)")
     const text = lines.join("\n")
     void clipboard.write(text).then(
-      () => toast.show({ variant: "success", message: "Diagnostics copied" }),
+      () => toast.show({ variant: "success", message: t("Diagnostics copied") }),
       (err: unknown) =>
         toast.show({
           variant: "error",
-          message: `Copy failed: ${err instanceof Error ? err.message : String(err)}`,
+          message: t("Copy failed: {{p0}}", { p0: err instanceof Error ? err.message : String(err) }),
         }),
     )
   }
 
   useBindings(() => ({
     bindings: [
-      { key: "escape", desc: "Close about", group: "Dialog", cmd: () => dialog.clear() },
-      { key: "return", desc: "Close about", group: "Dialog", cmd: () => dialog.clear() },
-      { key: "c", desc: "Copy diagnostics", group: "Dialog", cmd: copy },
+      { key: "escape", desc: t("Close about"), group: "Dialog", cmd: () => dialog.clear() },
+      { key: "return", desc: t("Close about"), group: "Dialog", cmd: () => dialog.clear() },
+      { key: "c", desc: t("Copy diagnostics"), group: "Dialog", cmd: copy },
     ],
   }))
 
@@ -134,25 +135,25 @@ export function DialogAbout() {
           <text fg={theme.text} attributes={TextAttributes.BOLD}>
             Identity
           </text>
-          <Row theme={theme} label="Version" value={InstallationVersion} />
-          <Row theme={theme} label="Channel" value={InstallationChannel} />
+          <Row theme={theme} label={t("Version")} value={InstallationVersion} />
+          <Row theme={theme} label={t("Channel")} value={InstallationChannel} />
         </box>
 
         <box gap={0}>
           <text fg={theme.text} attributes={TextAttributes.BOLD}>
             Runtime
           </text>
-          <Row theme={theme} label="Runtime" value={`${runtime()} (${process.platform}/${process.arch})`} muted />
-          <Row theme={theme} label="Config" value={pathLabel(Global.Path.config, privacy(), paths.home)} muted />
-          <Row theme={theme} label="Project" value={pathLabel(projectRoot(), privacy(), paths.home)} muted />
+          <Row theme={theme} label={t("Runtime")} value={`${runtime()} (${process.platform}/${process.arch})`} muted />
+          <Row theme={theme} label={t("Config")} value={pathLabel(Global.Path.config, privacy(), paths.home)} muted />
+          <Row theme={theme} label={t("Project")} value={pathLabel(projectRoot(), privacy(), paths.home)} muted />
         </box>
 
         <box gap={0}>
           <text fg={theme.text} attributes={TextAttributes.BOLD}>
             Provider
           </text>
-          <Row theme={theme} label="Connected" value={providers()} />
-          <Row theme={theme} label="Default model" value={defaultModel() || "(none)"} muted={!defaultModel()} />
+          <Row theme={theme} label={t("Connected")} value={providers()} />
+          <Row theme={theme} label={t("Default model")} value={defaultModel() || "(none)"} muted={!defaultModel()} />
         </box>
 
         <box gap={0}>

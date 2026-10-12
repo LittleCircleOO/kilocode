@@ -2,6 +2,7 @@ import { DialogSelect, type DialogSelectRef } from "../ui/dialog-select"
 import { useTheme } from "../context/theme"
 import { useDialog } from "../ui/dialog"
 import { onCleanup } from "solid-js"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 export function DialogThemeList() {
   const theme = useTheme()
@@ -22,7 +23,7 @@ export function DialogThemeList() {
 
   return (
     <DialogSelect
-      title="Themes"
+      title={t("Themes") /* kilocode_change */}
       options={options}
       current={initial}
       onMove={(opt) => {

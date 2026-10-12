@@ -4,6 +4,7 @@ import { For } from "solid-js"
 import { useTheme } from "../context/theme"
 import { useDialog } from "../ui/dialog"
 import { useBindings } from "../keymap"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 export function DialogWorkspaceUnavailable(props: { onRestore?: () => boolean | void | Promise<boolean | void> }) {
   const dialog = useDialog()
@@ -25,9 +26,9 @@ export function DialogWorkspaceUnavailable(props: { onRestore?: () => boolean | 
 
   useBindings(() => ({
     bindings: [
-      { key: "return", desc: "Confirm workspace option", group: "Dialog", cmd: () => void confirm() },
-      { key: "left", desc: "Cancel workspace restore", group: "Dialog", cmd: () => setStore("active", "cancel") },
-      { key: "right", desc: "Restore workspace", group: "Dialog", cmd: () => setStore("active", "restore") },
+      { key: "return", desc: t("Confirm workspace option") /* kilocode_change */, group: "Dialog", cmd: () => void confirm() },
+      { key: "left", desc: t("Cancel workspace restore") /* kilocode_change */, group: "Dialog", cmd: () => setStore("active", "cancel") },
+      { key: "right", desc: t("Restore workspace") /* kilocode_change */, group: "Dialog", cmd: () => setStore("active", "restore") },
     ],
   }))
 

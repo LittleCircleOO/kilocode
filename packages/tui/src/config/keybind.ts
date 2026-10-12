@@ -4,6 +4,7 @@ import type { KeyEvent, Renderable } from "@opentui/core"
 import type { Binding } from "@opentui/keymap"
 import type { BindingCommandMap, BindingConfig, BindingDefaults } from "@opentui/keymap/extras"
 import { Schema } from "effect"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 const KeyStroke = Schema.Struct({
   name: Schema.String,
@@ -256,7 +257,7 @@ export const KeybindOverrides = Schema.Struct(
       Schema.optional(BindingValueSchema).annotate({ description: item.description }),
     ]),
   ),
-).annotate({ description: "TUI keybinding overrides" })
+).annotate({ description: t("TUI keybinding overrides") /* kilocode_change */ })
 export const Descriptions = Object.fromEntries(
   Object.entries(Definitions).map(([name, item]) => [name, item.description]),
 ) as Record<KeybindName, string>

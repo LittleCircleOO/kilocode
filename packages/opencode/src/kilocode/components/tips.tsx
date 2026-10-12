@@ -1,5 +1,6 @@
 import { For } from "solid-js"
 import { DEFAULT_THEMES, useTheme } from "@tui/context/theme"
+import { t } from "@tui/kilocode/i18n"
 
 const themeCount = Object.keys(DEFAULT_THEMES).length
 const themeTip = `Use {highlight}/themes{/highlight} or {highlight}Ctrl+X T{/highlight} to switch between ${themeCount} built-in themes`
@@ -37,7 +38,7 @@ export function Tips(props: { tip?: string }) {
   return (
     <box flexDirection="row" maxWidth="100%">
       <text flexShrink={0} style={{ fg: theme.warning }}>
-        ● Tip{" "}
+        {t("● Tip")}{" "}
       </text>
       <text flexShrink={1}>
         <For each={parts}>

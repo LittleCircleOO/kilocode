@@ -14,6 +14,7 @@ import { useTheme } from "./theme"
 import { useToast } from "../ui/toast"
 import { useRoute } from "./route"
 import { usePermission } from "./permission"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 export type LocalTheme = {
   secondary: RGBA
@@ -108,7 +109,7 @@ export const { use: useLocal, provider: LocalProvider } = createSimpleContext({
           if (!agents().some((x) => x.name === name))
             return toast.show({
               variant: "warning",
-              message: `Agent not found: ${name}`,
+              message: t("Agent not found: {{name}}", { name: name }) /* kilocode_change */,
               duration: 3000,
             })
           setAgentStore("current", name)
@@ -360,7 +361,7 @@ export const { use: useLocal, provider: LocalProvider } = createSimpleContext({
           if (!favorites.length) {
             toast.show({
               variant: "info",
-              message: "Add a favorite model to use this shortcut",
+              message: t("Add a favorite model to use this shortcut") /* kilocode_change */,
               duration: 3000,
             })
             return
@@ -389,7 +390,7 @@ export const { use: useLocal, provider: LocalProvider } = createSimpleContext({
           batch(() => {
             if (!isModelValid(model)) {
               toast.show({
-                message: `Model ${model.providerID}/${model.modelID} is not valid`,
+                message: t("Model {{providerID}}/{{modelID}} is not valid", { providerID: model.providerID, modelID: model.modelID }) /* kilocode_change */,
                 variant: "warning",
                 duration: 3000,
               })
@@ -409,7 +410,7 @@ export const { use: useLocal, provider: LocalProvider } = createSimpleContext({
           batch(() => {
             if (!isModelValid(model)) {
               toast.show({
-                message: `Model ${model.providerID}/${model.modelID} is not valid`,
+                message: t("Model {{providerID}}/{{modelID}} is not valid", { providerID: model.providerID, modelID: model.modelID }) /* kilocode_change */,
                 variant: "warning",
                 duration: 3000,
               })
@@ -596,7 +597,7 @@ export const { use: useLocal, provider: LocalProvider } = createSimpleContext({
       if (isModelValid(value.model)) return
       toast.show({
         variant: "warning",
-        message: `Agent ${value.name}'s configured model ${value.model.providerID}/${value.model.modelID} is not valid`,
+        message: t("Agent {{name}}'s configured model {{providerID}}/{{modelID}} is not valid", { name: value.name, providerID: value.model.providerID, modelID: value.model.modelID }) /* kilocode_change */,
         duration: 3000,
       })
     })

@@ -17,6 +17,7 @@ import type { useToast } from "../ui/toast"
 import * as Keymap from "../keymap"
 import { createCommandShim } from "./command-shim"
 import type { PluginRoutes } from "./api"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 export type { RouteMap } from "./api"
 export { createPluginRoutes, createTuiApi } from "./api"
 
@@ -338,7 +339,7 @@ export function createTuiApiAdapters(input: Input): Omit<TuiPluginApi, "lifecycl
       async install() {
         return {
           ok: false,
-          message: "plugins.install is only available in plugin context",
+          message: t("plugins.install is only available in plugin context") /* kilocode_change */,
         }
       },
     },

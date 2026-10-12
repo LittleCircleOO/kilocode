@@ -6,6 +6,7 @@ import { Locale } from "../../util/locale"
 import { DialogMessage } from "./dialog-message"
 import { useDialog } from "../../ui/dialog"
 import type { PromptInfo } from "../../component/prompt/history"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 export function DialogTimeline(props: {
   sessionID: string
@@ -43,5 +44,5 @@ export function DialogTimeline(props: {
     return result
   })
 
-  return <DialogSelect onMove={(option) => props.onMove(option.value)} title="Timeline" options={options()} />
+  return <DialogSelect onMove={(option) => props.onMove(option.value)} title={t("Timeline") /* kilocode_change */} options={options()} />
 }

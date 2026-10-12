@@ -71,6 +71,7 @@ import { useVim, VimModeIndicator, vimToggleCommand } from "@/kilocode/cli/cmd/t
 import { usePromptWorkspace } from "./workspace"
 import { usePromptMove } from "./move"
 import { readLocalAttachment } from "./local-attachment"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 registerOpencodeSpinner()
 
@@ -257,7 +258,7 @@ export function Prompt(props: PromptProps) {
   function promptModelWarning() {
     toast.show({
       variant: "warning",
-      message: "Connect a provider to send prompts",
+      message: t("Connect a provider to send prompts") /* kilocode_change */,
       duration: 3000,
     })
     if (sync.data.provider.length === 0) {
@@ -379,7 +380,7 @@ export function Prompt(props: PromptProps) {
   const promptCommands = createMemo(() =>
     [
       {
-        title: "Clear prompt",
+        title: t("Clear prompt") /* kilocode_change */,
         name: "prompt.clear",
         category: "Prompt",
         hidden: true,
@@ -389,7 +390,7 @@ export function Prompt(props: PromptProps) {
         },
       },
       {
-        title: "Submit prompt",
+        title: t("Submit prompt") /* kilocode_change */,
         name: "prompt.submit",
         category: "Prompt",
         hidden: true,
@@ -402,7 +403,7 @@ export function Prompt(props: PromptProps) {
         },
       },
       {
-        title: "Remove editor context",
+        title: t("Remove editor context") /* kilocode_change */,
         name: "prompt.editor_context.clear",
         category: "Prompt",
         enabled: Boolean(editorContext()),
@@ -412,7 +413,7 @@ export function Prompt(props: PromptProps) {
         },
       },
       {
-        title: "Paste",
+        title: t("Paste") /* kilocode_change */,
         name: "prompt.paste",
         category: "Prompt",
         hidden: true,
@@ -434,7 +435,7 @@ export function Prompt(props: PromptProps) {
         },
       },
       {
-        title: "Interrupt session",
+        title: t("Interrupt session") /* kilocode_change */,
         name: "session.interrupt",
         category: "Session",
         hidden: true,
@@ -467,8 +468,8 @@ export function Prompt(props: PromptProps) {
       },
       // kilocode_change start
       {
-        title: "Cost alert",
-        desc: "Set Kilo's cost alert",
+        title: t("Cost alert") /* kilocode_change */,
+        desc: t("Set Kilo's cost alert") /* kilocode_change */,
         name: "cost_alert",
         category: "Session",
         slashName: "cost-alert",
@@ -480,7 +481,7 @@ export function Prompt(props: PromptProps) {
       },
       // kilocode_change end
       {
-        title: "Open editor",
+        title: t("Open editor") /* kilocode_change */,
         category: "Session",
         name: "prompt.editor",
         slashName: "editor",
@@ -581,7 +582,7 @@ export function Prompt(props: PromptProps) {
       }),
       // kilocode_change end
       {
-        title: "Skills",
+        title: t("Skills") /* kilocode_change */,
         name: "prompt.skills",
         category: "Prompt",
         slashName: "skills",
@@ -601,8 +602,8 @@ export function Prompt(props: PromptProps) {
         },
       },
       {
-        title: "Warp",
-        desc: "Change the workspace for the session",
+        title: t("Warp") /* kilocode_change */,
+        desc: t("Change the workspace for the session") /* kilocode_change */,
         name: "workspace.set",
         category: "Session",
         enabled: Flag.KILO_EXPERIMENTAL_WORKSPACES,
@@ -612,8 +613,8 @@ export function Prompt(props: PromptProps) {
         },
       },
       {
-        title: "Move session",
-        desc: "Move to another project dir",
+        title: t("Move session") /* kilocode_change */,
+        desc: t("Move to another project dir") /* kilocode_change */,
         name: "session.move",
         category: "Session",
         slashName: "move",
@@ -814,7 +815,7 @@ export function Prompt(props: PromptProps) {
   const stashCommands = createMemo(() =>
     [
       {
-        title: "Stash prompt",
+        title: t("Stash prompt") /* kilocode_change */,
         name: "prompt.stash",
         category: "Prompt",
         enabled: !!store.prompt.input,
@@ -833,7 +834,7 @@ export function Prompt(props: PromptProps) {
         },
       },
       {
-        title: "Stash pop",
+        title: t("Stash pop") /* kilocode_change */,
         name: "prompt.stash.pop",
         category: "Prompt",
         enabled: stash.list().length > 0,
@@ -850,7 +851,7 @@ export function Prompt(props: PromptProps) {
         },
       },
       {
-        title: "Stash list",
+        title: t("Stash list") /* kilocode_change */,
         name: "prompt.stash.list",
         category: "Prompt",
         enabled: stash.list().length > 0,
@@ -903,7 +904,7 @@ export function Prompt(props: PromptProps) {
     bindings: [
       {
         key: "ctrl+c",
-        desc: "Exit application",
+        desc: t("Exit application") /* kilocode_change */,
         group: "Prompt",
         cmd: (ctx: CommandContext<Renderable, KeyEvent>) => {
           ctx.event.preventDefault()
@@ -932,7 +933,7 @@ export function Prompt(props: PromptProps) {
       bindings: [
         {
           key: "!",
-          desc: "Shell mode",
+          desc: t("Shell mode") /* kilocode_change */,
           group: "Prompt",
           cmd: () => {
             setStore("placeholder", randomIndex(shell().length))
@@ -947,7 +948,7 @@ export function Prompt(props: PromptProps) {
     return {
       target: inputTarget,
       enabled: inputTarget() !== undefined && store.mode === "shell",
-      bindings: [{ key: "escape", desc: "Exit shell mode", group: "Prompt", cmd: () => setStore("mode", "normal") }],
+      bindings: [{ key: "escape", desc: t("Exit shell mode") /* kilocode_change */, group: "Prompt", cmd: () => setStore("mode", "normal") }],
     }
   })
 
@@ -958,7 +959,7 @@ export function Prompt(props: PromptProps) {
         cursorVersion()
         return inputTarget() !== undefined && store.mode === "shell" && input?.visualCursor.offset === 0
       })(),
-      bindings: [{ key: "backspace", desc: "Exit shell mode", group: "Prompt", cmd: () => setStore("mode", "normal") }],
+      bindings: [{ key: "backspace", desc: t("Exit shell mode") /* kilocode_change */, group: "Prompt", cmd: () => setStore("mode", "normal") }],
     }
   })
 
@@ -972,7 +973,7 @@ export function Prompt(props: PromptProps) {
       commands: [
         {
           name: "prompt.history.previous",
-          title: "Previous prompt history",
+          title: t("Previous prompt history") /* kilocode_change */,
           category: "Prompt",
           run() {
             if (input.cursorOffset !== 0) {
@@ -1005,7 +1006,7 @@ export function Prompt(props: PromptProps) {
       commands: [
         {
           name: "prompt.history.next",
-          title: "Next prompt history",
+          title: t("Next prompt history") /* kilocode_change */,
           category: "Prompt",
           run() {
             if (input.cursorOffset !== input.plainText.length) {
@@ -1148,7 +1149,7 @@ export function Prompt(props: PromptProps) {
         console.log("Creating a session failed:", res.error)
 
         toast.show({
-          message: "Creating a session failed. Open console for more details.",
+          message: t("Creating a session failed. Open console for more details.") /* kilocode_change */,
           variant: "error",
         })
 
@@ -1251,7 +1252,7 @@ export function Prompt(props: PromptProps) {
         )
         .catch((error) => {
           toast.show({
-            title: "Failed to send prompt",
+            title: t("Failed to send prompt") /* kilocode_change */,
             message: errorMessage(error),
             variant: "error",
           })
@@ -1647,7 +1648,7 @@ export function Prompt(props: PromptProps) {
                       />
                       {/* kilocode_change end */}
                       <Show when={store.mode === "normal" && local.permission.mode === "auto"}>
-                        <text fg={fadeColor(theme.textMuted, agentMetaAlpha())}>auto</text>
+                        <text fg={fadeColor(theme.textMuted, agentMetaAlpha())}>{t("auto") /* kilocode_change */}</text>
                       </Show>
                       <Show when={store.mode === "normal"}>
                       <box flexDirection="row" gap={1}>
@@ -1793,7 +1794,7 @@ export function Prompt(props: PromptProps) {
                 {/* kilocode_change start - the subagent footer shows the interrupt hint in subagent views */}
                 <Show when={!steer()}>
                   <text fg={store.interrupt > 0 ? theme.primary : theme.text}>
-                    esc{" "}
+                    {t("esc") /* kilocode_change */}{" "}
                     <span style={{ fg: store.interrupt > 0 ? theme.primary : theme.textMuted }}>
                       {store.interrupt > 0 ? "again to interrupt" : "interrupt"}
                     </span>
@@ -1849,7 +1850,7 @@ export function Prompt(props: PromptProps) {
             </Match>
             <Match when={move.pendingNew()}>
               <box paddingLeft={3}>
-                <text fg={theme.accent}>(new working copy)</text>
+                <text fg={theme.accent}>{t("(new working copy)") /* kilocode_change */}</text>
               </box>
             </Match>
             {/* kilocode_change start - Kilo already shows the working directory in its sidebar */}
@@ -1861,7 +1862,7 @@ export function Prompt(props: PromptProps) {
               {/* kilocode_change start - show "ctrl+c again to exit" hint */}
               <Show when={quit.count() > 0}>
                 <text fg={theme.primary}>
-                  ctrl+c <span style={{ fg: theme.primary }}>again to exit</span>
+                  ctrl+c <span style={{ fg: theme.primary }}>{t("again to exit") /* kilocode_change */}</span>
                 </text>
               </Show>
               {/* kilocode_change end */}
@@ -1874,7 +1875,7 @@ export function Prompt(props: PromptProps) {
                 <Match when={store.mode === "normal"}>
                   <Show when={local.model.variant.list().length > 0}>
                     <text fg={theme.text}>
-                      {variantShortcut()} <span style={{ fg: theme.textMuted }}>variants</span>
+                      {variantShortcut()} <span style={{ fg: theme.textMuted }}>{t("variants") /* kilocode_change */}</span>
                     </text>
                   </Show>
                   <Switch>
@@ -1887,17 +1888,17 @@ export function Prompt(props: PromptProps) {
                     </Match>
                     <Match when={true}>
                       <text fg={theme.text}>
-                        {agentShortcut()} <span style={{ fg: theme.textMuted }}>agents</span>
+                        {agentShortcut()} <span style={{ fg: theme.textMuted }}>{t("agents") /* kilocode_change */}</span>
                       </text>
                     </Match>
                   </Switch>
                   <text fg={theme.text}>
-                    {paletteShortcut()} <span style={{ fg: theme.textMuted }}>commands</span>
+                    {paletteShortcut()} <span style={{ fg: theme.textMuted }}>{t("commands") /* kilocode_change */}</span>
                   </text>
                 </Match>
                 <Match when={store.mode === "shell"}>
                   <text fg={theme.text}>
-                    esc <span style={{ fg: theme.textMuted }}>exit shell mode</span>
+                    esc <span style={{ fg: theme.textMuted }}>{t("exit shell mode") /* kilocode_change */}</span>
                   </text>
                 </Match>
               </Switch>

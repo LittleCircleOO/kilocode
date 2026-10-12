@@ -29,6 +29,7 @@ import type { KiloTitleIcon } from "./title-icon"
 import { Session as SessionApi } from "@/session/session"
 import { useCaffeination } from "./caffeination"
 import { useLinkInteractions } from "@tui/kilocode/link-interactions"
+import { t } from "@tui/kilocode/i18n"
 
 // Re-export so upstream can render the route without importing directly
 export { KiloTerminalTitle } from "./terminal-title"
@@ -272,8 +273,8 @@ export function init() {
       {
         namespace: "palette",
         name: "background_process.list",
-        title: "Background processes",
-        desc: "List and manage tracked background processes",
+        title: t("Background processes"),
+        desc: t("List and manage tracked background processes"),
         category: "Kilo",
         slashName: "process",
         slashAliases: ["processes"],
@@ -286,12 +287,12 @@ export function init() {
         name: "permission.allow_everything",
         get title() {
           return isAllowEverything(sync.data.config.permission)
-            ? "Disable saved auto-approve"
-            : "Enable saved auto-approve"
+            ? t("Disable saved auto-approve")
+            : t("Enable saved auto-approve")
         },
         // kilocode_change - the saved rule is server side, so it also stops VS Code, JetBrains and
         // headless runs from prompting
-        desc: "Toggle auto-approve for all permission prompts, saved to global config and shared with every client",
+        desc: t("Toggle auto-approve for all permission prompts, saved to global config and shared with every client"),
         category: "System",
         slashName: "auto-approve",
         slashAliases: ["autoapprove", "approve-all", "approveall"],
@@ -301,7 +302,7 @@ export function init() {
           if (result.error) {
             toast.show({
               variant: "error",
-              message: `Failed to ${!enabled ? "enable" : "disable"} auto-approve mode`,
+              message: t("Failed to {{p0}} auto-approve mode", { p0: !enabled ? "enable" : "disable" }),
             })
             return
           }

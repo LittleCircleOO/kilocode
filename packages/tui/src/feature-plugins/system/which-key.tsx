@@ -6,6 +6,7 @@ import { useBindings, useKeymapSelector } from "../../keymap"
 import type { ActiveKey } from "@opentui/keymap"
 import type { TuiPlugin, TuiPluginApi } from "@kilocode/plugin/tui"
 import type { BuiltinTuiPlugin } from "../builtins"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 const command = {
   toggle: "which-key.toggle",
@@ -289,8 +290,8 @@ function WhichKeyPanel(props: {
     commands: [
       {
         name: command.groupPrevious,
-        title: "Previous key binding group",
-        desc: "Show the previous which-key group",
+        title: t("Previous key binding group") /* kilocode_change */,
+        desc: t("Show the previous which-key group") /* kilocode_change */,
         category: "System",
         run() {
           moveGroup(-1)
@@ -298,8 +299,8 @@ function WhichKeyPanel(props: {
       },
       {
         name: command.groupNext,
-        title: "Next key binding group",
-        desc: "Show the next which-key group",
+        title: t("Next key binding group") /* kilocode_change */,
+        desc: t("Show the next which-key group") /* kilocode_change */,
         category: "System",
         run() {
           moveGroup(1)
@@ -307,8 +308,8 @@ function WhichKeyPanel(props: {
       },
       {
         name: command.scrollUp,
-        title: "Scroll key bindings up",
-        desc: "Scroll the which-key panel up",
+        title: t("Scroll key bindings up") /* kilocode_change */,
+        desc: t("Scroll the which-key panel up") /* kilocode_change */,
         category: "System",
         run() {
           scroll(-columns())
@@ -316,8 +317,8 @@ function WhichKeyPanel(props: {
       },
       {
         name: command.scrollDown,
-        title: "Scroll key bindings down",
-        desc: "Scroll the which-key panel down",
+        title: t("Scroll key bindings down") /* kilocode_change */,
+        desc: t("Scroll the which-key panel down") /* kilocode_change */,
         category: "System",
         run() {
           scroll(columns())
@@ -325,8 +326,8 @@ function WhichKeyPanel(props: {
       },
       {
         name: command.pageUp,
-        title: "Page key bindings up",
-        desc: "Page the which-key panel up",
+        title: t("Page key bindings up") /* kilocode_change */,
+        desc: t("Page the which-key panel up") /* kilocode_change */,
         category: "System",
         run() {
           scroll(-pageSize())
@@ -334,8 +335,8 @@ function WhichKeyPanel(props: {
       },
       {
         name: command.pageDown,
-        title: "Page key bindings down",
-        desc: "Page the which-key panel down",
+        title: t("Page key bindings down") /* kilocode_change */,
+        desc: t("Page the which-key panel down") /* kilocode_change */,
         category: "System",
         run() {
           scroll(pageSize())
@@ -343,8 +344,8 @@ function WhichKeyPanel(props: {
       },
       {
         name: command.home,
-        title: "First key binding",
-        desc: "Jump to the first which-key binding",
+        title: t("First key binding") /* kilocode_change */,
+        desc: t("Jump to the first which-key binding") /* kilocode_change */,
         category: "System",
         run() {
           setOffset(0)
@@ -352,8 +353,8 @@ function WhichKeyPanel(props: {
       },
       {
         name: command.end,
-        title: "Last key binding",
-        desc: "Jump to the last which-key binding",
+        title: t("Last key binding") /* kilocode_change */,
+        desc: t("Jump to the last which-key binding") /* kilocode_change */,
         category: "System",
         run() {
           setOffset(maxOffset())
@@ -455,7 +456,7 @@ function WhichKeyPanel(props: {
           <box height={TAB_CONTENT_GAP} flexShrink={0} />
         </Show>
         <box height={rows()} flexShrink={0} flexDirection="column">
-          <Show when={shown().length > 0} fallback={<text fg={look().muted}>No reachable bindings</text>}>
+          <Show when={shown().length > 0} fallback={<text fg={look().muted}>{t("No reachable bindings") /* kilocode_change */}</text>}>
             <For each={rowIndexes()}>
               {(row) => (
                 <box width="100%" flexDirection="row" justifyContent="center" gap={COLUMN_GAP}>
@@ -539,8 +540,8 @@ const tui: TuiPlugin = async (api) => {
     commands: [
       {
         name: command.toggle,
-        title: "Show key bindings",
-        desc: "Toggle which-key overlay",
+        title: t("Show key bindings") /* kilocode_change */,
+        desc: t("Toggle which-key overlay") /* kilocode_change */,
         category: "System",
         run() {
           setPinned((value) => !value)
@@ -548,8 +549,8 @@ const tui: TuiPlugin = async (api) => {
       },
       {
         name: command.toggleLayout,
-        title: "Toggle key bindings layout",
-        desc: "Switch which-key between dock and overlay mode",
+        title: t("Toggle key bindings layout") /* kilocode_change */,
+        desc: t("Switch which-key between dock and overlay mode") /* kilocode_change */,
         category: "System",
         run() {
           setMode((value) => {
@@ -561,8 +562,8 @@ const tui: TuiPlugin = async (api) => {
       },
       {
         name: command.togglePending,
-        title: "Toggle pending key preview",
-        desc: "Automatically show which-key for pending key sequences in overlay mode",
+        title: t("Toggle pending key preview") /* kilocode_change */,
+        desc: t("Automatically show which-key for pending key sequences in overlay mode") /* kilocode_change */,
         category: "System",
         run() {
           setPendingPreview((value) => {

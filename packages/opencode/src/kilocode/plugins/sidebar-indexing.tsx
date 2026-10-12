@@ -5,6 +5,7 @@ import * as Log from "@opencode-ai/core/util/log"
 import { useSync } from "@tui/context/sync"
 import { formatIndexingLabel } from "../indexing-label"
 import { indexingEnabled } from "../indexing-feature"
+import { t } from "@tui/kilocode/i18n"
 
 const id = "internal:kilo-sidebar-indexing"
 const log = Log.create({ service: "sidebar-indexing" })
@@ -68,7 +69,7 @@ function View(props: { api: TuiPluginApi }) {
     <Show when={enabled()}>
       <box>
         <text fg={theme().text}>
-          <b>Code Indexing</b>
+          <b>{t("Code Indexing")}</b>
         </text>
         <box flexDirection="row" gap={1}>
           <text flexShrink={0} style={{ fg: tone(status().state, props.api) }}>

@@ -13,6 +13,7 @@ import {
   fmtPrice,
   fmtScore,
 } from "./model-info-panel-utils"
+import { t } from "@tui/kilocode/i18n"
 
 interface Props {
   model: Model
@@ -88,13 +89,13 @@ export function ModelInfoPanel(props: Props) {
         </Show>
         <Show when={m().family}>
           <box flexDirection="row" justifyContent="space-between">
-            <text fg={theme.textMuted}>Family</text>
+            <text fg={theme.textMuted}>{t("Family")}</text>
             <text fg={theme.text}>{m().family!.charAt(0).toUpperCase() + m().family!.slice(1)}</text>
           </box>
         </Show>
         <Show when={m().release_date}>
           <box flexDirection="row" justifyContent="space-between">
-            <text fg={theme.textMuted}>Released</text>
+            <text fg={theme.textMuted}>{t("Released")}</text>
             <text fg={theme.text}>{fmtDate(m().release_date)}</text>
           </box>
         </Show>
@@ -102,28 +103,28 @@ export function ModelInfoPanel(props: Props) {
           <box>
             <Show when={hasPricing()}>
               <box flexDirection="row" justifyContent="space-between">
-                <text fg={theme.textMuted}>Input</text>
+                <text fg={theme.textMuted}>{t("Input")}</text>
                 <text fg={theme.text}>{m() ? fmtPrice(m().cost.input) : "—"}</text>
               </box>
               <box flexDirection="row" justifyContent="space-between">
-                <text fg={theme.textMuted}>Output</text>
+                <text fg={theme.textMuted}>{t("Output")}</text>
                 <text fg={theme.text}>{m() ? fmtPrice(m().cost.output) : "—"}</text>
               </box>
               <Show when={cached()}>
                 <box flexDirection="row" justifyContent="space-between">
-                  <text fg={theme.textMuted}>Cached</text>
+                  <text fg={theme.textMuted}>{t("Cached")}</text>
                   <text fg={theme.text}>{cached()}</text>
                 </box>
               </Show>
               <Show when={avg() !== undefined}>
                 <box flexDirection="row" justifyContent="space-between">
-                  <text fg={theme.textMuted}>Avg Cost</text>
+                  <text fg={theme.textMuted}>{t("Avg Cost")}</text>
                   <text fg={theme.text}>{m() ? fmtPrice(avg()!) : "—"}</text>
                 </box>
               </Show>
             </Show>
             <box flexDirection="row" justifyContent="space-between">
-              <text fg={theme.textMuted}>Context</text>
+              <text fg={theme.textMuted}>{t("Context")}</text>
               <text fg={theme.text}>{m() ? fmtContext(m().limit.context) : "—"}</text>
             </box>
           </box>
@@ -132,14 +133,14 @@ export function ModelInfoPanel(props: Props) {
           {(bench) => (
             <box>
               <text fg={theme.text}>
-                <b>Terminal Bench 2.0</b>
+                <b>{t("Terminal Bench 2.0")}</b>
               </text>
               <box flexDirection="row" justifyContent="space-between">
-                <text fg={theme.textMuted}>Completion</text>
+                <text fg={theme.textMuted}>{t("Completion")}</text>
                 <text fg={theme.text}>{fmtScore(bench().overallScore)}</text>
               </box>
               <box flexDirection="row" justifyContent="space-between">
-                <text fg={theme.textMuted}>Cost / attempt</text>
+                <text fg={theme.textMuted}>{t("Cost / attempt")}</text>
                 <text fg={theme.text}>{fmtAttemptCost(bench().avgAttemptCostUsd)}</text>
               </box>
             </box>
@@ -149,14 +150,14 @@ export function ModelInfoPanel(props: Props) {
           <box flexDirection="column">
             <Show when={caps()?.reasoning}>
               <box flexDirection="row" justifyContent="space-between">
-                <text fg={theme.textMuted}>Reasoning</text>
-                <text fg={theme.text}>Yes</text>
+                <text fg={theme.textMuted}>{t("Reasoning")}</text>
+                <text fg={theme.text}>{t("Yes")}</text>
               </box>
             </Show>
             <Show when={inputLine()}>
               {(line) => (
                 <box flexDirection="row" justifyContent="space-between">
-                  <text fg={theme.textMuted}>Caps</text>
+                  <text fg={theme.textMuted}>{t("Caps")}</text>
                   <text fg={theme.text}>{line().replace(/^In:\s*/, "")}</text>
                 </box>
               )}
@@ -164,7 +165,7 @@ export function ModelInfoPanel(props: Props) {
             <Show when={outputLine()}>
               {(line) => (
                 <box flexDirection="row" justifyContent="space-between">
-                  <text fg={theme.textMuted}>Out</text>
+                  <text fg={theme.textMuted}>{t("Out")}</text>
                   <text fg={theme.text}>{line().replace(/^Out:\s*/, "")}</text>
                 </box>
               )}

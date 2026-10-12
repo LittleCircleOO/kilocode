@@ -2,6 +2,7 @@ import { TextAttributes } from "@opentui/core"
 import { useTheme } from "../context/theme"
 import { useDialog } from "./dialog"
 import { useBindings, useCommandShortcut } from "../keymap"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 export function DialogHelp() {
   const dialog = useDialog()
@@ -10,8 +11,8 @@ export function DialogHelp() {
 
   useBindings(() => ({
     bindings: [
-      { key: "return", desc: "Close help", group: "Dialog", cmd: () => dialog.clear() },
-      { key: "escape", desc: "Close help", group: "Dialog", cmd: () => dialog.clear() },
+      { key: "return", desc: t("Close help") /* kilocode_change */, group: "Dialog", cmd: () => dialog.clear() },
+      { key: "escape", desc: t("Close help") /* kilocode_change */, group: "Dialog", cmd: () => dialog.clear() },
     ],
   }))
 
@@ -32,7 +33,7 @@ export function DialogHelp() {
       </box>
       <box flexDirection="row" justifyContent="flex-end" paddingBottom={1}>
         <box paddingLeft={3} paddingRight={3} backgroundColor={theme.primary} onMouseUp={() => dialog.clear()}>
-          <text fg={theme.selectedListItemText}>ok</text>
+          <text fg={theme.selectedListItemText}>{t("ok") /* kilocode_change */}</text>
         </box>
       </box>
     </box>

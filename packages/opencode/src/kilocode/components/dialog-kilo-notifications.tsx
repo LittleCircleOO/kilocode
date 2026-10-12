@@ -12,6 +12,7 @@ import { useDialog } from "@tui/ui/dialog"
 import { Link } from "@tui/ui/link"
 import { TextAttributes } from "@opentui/core"
 import type { KilocodeNotification } from "@kilocode/kilo-gateway"
+import { t } from "@tui/kilocode/i18n"
 
 interface DialogKiloNotificationsProps {
   notifications: KilocodeNotification[]
@@ -42,7 +43,7 @@ export function DialogKiloNotifications(props: DialogKiloNotificationsProps) {
           onMouseOut={() => setCloseHover(false)}
           onMouseUp={() => dialog.clear()}
         >
-          <text fg={closeHover() ? theme.text : theme.textMuted}>esc</text>
+          <text fg={closeHover() ? theme.text : theme.textMuted}>{t("esc")}</text>
         </box>
       </box>
       <scrollbox maxHeight={15} flexGrow={1}>
@@ -88,7 +89,7 @@ export function DialogKiloNotifications(props: DialogKiloNotificationsProps) {
       </scrollbox>
       <box flexDirection="row" justifyContent="flex-end" paddingBottom={1}>
         <box paddingLeft={3} paddingRight={3} backgroundColor={theme.primary} onMouseUp={() => dialog.clear()}>
-          <text fg={theme.selectedListItemText}>close</text>
+          <text fg={theme.selectedListItemText}>{t("close")}</text>
         </box>
       </box>
     </box>

@@ -23,6 +23,7 @@ import { skillShellPrompt } from "@/kilocode/skills/display"
 // kilocode_change end
 import { KILO_BASE_MODE, useBindings, useCommandShortcut } from "../../keymap"
 import { usePathFormatter } from "../../context/path-format"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 type PermissionStage = "permission" | "always" | "reject"
 
@@ -70,7 +71,7 @@ function EditBody(props: { request: PermissionRequest }) {
         >
           {/* kilocode_change start */}
           <box flexDirection="column">
-            <Show when={changed()} fallback={<text fg={theme.textMuted}>No changes to review</text>}>
+            <Show when={changed()} fallback={<text fg={theme.textMuted}>{t("No changes to review") /* kilocode_change */}</text>}>
               <For each={hunks()}>
                 {(hunk, i) => (
                   <>
@@ -106,7 +107,7 @@ function EditBody(props: { request: PermissionRequest }) {
       </Show>
       <Show when={!diff()}>
         <box paddingLeft={1}>
-          <text fg={theme.textMuted}>No diff provided</text>
+          <text fg={theme.textMuted}>{t("No diff provided") /* kilocode_change */}</text>
         </box>
       </Show>
     </box>
@@ -171,7 +172,7 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
     <Switch>
       <Match when={store.stage === "always"}>
         <Prompt
-          title="Always allow"
+          title={t("Always allow") /* kilocode_change */}
           body={
             <Switch>
               <Match when={props.request.always.length === 1 && props.request.always[0] === "*"}>
@@ -181,7 +182,7 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
               <Match when={true}>
                 <box paddingLeft={1} gap={1}>
                   {/* kilocode_change */}
-                  <text fg={theme.textMuted}>This will allow the following patterns permanently</text>
+                  <text fg={theme.textMuted}>{t("This will allow the following patterns permanently") /* kilocode_change */}</text>
                   <box>
                     <For each={props.request.always}>
                       {(pattern) => (
@@ -239,7 +240,7 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
               const filepath = typeof raw === "string" ? raw : ""
               return {
                 icon: "→",
-                title: `Edit ${pathFormatter.format(filepath)}`,
+                title: t("Edit {{p0}}", { p0: pathFormatter.format(filepath) }) /* kilocode_change */,
                 body: <EditBody request={props.request} />,
               }
             }
@@ -249,7 +250,7 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
               const filePath = typeof raw === "string" ? raw : ""
               return {
                 icon: "→",
-                title: `Read ${pathFormatter.format(filePath)}`,
+                title: t("Read {{p0}}", { p0: pathFormatter.format(filePath) }) /* kilocode_change */,
                 body: (
                   <Show when={filePath}>
                     <box paddingLeft={1}>
@@ -264,7 +265,7 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
               const pattern = typeof data.pattern === "string" ? data.pattern : ""
               return {
                 icon: "✱",
-                title: `Glob "${pattern}"`,
+                title: t("Glob \"{{pattern}}\"", { pattern: pattern }) /* kilocode_change */,
                 body: (
                   <Show when={pattern}>
                     <box paddingLeft={1}>
@@ -279,7 +280,7 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
               const pattern = typeof data.pattern === "string" ? data.pattern : ""
               return {
                 icon: "✱",
-                title: `Grep "${pattern}"`,
+                title: t("Grep \"{{pattern}}\"", { pattern: pattern }) /* kilocode_change */,
                 body: (
                   <Show when={pattern}>
                     <box paddingLeft={1}>
@@ -295,7 +296,7 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
               const dir = typeof raw === "string" ? raw : ""
               return {
                 icon: "→",
-                title: `List ${pathFormatter.format(dir)}`,
+                title: t("List {{p0}}", { p0: pathFormatter.format(dir) }) /* kilocode_change */,
                 body: (
                   <Show when={dir}>
                     <box paddingLeft={1}>
@@ -356,7 +357,7 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
               )
               return {
                 icon: "!",
-                title: "Run outside the sandbox",
+                title: t("Run outside the sandbox") /* kilocode_change */,
                 body: (
                   <box paddingLeft={1} flexDirection="column">
                     <Show when={command}>
@@ -384,7 +385,7 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
               const desc = typeof data.description === "string" ? data.description : ""
               return {
                 icon: "#",
-                title: `${Locale.titlecase(type)} Task`,
+                title: t("{{p0}} Task", { p0: Locale.titlecase(type) }) /* kilocode_change */,
                 body: (
                   <Show when={desc}>
                     <box paddingLeft={1}>
@@ -399,7 +400,7 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
               const url = normalizeUrls(typeof data.url === "string" ? data.url : "") // kilocode_change
               return {
                 icon: "%",
-                title: `WebFetch ${url}`,
+                title: t("WebFetch {{url}}", { url: url }) /* kilocode_change */,
                 body: (
                   <Show when={url}>
                     <box paddingLeft={1}>
@@ -414,7 +415,7 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
               const query = typeof data.query === "string" ? data.query : ""
               return {
                 icon: "◈",
-                title: `${webSearchProviderLabel(data.provider)} "${query}"`,
+                title: t("{{p0}} \"{{query}}\"", { p0: webSearchProviderLabel(data.provider), query: query }) /* kilocode_change */,
                 body: (
                   <Show when={query}>
                     <box paddingLeft={1}>
@@ -439,11 +440,11 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
 
               return {
                 icon: "←",
-                title: `Access external directory ${dir}`,
+                title: t("Access external directory {{dir}}", { dir: dir }) /* kilocode_change */,
                 body: (
                   <Show when={patterns.length > 0}>
                     <box paddingLeft={1} gap={1}>
-                      <text fg={theme.textMuted}>Patterns</text>
+                      <text fg={theme.textMuted}>{t("Patterns") /* kilocode_change */}</text>
                       <box>
                         <For each={patterns}>{(p) => <text fg={theme.text}>{"- " + p}</text>}</For>
                       </box>
@@ -456,10 +457,10 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
             if (permission === "doom_loop") {
               return {
                 icon: "⟳",
-                title: "Continue after repeated failures",
+                title: t("Continue after repeated failures") /* kilocode_change */,
                 body: (
                   <box paddingLeft={1}>
-                    <text fg={theme.textMuted}>This keeps the session running despite repeated failures.</text>
+                    <text fg={theme.textMuted}>{t("This keeps the session running despite repeated failures.") /* kilocode_change */}</text>
                   </box>
                 ),
               }
@@ -470,7 +471,7 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
 
             return {
               icon: "⚙",
-              title: `Call tool ${permission}`,
+              title: t("Call tool {{permission}}", { permission: permission }) /* kilocode_change */,
               body: (
                 <box paddingLeft={1}>
                   <text fg={theme.textMuted}>{"Tool: " + permission}</text>
@@ -485,7 +486,7 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
             <box flexDirection="column" gap={0}>
               <box flexDirection="row" gap={1} flexShrink={0}>
                 <text fg={theme.warning}>{"△"}</text>
-                <text fg={theme.text}>Permission required</text>
+                <text fg={theme.text}>{t("Permission required") /* kilocode_change */}</text>
               </box>
               <box flexDirection="row" gap={1} paddingLeft={2} flexShrink={0}>
                 <text fg={theme.textMuted} flexShrink={0}>
@@ -518,7 +519,7 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
 
           const body = (
             <Prompt
-              title="Permission required"
+              title={t("Permission required") /* kilocode_change */}
               header={header()}
               body={current.body}
               /* kilocode_change */ options={options}
@@ -568,18 +569,18 @@ function RejectPrompt(props: { onConfirm: (message: string) => void; onCancel: (
       {
         name: "app.exit",
         // kilocode_change start - interrupt without entering or cancelling the feedback stage
-        title: "Reject permission",
+        title: t("Reject permission") /* kilocode_change */,
         category: "Permission",
         run: props.onInterrupt,
         // kilocode_change end
       },
     ],
     bindings: [
-      { key: "escape", desc: "Cancel permission rejection", group: "Permission", cmd: () => props.onCancel() },
+      { key: "escape", desc: t("Cancel permission rejection") /* kilocode_change */, group: "Permission", cmd: () => props.onCancel() },
       ...tuiConfig.keybinds.get("app.exit"),
       {
         key: "return",
-        desc: "Confirm permission rejection",
+        desc: t("Confirm permission rejection") /* kilocode_change */,
         group: "Permission",
         cmd: () => props.onConfirm(input.plainText),
       },
@@ -596,10 +597,10 @@ function RejectPrompt(props: { onConfirm: (message: string) => void; onCancel: (
       <box gap={1} paddingLeft={1} paddingRight={3} paddingTop={1} paddingBottom={1}>
         <box flexDirection="row" gap={1} paddingLeft={1}>
           <text fg={theme.error}>{"△"}</text>
-          <text fg={theme.text}>Reject permission</text>
+          <text fg={theme.text}>{t("Reject permission") /* kilocode_change */}</text>
         </box>
         <box paddingLeft={1}>
-          <text fg={theme.textMuted}>Tell Kilo what to do differently</text>
+          <text fg={theme.textMuted}>{t("Tell Kilo what to do differently") /* kilocode_change */}</text>
         </box>
       </box>
       <box
@@ -627,10 +628,10 @@ function RejectPrompt(props: { onConfirm: (message: string) => void; onCancel: (
         />
         <box flexDirection="row" gap={2} flexShrink={0}>
           <text fg={theme.text}>
-            enter <span style={{ fg: theme.textMuted }}>confirm</span>
+            enter <span style={{ fg: theme.textMuted }}>{t("confirm") /* kilocode_change */}</span>
           </text>
           <text fg={theme.text}>
-            esc <span style={{ fg: theme.textMuted }}>cancel</span>
+            esc <span style={{ fg: theme.textMuted }}>{t("cancel") /* kilocode_change */}</span>
           </text>
         </box>
       </box>
@@ -665,7 +666,7 @@ function Prompt<const T extends Record<string, string>>(props: {
       {
         name: "app.exit",
         // kilocode_change start - preserve direct rejection rather than exiting the app
-        title: "Reject permission",
+        title: t("Reject permission") /* kilocode_change */,
         category: "Permission",
         run() {
           if (props.onInterrupt) return props.onInterrupt()
@@ -675,7 +676,7 @@ function Prompt<const T extends Record<string, string>>(props: {
       },
       {
         name: "permission.prompt.fullscreen",
-        title: "Toggle permission fullscreen",
+        title: t("Toggle permission fullscreen") /* kilocode_change */,
         category: "Permission",
         run() {
           if (!props.fullscreen) return
@@ -686,7 +687,7 @@ function Prompt<const T extends Record<string, string>>(props: {
     bindings: [
       {
         key: "left",
-        desc: "Previous permission option",
+        desc: t("Previous permission option") /* kilocode_change */,
         group: "Permission",
         cmd: () => {
           const idx = keys.indexOf(store.selected)
@@ -696,7 +697,7 @@ function Prompt<const T extends Record<string, string>>(props: {
       },
       {
         key: "h",
-        desc: "Previous permission option",
+        desc: t("Previous permission option") /* kilocode_change */,
         group: "Permission",
         cmd: () => {
           const idx = keys.indexOf(store.selected)
@@ -706,7 +707,7 @@ function Prompt<const T extends Record<string, string>>(props: {
       },
       {
         key: "right",
-        desc: "Next permission option",
+        desc: t("Next permission option") /* kilocode_change */,
         group: "Permission",
         cmd: () => {
           const idx = keys.indexOf(store.selected)
@@ -716,7 +717,7 @@ function Prompt<const T extends Record<string, string>>(props: {
       },
       {
         key: "l",
-        desc: "Next permission option",
+        desc: t("Next permission option") /* kilocode_change */,
         group: "Permission",
         cmd: () => {
           const idx = keys.indexOf(store.selected)
@@ -726,7 +727,7 @@ function Prompt<const T extends Record<string, string>>(props: {
       },
       {
         key: "return",
-        desc: "Select permission option",
+        desc: t("Select permission option") /* kilocode_change */,
         group: "Permission",
         cmd: () => props.onSelect(store.selected),
       },
@@ -734,7 +735,7 @@ function Prompt<const T extends Record<string, string>>(props: {
         ? [
             {
               key: "escape",
-              desc: "Reject permission",
+              desc: t("Reject permission") /* kilocode_change */,
               group: "Permission",
               cmd: () => props.onSelect(props.escapeKey!),
             },
@@ -820,10 +821,10 @@ function Prompt<const T extends Record<string, string>>(props: {
             </text>
           </Show>
           <text fg={theme.text}>
-            {"⇆"} <span style={{ fg: theme.textMuted }}>select</span>
+            {"⇆"} <span style={{ fg: theme.textMuted }}>{t("select") /* kilocode_change */}</span>
           </text>
           <text fg={theme.text}>
-            enter <span style={{ fg: theme.textMuted }}>confirm</span>
+            enter <span style={{ fg: theme.textMuted }}>{t("confirm") /* kilocode_change */}</span>
           </text>
         </box>
       </box>

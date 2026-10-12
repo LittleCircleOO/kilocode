@@ -7,6 +7,7 @@ import { useToast } from "./toast"
 import { Flag } from "@opencode-ai/core/flag/flag"
 import { useBindings, useOpencodeModeStack } from "../keymap"
 import { useClipboard } from "../context/clipboard"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 export function Dialog(
   props: ParentProps<{
@@ -107,7 +108,7 @@ function init() {
     bindings: [
       {
         key: "escape",
-        desc: "Close dialog",
+        desc: t("Close dialog") /* kilocode_change */,
         group: "Dialog",
         cmd: () => {
           if (renderer.getSelection()) {
@@ -121,7 +122,7 @@ function init() {
       },
       {
         key: "ctrl+c",
-        desc: "Close dialog",
+        desc: t("Close dialog") /* kilocode_change */,
         group: "Dialog",
         cmd: () => {
           if (renderer.getSelection()) {
@@ -189,7 +190,7 @@ export function DialogProvider(props: ParentProps) {
     const text = renderer.getSelection()?.getSelectedText()
     if (!text || !clipboard.write) return false
     void clipboard.write(text).then(
-      () => toast.show({ message: "Copied to clipboard", variant: "info" }),
+      () => toast.show({ message: t("Copied to clipboard") /* kilocode_change */, variant: "info" }),
       (error) => toast.error(error),
     )
     renderer.clearSelection()

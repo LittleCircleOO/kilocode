@@ -5,21 +5,22 @@ import * as Log from "@opencode-ai/core/util/log"
 import { route } from "@/kilocode/cli/cmd/tui/memory-command"
 import { MemoryTuiMeta } from "@/kilocode/cli/cmd/tui/memory-meta"
 import { MemoryTuiState } from "@/kilocode/cli/cmd/tui/memory-state"
+import { t } from "@tui/kilocode/i18n"
 
 export function memoryRow(input: {
   enabled?: boolean
   loading?: boolean
   active: boolean
 }): {
-  label: "Loading" | "Unavailable" | "Disabled" | "Enabled"
+  label: string
   tone: "muted" | "success" | "error"
 } {
   if (input.enabled === undefined) {
-    return input.loading ? { label: "Loading", tone: "muted" } : { label: "Unavailable", tone: "error" }
+    return input.loading ? { label: t("Loading"), tone: "muted" } : { label: t("Unavailable"), tone: "error" }
   }
-  if (!input.enabled) return { label: "Disabled", tone: "muted" as const }
+  if (!input.enabled) return { label: t("Disabled"), tone: "muted" as const }
   return {
-    label: "Enabled",
+    label: t("Enabled"),
     tone: input.active ? ("success" as const) : ("muted" as const),
   }
 }
@@ -100,7 +101,7 @@ export function MemorySidebar(props: { api: TuiPluginApi; sessionID: string }) {
         {(row) => (
           <box>
             <text fg={props.api.theme.current.text}>
-              <b>Memory</b>
+              <b>{t("Memory")}</b>
             </text>
             <box flexDirection="row" gap={1}>
               <text

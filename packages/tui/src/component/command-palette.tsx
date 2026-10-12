@@ -9,6 +9,7 @@ import {
   useOpencodeKeymap,
 } from "../keymap"
 import { useTuiConfig } from "../config"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 type PaletteCommandEntry = ReturnType<OpenTuiKeymap["getCommandEntries"]>[number]
 
@@ -75,5 +76,5 @@ export function CommandPaletteDialog() {
     ]
   }
 
-  return <DialogSelect ref={(value) => (ref = value)} title="Commands" options={list()} />
+  return <DialogSelect ref={(value) => (ref = value)} title={t("Commands") /* kilocode_change */} options={list()} />
 }

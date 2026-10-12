@@ -1,6 +1,7 @@
 import type { TuiPlugin, TuiPluginModule } from "@kilocode/plugin/tui"
 import { createMemo, Show } from "solid-js"
 import { KiloNews } from "@/kilocode/components/kilo-news"
+import { t } from "@tui/kilocode/i18n"
 
 const id = "internal:home-news"
 
@@ -11,7 +12,7 @@ const tui: TuiPlugin = async (api) => {
         namespace: "palette",
         name: "news.toggle",
         get title() {
-          return api.kv.get("news_hidden", false) ? "Show news" : "Hide news"
+          return api.kv.get("news_hidden", false) ? t("Show news") : t("Hide news")
         },
         category: "System",
         get hidden() {

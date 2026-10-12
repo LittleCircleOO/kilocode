@@ -1,6 +1,7 @@
 import type { KiloClient } from "@kilocode/sdk/v2"
 import { MEMORY_USAGE, parseMemoryCommand, type ParsedMemoryCommand } from "@kilocode/kilo-memory/commands"
 import { errorMessage } from "@/util/error"
+import { t } from "@tui/kilocode/i18n"
 
 export { MEMORY_USAGE }
 export type MemoryCommand = ParsedMemoryCommand
@@ -77,7 +78,7 @@ export async function runMemoryCommand(input: {
       read(await input.client.memory.enable(route(input)))
       input.toast.show({
         variant: "success",
-        message: `${name} enabled`,
+        message: t("{{name}} enabled", { name: name }),
       })
       return true
     }
@@ -89,7 +90,7 @@ export async function runMemoryCommand(input: {
       const status = read(await input.client.memory.status(route(input)))
       if (!status.state.enabled) throw new Error("Memory is disabled. Run /memory on first.")
       if (!input.inspect) throw new Error("Memory folder inspection is unavailable")
-      input.toast.show({ variant: "info", message: `Memory folder: ${status.root}` })
+      input.toast.show({ variant: "info", message: t("Memory folder: {{root}}", { root: status.root }) })
       await input.inspect(status.root)
       return true
     }
@@ -105,17 +106,17 @@ export async function runMemoryCommand(input: {
     }
     if (parsed.operation === "disable") {
       read(await input.client.memory.disable(route(input)))
-      input.toast.show({ variant: "info", message: `${name} disabled` })
+      input.toast.show({ variant: "info", message: t("{{name}} disabled", { name: name }) })
       return true
     }
     if (parsed.operation === "rebuild") {
       const result = read(await input.client.memory.rebuild(route(input)))
-      input.toast.show({ variant: "success", message: `${name} rebuilt (${tokens(result.index.tokens)})` })
+      input.toast.show({ variant: "success", message: t("{{name}} rebuilt ({{p1}})", { name: name, p1: tokens(result.index.tokens) }) })
       return true
     }
     if (parsed.operation === "purge") {
       read(await input.client.memory.purge({ ...route(input), confirm: true }))
-      input.toast.show({ variant: "success", message: `${name} purged` })
+      input.toast.show({ variant: "success", message: t("{{name}} purged", { name: name }) })
       return true
     }
     // Wording mirrors the server memory event messages so chat-intent and command saves read the same.
@@ -127,7 +128,7 @@ export async function runMemoryCommand(input: {
           text: parsed.text,
         }),
       )
-      input.toast.show({ variant: "success", message: `Memory saved · ${changeCount(result.operationCount)}` })
+      input.toast.show({ variant: "success", message: t("Memory saved · {{p0}}", { p0: changeCount(result.operationCount) }) })
       return true
     }
     if (parsed.operation === "correct") {
@@ -138,7 +139,7 @@ export async function runMemoryCommand(input: {
           text: parsed.text,
         }),
       )
-      input.toast.show({ variant: "success", message: `Correction saved · ${changeCount(result.operationCount)}` })
+      input.toast.show({ variant: "success", message: t("Correction saved · {{p0}}", { p0: changeCount(result.operationCount) }) })
       return true
     }
 
@@ -150,11 +151,11 @@ export async function runMemoryCommand(input: {
           query: parsed.query,
         }),
       )
-      input.toast.show({ variant: "success", message: `Memory updated · ${result.removed.toLocaleString()} removed` })
+      input.toast.show({ variant: "success", message: t("Memory updated · {{p0}} removed", { p0: result.removed.toLocaleString() }) })
     }
     return true
   } catch (error) {
-    input.toast.show({ variant: "error", message: `Memory command failed: ${errorMessage(error)}` })
+    input.toast.show({ variant: "error", message: t("Memory command failed: {{p0}}", { p0: errorMessage(error) }) })
     return true
   }
 }

@@ -11,7 +11,8 @@ import type { Model } from "@kilocode/sdk/v2" // kilocode_change
 import { useConnected } from "./use-connected"
 import { ModelInfoPanel } from "@/kilocode/components/model-info-panel" // kilocode_change
 import { FreeModelDisclosure } from "@/kilocode/components/free-model-disclosure" // kilocode_change
-import { buildModelPickerOptions, rankProviderOptions } from "../kilocode/model-picker" // kilocode_change
+import { buildModelPickerOptions, rankProviderOptions } from "../kilocode/model-picker"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 export function DialogModel(props: { providerID?: string }) {
   const local = useLocal()
@@ -139,14 +140,14 @@ export function DialogModel(props: { providerID?: string }) {
           actions={[
             {
               command: "model.dialog.provider",
-              title: connected() ? "Connect provider" : "View all providers",
+              title: connected() ? t("Connect provider") /* kilocode_change */ : t("View all providers") /* kilocode_change */,
               onTrigger() {
                 dialog.replace(() => <DialogProvider />)
               },
             },
             {
               command: "model.dialog.favorite",
-              title: "Favorite",
+              title: t("Favorite") /* kilocode_change */,
               hidden: !connected(),
               onTrigger: (option) => {
                 local.model.toggleFavorite(option.value as { providerID: string; modelID: string })

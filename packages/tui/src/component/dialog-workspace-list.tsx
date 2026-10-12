@@ -10,6 +10,7 @@ import { createStore } from "solid-js/store"
 import { errorMessage } from "../util/error"
 import { useSDK } from "../context/sdk"
 import { useToast } from "../ui/toast"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 type WorkspaceOption = { workspace: Workspace }
 
@@ -39,7 +40,7 @@ export function DialogWorkspaceList() {
         return {
           title:
             removing() === workspace.id
-              ? "Deleting..."
+              ? t("Deleting...") /* kilocode_change */
               : deleting() === workspace.id
                 ? `Delete ${workspace.name}? Press delete again`
                 : workspace.name,
@@ -71,7 +72,7 @@ export function DialogWorkspaceList() {
       setRemoving(undefined)
       toast.show({
         variant: "error",
-        title: "Failed to delete workspace",
+        title: t("Failed to delete workspace") /* kilocode_change */,
         message: errorMessage(result.error),
       })
       return
@@ -94,7 +95,7 @@ export function DialogWorkspaceList() {
 
   return (
     <DialogSelect
-      title="Workspaces"
+      title={t("Workspaces") /* kilocode_change */}
       options={options()}
       onMove={(option) => {
         setDeleting(undefined)
@@ -103,7 +104,7 @@ export function DialogWorkspaceList() {
       actions={[
         {
           command: "session.delete",
-          title: "delete",
+          title: t("delete") /* kilocode_change */,
           onTrigger: (option) => void remove(option.value.workspace),
         },
       ]}

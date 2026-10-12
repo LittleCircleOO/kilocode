@@ -2,6 +2,7 @@ import { createMemo } from "solid-js"
 import { useLocal } from "../context/local"
 import { DialogSelect } from "../ui/dialog-select"
 import { useDialog } from "../ui/dialog"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 export function DialogAgent() {
   const local = useLocal()
@@ -20,7 +21,7 @@ export function DialogAgent() {
 
   return (
     <DialogSelect
-      title="Select agent"
+      title={t("Select agent") /* kilocode_change */}
       current={local.agent.current()?.name ?? ""} // kilocode_change
       options={options()}
       onSelect={(option) => {

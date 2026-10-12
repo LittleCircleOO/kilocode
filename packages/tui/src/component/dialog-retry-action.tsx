@@ -6,6 +6,7 @@ import { useDialog, type DialogContext } from "../ui/dialog"
 import { Link } from "../ui/link"
 import { BgPulse } from "./bg-pulse"
 import { useBindings } from "../keymap"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 const KILO_PRICING_URL = "https://kilo.ai/pricing" // kilocode_change
 const PAD_X = 3
@@ -48,25 +49,25 @@ export function DialogRetryAction(props: DialogRetryActionProps) {
     bindings: [
       {
         key: "left",
-        desc: "Previous retry option",
+        desc: t("Previous retry option") /* kilocode_change */,
         group: "Dialog",
         cmd: () => setSelected((value) => (value === "action" ? "dismiss" : "action")),
       },
       {
         key: "right",
-        desc: "Next retry option",
+        desc: t("Next retry option") /* kilocode_change */,
         group: "Dialog",
         cmd: () => setSelected((value) => (value === "action" ? "dismiss" : "action")),
       },
       {
         key: "tab",
-        desc: "Next retry option",
+        desc: t("Next retry option") /* kilocode_change */,
         group: "Dialog",
         cmd: () => setSelected((value) => (value === "action" ? "dismiss" : "action")),
       },
       {
         key: "return",
-        desc: "Confirm retry option",
+        desc: t("Confirm retry option") /* kilocode_change */,
         group: "Dialog",
         cmd: () => {
           if (selected() === "action") runAction(props, dialog)

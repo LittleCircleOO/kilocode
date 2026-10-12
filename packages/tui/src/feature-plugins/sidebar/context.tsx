@@ -1,7 +1,8 @@
 import type { AssistantMessage } from "@kilocode/sdk/v2"
 import type { TuiPlugin, TuiPluginApi } from "@kilocode/plugin/tui"
 import type { BuiltinTuiPlugin } from "../builtins"
-import { createMemo, createSignal, Show } from "solid-js" // kilocode_change
+import { createMemo, createSignal, Show } from "solid-js"
+import { t } from "@tui/kilocode/i18n" // kilocode_change
 
 const id = "internal:sidebar-context"
 
@@ -51,7 +52,7 @@ function View(props: { api: TuiPluginApi; session_id: string }) {
       <box flexDirection="row" gap={1} onMouseDown={() => setOpen((x) => !x)}>
         <text fg={theme().text}>{open() ? "▼" : "▶"}</text>
         <text fg={theme().text}>
-          <b>Context</b>
+          <b>{t("Context") /* kilocode_change */}</b>
           <Show when={!open()}>
             <span style={{ fg: theme().textMuted }}>
               {" "}
@@ -61,9 +62,9 @@ function View(props: { api: TuiPluginApi; session_id: string }) {
         </text>
       </box>
       <Show when={open()}>
-        <text fg={theme().textMuted}>{state().tokens.toLocaleString()} tokens</text>
-        <text fg={theme().textMuted}>{state().percent ?? 0}% used</text>
-        <text fg={theme().textMuted}>{money.format(cost())} spent</text>
+        <text fg={theme().textMuted}>{state().tokens.toLocaleString()} {t("tokens") /* kilocode_change */}</text>
+        <text fg={theme().textMuted}>{state().percent ?? 0}{t("% used") /* kilocode_change */}</text>
+        <text fg={theme().textMuted}>{money.format(cost())} {t("spent") /* kilocode_change */}</text>
       </Show>
       {/* kilocode_change end */}
     </box>

@@ -1,5 +1,6 @@
 import type { useToast } from "@tui/ui/toast"
 import type { useNudge } from "@/kilocode/cli/cmd/tui/context/nudge"
+import { t } from "@tui/kilocode/i18n"
 
 export type CostAlertCommand =
   | { type: "prompt" }
@@ -72,7 +73,7 @@ export function createCostAlertController(deps: {
       const info = nudge.clearLimit(sid)
       clearPrompt()
       toast.show({
-        message: sid ? `Cost alert disabled. Current cost ${nudge.formatCost(info.cost)}.` : "Cost alert disabled.",
+        message: sid ? `Cost alert disabled. Current cost ${nudge.formatCost(info.cost)}.` : t("Cost alert disabled."),
         variant: "success",
         duration: 4000,
       })
